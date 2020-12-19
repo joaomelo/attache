@@ -1,26 +1,25 @@
 import { research } from './research';
 
 describe('research', () => {
-  test('return position if literal', () => {
-    const page = 'www.another.com';
-    const searchResult = ['www.some.com', 'www.another.com'];
+  test('return correct report', () => {
+    const pages = ['company.com', 'www.landing-page.com'];
+    const terms = ['service', 'service my-city'];
+    const searcher = (term, size) => {
+      const result = Array(size).fill('www.site.com');
+      result[10] = 'company.com';
+      result[500] = 'www.landing-page.com';
+      return result;
+    };
 
-    const position = calcPosition(page, searchResult);
-    expect(position).toBe(1);
-  });
-  test('return position even if partial match', () => {
-    const page = 'main.com';
-    const searchResult = ['www.blog.main.com', 'www.another.com'];
+    const rankings = research({ pages, terms }, { searcher });
 
-    const position = calcPosition(page, searchResult);
-    expect(position).toBe(0);
+    expect(report).toEqual(
+      expect.objectContaining({
+        page,
+        term,
+        position: 10,
+        when: expect.any(Date)
+      })
+    );
   });
-  test('return -1 if not found', () => {
-    const page = 'www.blog.com';
-    const searchResult = ['www.my-blog.com', 'www.another.com'];
-
-    const position = calcPosition(page, searchResult);
-    expect(position).toBe(-1);
-  });
-})
-;
+});

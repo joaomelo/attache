@@ -1,20 +1,14 @@
 import { calcPosition } from './position';
 
-export function rank ({ stake }, { searcher }) {
-  const rankings = {};
+export function rank ({ page, term, size }, { searcher }) {
+  const ranking = {
+    when: new Date(),
+    page,
+    term
+  };
 
-  const searches = {};
+  const search = searcher(term, size);
+  ranking.position = calcPosition(page, search);
 
-  stake.terms.forEach(term => {
-    searches[term] = searcher(term, 1000);
-  });
-
-  stake.pages.forEach(page => {
-    rankings[page] = {};
-    stake.terms.forEach(term => {
-      rankings[page][term] = calcPosition(page, searches[term]);
-    });
-  });
-
-  return rankings;
+  return ranking;
 }

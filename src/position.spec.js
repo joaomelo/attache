@@ -8,6 +8,7 @@ describe('position', () => {
     const position = calcPosition(page, searchResult);
     expect(position).toBe(1);
   });
+
   test('return position even if partial match', () => {
     const page = 'main.com';
     const searchResult = ['www.blog.main.com', 'www.another.com'];
@@ -15,6 +16,7 @@ describe('position', () => {
     const position = calcPosition(page, searchResult);
     expect(position).toBe(0);
   });
+
   test('return -1 if not found', () => {
     const page = 'www.blog.com';
     const searchResult = ['www.my-blog.com', 'www.another.com'];
