@@ -8,12 +8,14 @@ module.exports = {
     'standard',
     'plugin:vue/recommended'
   ],
+  plugins: ['jest'],
   rules: {
     semi: ['error', 'always'],
     'no-console': ['warn'],
     'no-debugger': 'warn'
   },
   env: {
-    browser: true
+    browser: true,
+    'jest/globals': true
   }
 };
