@@ -1,6 +1,6 @@
 # TL;DR
 
-Attache is a SERP tracker. It crosses the presence of pages against results of search terms and reports that.
+Attache is in early development. The goal is to build a SERP tracker. It crosses the presence of pages against results of search terms and reports that.
 
 # Main Concepts
 
