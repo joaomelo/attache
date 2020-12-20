@@ -1,16 +1,14 @@
+import { createIsRanked } from './is-ranked';
 import { rank } from './rank';
 
 export async function research ({ stake, size }, { searcher, db }) {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const todayRankings = db.getRankingsSince(today);
-  const isAlreadyRanked = (page, term) => todayRankings.find(r => r.page === page && r.term === term);
+  const isRanked = await createIsRanked({ frequency: stake.frequency }, { db });
 
   const promises = [];
 
   stake.pages.forEach(page => {
     stake.terms.forEach(term => {
-      if (!isAlreadyRanked(page, term)) {
+      if (!isRanked(page, term)) {
         promises.push(rank({ page, term, size }, { searcher }));
       }
     });

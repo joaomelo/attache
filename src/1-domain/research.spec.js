@@ -1,5 +1,5 @@
 import { dummySearcher } from '../2-services/search';
-import { createDummyDb } from '../2-services/db';
+import { initMemoryDb } from '../2-services/db';
 import { research } from './research';
 
 describe('research', () => {
@@ -12,7 +12,7 @@ describe('research', () => {
   test('return correct report shape', async () => {
     const report = await research(
       { stake, size: 1000 },
-      { searcher: dummySearcher, db: createDummyDb() }
+      { searcher: dummySearcher, db: initMemoryDb() }
     );
 
     expect(report).toHaveLength(4);
@@ -30,7 +30,7 @@ describe('research', () => {
   });
 
   test('will not repeat research if frequency already answered', async () => {
-    const db = createDummyDb();
+    const db = initMemoryDb();
     await research({ stake, size: 1000 }, { searcher: dummySearcher, db });
     const length = db.rankings.length;
 
@@ -39,13 +39,13 @@ describe('research', () => {
     expect(db.rankings).toHaveLength(length);
   });
 
-  test('can distinguish partial presence of rankings ', async () => {
-    const db = createDummyDb();
+  test('can deal with partial diferences in parameters', async () => {
+    const db = initMemoryDb();
     await research({ stake, size: 1000 }, { searcher: dummySearcher, db });
     const length = db.rankings.length;
 
     const newStake = {
-      frequency: 'daily',
+      frequency: 'weekly',
       pages: ['company.com', 'www.landing-page.com', 'new-page.net'],
       terms: ['service', 'service my-city']
     };
