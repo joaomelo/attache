@@ -1,5 +1,6 @@
 export function initMemoryDb () {
   return {
+    stakes: [],
     rankings: [],
 
     saveReport (report) {
@@ -10,6 +11,10 @@ export function initMemoryDb () {
     getRankingsSince (date) {
       const rankingsSince = this.rankings.filter(ranking => ranking.when >= date);
       return Promise.resolve(rankingsSince);
+    },
+
+    getAllStakes () {
+      return Promise.resolve([...this.stakes]);
     }
   };
 };

@@ -1,4 +1,4 @@
-import { initMemoryDb } from '../2-services/db';
+import { initMemoryDb } from '../2-interfaces/db';
 import { createIsRanked } from './is-ranked';
 
 describe('isRanked', () => {

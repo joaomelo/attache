@@ -1,5 +1,5 @@
-import { dummySearcher } from '../2-services/search';
-import { initMemoryDb } from '../2-services/db';
+import { dummySearcher } from '../2-interfaces/search';
+import { initMemoryDb } from '../2-interfaces/db';
 import { research } from './research';
 
 describe('research', () => {
@@ -11,7 +11,7 @@ describe('research', () => {
 
   test('return correct report shape', async () => {
     const report = await research(
-      { stake, size: 1000 },
+      { stake },
       { searcher: dummySearcher, db: initMemoryDb() }
     );
 
@@ -31,17 +31,17 @@ describe('research', () => {
 
   test('will not repeat research if frequency already answered', async () => {
     const db = initMemoryDb();
-    await research({ stake, size: 1000 }, { searcher: dummySearcher, db });
+    await research({ stake }, { searcher: dummySearcher, db });
     const length = db.rankings.length;
 
-    await research({ stake, size: 1000 }, { searcher: dummySearcher, db });
+    await research({ stake }, { searcher: dummySearcher, db });
 
     expect(db.rankings).toHaveLength(length);
   });
 
   test('can deal with partial diferences in parameters', async () => {
     const db = initMemoryDb();
-    await research({ stake, size: 1000 }, { searcher: dummySearcher, db });
+    await research({ stake }, { searcher: dummySearcher, db });
     const length = db.rankings.length;
 
     const newStake = {
@@ -49,7 +49,7 @@ describe('research', () => {
       pages: ['company.com', 'www.landing-page.com', 'new-page.net'],
       terms: ['service', 'service my-city']
     };
-    await research({ stake: newStake, size: 1000 }, { searcher: dummySearcher, db });
+    await research({ stake: newStake }, { searcher: dummySearcher, db });
 
     expect(db.rankings).toHaveLength(length + 2);
   });

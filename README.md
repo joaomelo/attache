@@ -18,4 +18,4 @@ Attache is a SERP tracker. It crosses the presence of pages against results of s
 
 # Typical Use case
 
-Every day, I want to receive in my WhatsApp the ranking of pages `company.com` and `landing-page.com` in Google searches against terms `service`, `service my-city` and `service my-neighborhood`.
+Every week, I want to receive in my WhatsApp the ranking of pages `company.com` and `landing-page.com` in Google searches against terms `service`, `service my-city` and `service my-neighborhood`.

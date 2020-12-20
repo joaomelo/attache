@@ -1,7 +1,7 @@
 import { createIsRanked } from './is-ranked';
 import { rank } from './rank';
 
-export async function research ({ stake, size }, { searcher, db }) {
+export async function research ({ stake }, { searcher, db }) {
   const isRanked = await createIsRanked({ frequency: stake.frequency }, { db });
 
   const promises = [];
@@ -9,7 +9,7 @@ export async function research ({ stake, size }, { searcher, db }) {
   stake.pages.forEach(page => {
     stake.terms.forEach(term => {
       if (!isRanked(page, term)) {
-        promises.push(rank({ page, term, size }, { searcher }));
+        promises.push(rank({ page, term, size: 1000 }, { searcher }));
       }
     });
   });

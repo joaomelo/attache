@@ -1,4 +1,4 @@
-import { dummySearcher } from '../2-services/search';
+import { dummySearcher } from '../2-interfaces/search';
 import { rank } from './rank';
 
 describe('rank', () => {
