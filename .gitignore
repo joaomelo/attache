@@ -1,3 +1,5 @@
+local-data/
+
 # cypress media
 videos/
 screenshots/

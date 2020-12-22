@@ -11,20 +11,13 @@ describe('searchStakes', () => {
     {
       frequency: 'weekly',
       pages: ['company.com', 'www.competitor.com'],
-      terms: ['service', 'service my-city']
+      terms: ['service', 'service my-neighborough']
     }
   ];
 
-  test('return search results for stakes', async () => {
+  test('return searches results for stakes', async () => {
     const search = createDummySearch();
-
-    const searchResults = await searchStakes({ term }, { search });
-
-    expect(searchResult).toEqual(
-      expect.objectContaining({
-        size: 100,
-        results: expect.any(Array)
-      })
-    );
+    const searchesResults = await searchStakes({ stakes }, { search });
+    expect(searchesResults).toHaveLength(3);
   });
 });
