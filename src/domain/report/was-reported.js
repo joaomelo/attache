@@ -11,7 +11,7 @@ export async function createIsRanked ({ frequency }, { db }) {
     sinceDate.setDate(sinceDate.getDate() - 6);
   }
 
-  const rankings = await db.getRankingsSince(sinceDate);
+  const rankings = await db.queryRankingsSince(sinceDate);
 
   const isRanked = (page, term) => !!rankings.find(r => r.page === page && r.term === term);
   return isRanked;

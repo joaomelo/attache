@@ -6,8 +6,8 @@ describe('searchTerms', () => {
     const terms = new Set(['service', 'service my-city', 'service', 'service my-neighborough']);
     const search = createDummySearch();
 
-    const contexts = await searchTerms({ terms }, { search });
+    const snapshots = await searchTerms({ terms }, { search });
 
-    expect(contexts.size).toBe(3);
+    expect(snapshots.size).toBe(3);
   });
 });

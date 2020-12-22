@@ -20,6 +20,6 @@ describe('cycleRank', () => {
 
     await cycleRank({ db, search });
 
-    expect(db.rankings).toHaveLength(5);
+    expect(Object.entries(db.rankings)).toHaveLength(5);
   });
 });

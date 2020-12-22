@@ -17,8 +17,8 @@ describe('searchStakes', () => {
     ];
     const search = createDummySearch();
 
-    const contexts = await searchStakes({ stakes }, { search });
+    const snapshots = await searchStakes({ stakes }, { search });
 
-    expect(contexts.size).toBe(2);
+    expect(snapshots.size).toBe(2);
   });
 });

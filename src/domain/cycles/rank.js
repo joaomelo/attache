@@ -1,13 +1,11 @@
-import { research } from './research';
+import { searchStakes } from '../search';
+import { rankStakes } from '../rank';
 
 export async function cycleRank ({ db, search }) {
-  const stakes = await db.getAllStakes();
+  const stakes = await db.queryStakes();
 
-  const promises = [];
-  stakes.forEach(stake => {
-    promises.push(research({ stake }, { db, searcher }));
-  });
+  const snapshots = await searchStakes({ stakes }, { search });
+  const rankings = rankStakes({ stakes, snapshots });
 
-  const reports = await Promise.all(promises);
-  return reports.flat();
+  return db.saveRankings(rankings);
 }

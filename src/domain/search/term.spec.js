@@ -6,9 +6,9 @@ describe('searchTerm', () => {
     const term = 'service city';
     const search = createDummySearch();
 
-    const context = await searchTerm({ term }, { search });
+    const snapshot = await searchTerm({ term }, { search });
 
-    expect(context).toEqual(
+    expect(snapshot).toEqual(
       expect.objectContaining({
         term,
         size: 100,

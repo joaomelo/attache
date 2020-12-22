@@ -1,12 +1,12 @@
 import { rankPage } from './page';
 
-export async function rankStakes ({ stakes, contexts }) {
+export function rankStakes ({ stakes, snapshots }) {
   const rankings = new Map();
 
   stakes.forEach(stake => {
     stake.terms.forEach(term => {
-      const context = contexts.get(term);
-      const { result, size, when } = context;
+      const snapshot = snapshots.get(term);
+      const { result, size, when } = snapshot;
 
       stake.pages.forEach(page => {
         const hash = `${page}::${term}`;

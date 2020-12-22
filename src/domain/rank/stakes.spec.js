@@ -17,9 +17,9 @@ describe('rankStakes', () => {
       }
     ];
     const search = createDummySearch();
-    const contexts = await searchStakes({ stakes }, { search });
+    const snapshots = await searchStakes({ stakes }, { search });
 
-    const rankings = await rankStakes({ stakes, contexts });
+    const rankings = rankStakes({ stakes, snapshots });
 
     expect(rankings.size).toBe(3);
     expect(Array.from(rankings.values())).toEqual(
