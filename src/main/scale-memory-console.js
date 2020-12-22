@@ -1,7 +1,7 @@
-import { initMemoryDb } from '../2-interfaces/db';
-import { axiosGet } from '../2-interfaces/get';
-import { createScaleSerpSearcher } from '../2-interfaces/search';
-import { runCycle } from '../1-domain';
+import { initMemoryDb } from '../interfaces/db';
+import { axiosGet } from '../interfaces/get';
+import { createScaleSerpSearch } from '../interfaces/search';
+import { cycleRank } from '../domain/cycles';
 
 async function main () {
   const db = initMemoryDb();
@@ -19,11 +19,11 @@ async function main () {
   );
 
   const key = process.env.SCALE_SERP_KEY;
-  const searcher = createScaleSerpSearcher({ get: axiosGet, key });
+  const search = createScaleSerpSearch({ get: axiosGet, key });
 
-  const result = await runCycle({ db, searcher });
+  const rankings = await cycleRank({ db, search });
 
-  result.forEach(result => console.log(result));
+  rankings.forEach(ranking => console.log(ranking));
 }
 
 main();

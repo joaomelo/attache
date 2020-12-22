@@ -7,7 +7,7 @@
     "serve": "firebase emulators:start",
     "test": "jest --watchAll",
     "lint": "eslint --fix --ext .js,.vue src/",
-    "main:console": "babel-node -r dotenv/config src/0-main/scale-memory-console.js"
+    "main:console": "babel-node -r dotenv/config src/main/scale-memory-console.js"
   },
   "author": "",
   "license": "ISC",

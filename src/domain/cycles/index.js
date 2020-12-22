@@ -1,1 +1,1 @@
-export { runCycle } from './cycle';
+export { cycleRank } from './rank';
