@@ -1,1 +1,1 @@
-export { searchTerms } from './terms';
+export { searchStakes } from './stakes';

@@ -1,7 +1,7 @@
-import { initMemoryDb } from '../2-interfaces/db';
-import { createIsRanked } from './is-ranked';
+import { initMemoryDb } from '../../interfaces/db';
+import { createIsRanked } from './was-reported';
 
-describe('isRanked', () => {
+describe.skip('isRanked', () => {
   const page = 'blog.company';
   const term = 'service';
 

@@ -1,5 +1,5 @@
 import { createDummySearch } from '../../interfaces/search';
-import { searchTerms } from '../search';
+import { searchStakes } from '../search';
 import { rankStakes } from './stakes';
 
 describe('rankStakes', () => {
@@ -16,9 +16,8 @@ describe('rankStakes', () => {
         terms: ['service', 'service city']
       }
     ];
-    const terms = new Set(['service', 'service city']);
     const search = createDummySearch();
-    const contexts = await searchTerms({ terms }, { search });
+    const contexts = await searchStakes({ stakes }, { search });
 
     const rankings = await rankStakes({ stakes, contexts });
 

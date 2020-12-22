@@ -1,6 +1,6 @@
 import { research } from './research';
 
-export async function runCycle ({ db, searcher }) {
+export async function cycleRank ({ db, search }) {
   const stakes = await db.getAllStakes();
 
   const promises = [];

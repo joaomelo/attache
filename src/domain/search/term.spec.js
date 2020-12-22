@@ -6,14 +6,14 @@ describe('searchTerm', () => {
     const term = 'service city';
     const search = createDummySearch();
 
-    const searchResult = await searchTerm({ term }, { search });
+    const context = await searchTerm({ term }, { search });
 
-    expect(searchResult).toEqual(
+    expect(context).toEqual(
       expect.objectContaining({
         term,
         size: 100,
         when: expect.any(Date),
-        results: expect.any(Array)
+        result: expect.any(Array)
       })
     );
   });

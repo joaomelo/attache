@@ -1,7 +1,7 @@
 export async function searchTerm ({ term }, { search }) {
-  const searchResult = await search(term);
-  searchResult.term = term;
-  searchResult.when = new Date();
+  const context = await search(term);
+  context.term = term;
+  context.when = new Date();
 
-  return searchResult;
+  return context;
 }
