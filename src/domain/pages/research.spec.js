@@ -1,19 +1,22 @@
-import { dummySearcher } from '../2-interfaces/search';
+import { createDummySearch } from '../2-interfaces/search';
 import { initMemoryDb } from '../2-interfaces/db';
 import { research } from './research';
 
 describe('research', () => {
+  let db;
+  const search = createDummySearch();
   const stake = {
     frequency: 'daily',
     pages: ['company.com', 'www.landing-page.com'],
     terms: ['service', 'service my-city']
   };
 
+  beforeEach(() => {
+    db = initMemoryDb();
+  });
+
   test('return correct report shape', async () => {
-    const report = await research(
-      { stake },
-      { searcher: dummySearcher, db: initMemoryDb() }
-    );
+    const report = await research({ stake }, { search, db });
 
     expect(report).toHaveLength(4);
 
@@ -23,6 +26,7 @@ describe('research', () => {
           page: expect.any(String),
           term: expect.any(String),
           position: expect.any(Number),
+          size: expect.any(Number),
           when: expect.any(Date)
         })
       ])
@@ -30,18 +34,16 @@ describe('research', () => {
   });
 
   test('will not repeat research if frequency already answered', async () => {
-    const db = initMemoryDb();
-    await research({ stake }, { searcher: dummySearcher, db });
+    await research({ stake }, { search, db });
     const length = db.rankings.length;
 
-    await research({ stake }, { searcher: dummySearcher, db });
+    await research({ stake }, { search, db });
 
     expect(db.rankings).toHaveLength(length);
   });
 
   test('can deal with partial diferences in parameters', async () => {
-    const db = initMemoryDb();
-    await research({ stake }, { searcher: dummySearcher, db });
+    await research({ stake }, { search, db });
     const length = db.rankings.length;
 
     const newStake = {
@@ -49,7 +51,7 @@ describe('research', () => {
       pages: ['company.com', 'www.landing-page.com', 'new-page.net'],
       terms: ['service', 'service my-city']
     };
-    await research({ stake: newStake }, { searcher: dummySearcher, db });
+    await research({ stake: newStake }, { search, db });
 
     expect(db.rankings).toHaveLength(length + 2);
   });
