@@ -9,13 +9,13 @@ export function createScaleSerpSearch ({ get, key }) {
       num: size
     });
 
-    const results = responseData
+    const result = responseData
       .organic_results
       .map(result => result.link);
 
     return {
       size,
-      results,
+      result,
       when: new Date()
     };
   };

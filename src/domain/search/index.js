@@ -1,0 +1,1 @@
+export { searchTerms } from './terms';

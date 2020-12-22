@@ -5,11 +5,11 @@ export function createDummySearch (config = {}) {
   const syntheticPos = pos ? Math.min(pos, size) : 10;
 
   const search = term => {
-    const results = Array(size).fill('www.site.com');
-    results[syntheticPos] = syntheticSite;
+    const result = Array(size).fill('www.site.com');
+    result[syntheticPos] = syntheticSite;
 
     return Promise.resolve({
-      results,
+      result,
       size
     });
   };

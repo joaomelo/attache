@@ -1,22 +1,26 @@
-import { createDummySearch } from '../2-interfaces/search';
-import { initMemoryDb } from '../2-interfaces/db';
-import { research } from './research';
+import { createDummySearch } from '../interfaces/search';
+import { searchTerms } from '../search';
+import { rankStakes } from './stakes';
 
-describe('research', () => {
-  let db;
+describe('rankStakes', async () => {
+  const stakes = [
+    {
+      frequency: 'daily',
+      pages: ['company.com', 'www.landing-page.com'],
+      terms: ['service', 'service my-city']
+    },
+    {
+      frequency: 'weekly',
+      pages: ['company.com', 'www.competitor.com'],
+      terms: ['service', 'service my-neighborough']
+    }
+  ];
+  const terms = new Set(['service', 'service my-city', 'service', 'service my-neighborough']);
   const search = createDummySearch();
-  const stake = {
-    frequency: 'daily',
-    pages: ['company.com', 'www.landing-page.com'],
-    terms: ['service', 'service my-city']
-  };
-
-  beforeEach(() => {
-    db = initMemoryDb();
-  });
+  const searches = await searchTerms({ terms }, { search });
 
   test('return correct report shape', async () => {
-    const report = await research({ stake }, { search, db });
+    const report = await rankStakes({ stakes, searches });
 
     expect(report).toHaveLength(4);
 

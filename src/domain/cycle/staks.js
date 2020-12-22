@@ -1,7 +1,7 @@
 import { createIsRanked } from './is-ranked';
 import { rank } from './rank';
 
-export async function research ({ stake }, { searcher, db }) {
+export async function rankStakes ({ stake }, { searcher, db }) {
   const isRanked = await createIsRanked({ frequency: stake.frequency }, { db });
 
   const promises = [];

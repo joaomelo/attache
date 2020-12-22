@@ -10,7 +10,9 @@ describe('searchTerm', () => {
 
     expect(searchResult).toEqual(
       expect.objectContaining({
+        term,
         size: 100,
+        when: expect.any(Date),
         results: expect.any(Array)
       })
     );
