@@ -7,6 +7,11 @@ export function initMemoryDb () {
       return Promise.resolve([...this.stakes]);
     },
 
+    saveStakes (stakes) {
+      this.stakes.push(...stakes);
+      return Promise.resolve(true);
+    },
+
     // queryRankingsSince (date) {
     //   const rankingsSince = this.rankings.filter(ranking => ranking.when >= date);
     //   return Promise.resolve(rankingsSince);

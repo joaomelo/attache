@@ -7,7 +7,8 @@
     "serve": "firebase emulators:start",
     "test": "jest --watchAll",
     "lint": "eslint --fix --ext .js,.vue src/",
-    "main:console": "babel-node -r dotenv/config src/main/scale-memory-console.js"
+    "main:memory": "babel-node -r dotenv/config src/main/scale-memory-console.js",
+    "main:sqlite": "babel-node -r dotenv/config src/main/scale-sqlite-console.js"
   },
   "author": "",
   "license": "ISC",
@@ -16,7 +17,9 @@
     "babel-jest": "^26.6.3",
     "core-js": "^3.8.1",
     "dotenv": "^8.2.0",
+    "knex": "^0.21.14",
     "regenerator-runtime": "^0.13.7",
+    "sqlite3": "^5.0.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

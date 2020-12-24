@@ -5,7 +5,7 @@ import { cycleRank } from '../domain/cycles';
 
 async function main () {
   const db = initMemoryDb();
-  db.stakes.push(
+  db.saveStakes([
     {
       frequency: 'daily',
       pages: ['azure.microsoft.com', 'aws.amazon.com', 'firebase.google.com'],
@@ -16,14 +16,14 @@ async function main () {
       pages: ['vuejs.org', 'reactjs.org', 'angular.io', 'svelte.dev'],
       terms: ['js front end library']
     }
-  );
+  ]);
 
   const key = process.env.SCALE_SERP_KEY;
   const search = createScaleSerpSearch({ get: axiosGet, key });
 
   const rankings = await cycleRank({ db, search });
 
-  rankings.forEach(ranking => console.log(ranking));
+  rankings.forEach(ranking => console.info(ranking));
 }
 
 main();

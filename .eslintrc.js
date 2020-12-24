@@ -11,7 +11,11 @@ module.exports = {
   plugins: ['jest'],
   rules: {
     semi: ['error', 'always'],
-    'no-console': ['warn'],
+    'no-console': [
+      'warn', {
+        allow: ['warn', 'error', 'info']
+      }
+    ],
     'no-debugger': 'warn'
   },
   env: {
