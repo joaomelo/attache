@@ -15,8 +15,7 @@ export function createScaleSerpSearch ({ get, key }) {
 
     return {
       size,
-      result,
-      when: new Date()
+      result
     };
   };
 

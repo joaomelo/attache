@@ -34,4 +34,24 @@ describe('rankStakes', () => {
       ])
     );
   });
+
+  test('will not rank against failed term searches', async () => {
+    const stakes = [
+      {
+        frequency: 'weekly',
+        pages: ['www.competitor.com'],
+        terms: ['service', 'service city']
+      }
+    ];
+
+    const correctSearch = createDummySearch();
+    const failingSearch = term => (term === 'service')
+      ? { result: false }
+      : correctSearch(term);
+    const snapshots = await searchStakes({ stakes }, { search: failingSearch });
+
+    const rankings = rankStakes({ stakes, snapshots });
+
+    expect(rankings.size).toBe(1);
+  });
 });

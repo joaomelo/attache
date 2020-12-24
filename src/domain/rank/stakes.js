@@ -6,6 +6,8 @@ export function rankStakes ({ stakes, snapshots }) {
   stakes.forEach(stake => {
     stake.terms.forEach(term => {
       const snapshot = snapshots.get(term);
+      if (!snapshot || !snapshot.success) return;
+
       const { result, size, when } = snapshot;
 
       stake.pages.forEach(page => {
