@@ -1,13 +1,14 @@
 import initKnex from 'knex';
 
-export async function initSqliteDB ({ filename, reset }) {
+export async function initSqliteDB ({ memory, filename, reset }) {
+  const connection = memory ? ':memory:' : { filename };
   const knex = initKnex({
     client: 'sqlite3',
-    connection: { filename }
+    connection,
+    useNullAsDefault: true
   });
 
   if (reset) {
-    console.info('resetind sqlite database');
     await knex.schema.dropTable('stakes');
   }
 
@@ -16,24 +17,32 @@ export async function initSqliteDB ({ filename, reset }) {
       return knex.schema.createTable('stakes', t => {
         t.uuid('id').primary();
         t.text('frequency');
-        t.json('pages');
-        t.json('terms');
+        t.text('pages');
+        t.text('terms');
       });
     }
   });
 
   return {
-    queryStakes () {
-      return knex.select().table('stakes');
+    async queryStakes () {
+      const dbStakes = await knex.select().table('stakes');
+      const stakes = dbStakes.map(record => ({
+        id: record.id,
+        frequency: record.frequency,
+        pages: JSON.parse(record.pages),
+        terms: JSON.parse(record.terms)
+      }));
+      return stakes;
     },
 
     saveStakes (stakes) {
-      const dataStakes = stakes.map(stake => ({
+      const dbStakes = stakes.map(stake => ({
+        id: stake.id,
         frequency: stake.frequency,
-        pages: stake.pages,
-        terms: stake.terms
+        pages: JSON.stringify(stake.pages),
+        terms: JSON.stringify(stake.terms)
       }));
-      return knex('stakes').insert(dataStakes);
+      return knex('stakes').insert(dbStakes);
     }
 
     // queryRankingsSince (date) {

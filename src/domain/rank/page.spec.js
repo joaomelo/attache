@@ -1,28 +1,48 @@
 import { rankPage } from './page';
 
 describe('position', () => {
-  test('return position if literal', () => {
+  const term = 'service';
+  const when = new Date();
+  const success = true;
+  const size = 2;
+
+  test('return ranking with correct position', () => {
     const page = 'www.another.com';
     const result = ['www.some.com', 'www.another.com'];
+    const snapshot = { term, when, success, size, result };
 
-    const position = rankPage({ page, result });
-    expect(position).toBe(1);
+    const ranking = rankPage({ page, snapshot });
+
+    expect(ranking).toEqual(
+      expect.objectContaining({
+        id: expect.any(String),
+        page,
+        term,
+        position: 1,
+        size,
+        when
+      })
+    );
   });
 
-  test('return position even if partial match', () => {
+  test('mark position even if partial match', () => {
     const page = 'main.com';
     const result = ['www.blog.main.com', 'www.another.com'];
+    const snapshot = { term, when, success, size, result };
 
-    const position = rankPage({ page, result });
-    expect(position).toBe(0);
+    const ranking = rankPage({ page, snapshot });
+
+    expect(ranking.position).toBe(0);
   });
 
-  test('return -1 if not found', () => {
-    const page = 'www.blog.com';
+  test('mark position as -1 if not found', () => {
+    const page = 'main.com';
     const result = ['www.my-blog.com', 'www.another.com'];
+    const snapshot = { term, when, success, size, result };
 
-    const position = rankPage({ page, result });
-    expect(position).toBe(-1);
+    const ranking = rankPage({ page, snapshot });
+
+    expect(ranking.position).toBe(-1);
   });
 })
 ;

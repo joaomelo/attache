@@ -3,7 +3,7 @@ import { searchStakes } from '../search';
 import { rankStakes } from './stakes';
 
 describe('rankStakes', () => {
-  test('return correct rankings quantity and shape', async () => {
+  test('return correct rankings quantity', async () => {
     const stakes = [
       {
         frequency: 'daily',
@@ -21,18 +21,7 @@ describe('rankStakes', () => {
 
     const rankings = rankStakes({ stakes, snapshots });
 
-    expect(rankings.size).toBe(3);
-    expect(Array.from(rankings.values())).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          page: expect.any(String),
-          term: expect.any(String),
-          position: expect.any(Number),
-          size: expect.any(Number),
-          when: expect.any(Date)
-        })
-      ])
-    );
+    expect(rankings).toHaveLength(3);
   });
 
   test('will not rank against failed term searches', async () => {
@@ -52,6 +41,6 @@ describe('rankStakes', () => {
 
     const rankings = rankStakes({ stakes, snapshots });
 
-    expect(rankings.size).toBe(1);
+    expect(rankings).toHaveLength(1);
   });
 });
