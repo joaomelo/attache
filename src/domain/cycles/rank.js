@@ -1,4 +1,4 @@
-import { searchStakes } from '../search';
+import { searchStakes } from '../snapshot';
 import { rankStakes } from '../rank';
 
 export async function cycleRank ({ db, search }) {
