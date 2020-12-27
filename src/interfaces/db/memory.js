@@ -1,7 +1,7 @@
 export function initMemoryDb () {
   return {
     stakes: [],
-    rankings: {},
+    rankings: [],
 
     queryStakes () {
       return Promise.resolve([...this.stakes]);
@@ -9,19 +9,16 @@ export function initMemoryDb () {
 
     saveStakes (stakes) {
       this.stakes.push(...stakes);
-      return Promise.resolve(true);
+      return Promise.resolve(stakes);
     },
 
-    // queryRankingsSince (date) {
-    //   const rankingsSince = this.rankings.filter(ranking => ranking.when >= date);
-    //   return Promise.resolve(rankingsSince);
-    // },
+    queryRankings () {
+      return Promise.resolve([...this.rankings]);
+    },
 
     saveRankings (rankings) {
-      rankings.forEach((value, key) => {
-        this.rankings[key] = value;
-      });
-      return Promise.resolve(true);
+      this.rankings.push(...rankings);
+      return Promise.resolve(rankings);
     }
   };
 };

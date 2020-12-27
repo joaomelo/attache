@@ -1,9 +1,9 @@
 import { stakes, rankings } from '../../../tests/fixtures';
-import { initSqliteDB } from './sqlite';
+import { initMemoryDb } from './memory';
 
-describe('sqlite db adapter', () => {
+describe('inMemory db adapter', () => {
   test('must save and retrieve stakes', async () => {
-    const db = await initSqliteDB({ memory: true });
+    const db = await initMemoryDb();
     await db.saveStakes(stakes);
     const retrievedStakes = await db.queryStakes();
 
@@ -11,7 +11,7 @@ describe('sqlite db adapter', () => {
   });
 
   test('must save and retrieve rankings', async () => {
-    const db = await initSqliteDB({ memory: true });
+    const db = await initMemoryDb();
 
     await db.saveRankings(rankings);
     const retrievedRankings = await db.queryRankings();
