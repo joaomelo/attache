@@ -9,7 +9,7 @@ export function initMemoryDb () {
 
     saveStakes (stakes) {
       this.stakes.push(...stakes);
-      return Promise.resolve(stakes);
+      return Promise.resolve(true);
     },
 
     queryRankings () {
@@ -18,7 +18,7 @@ export function initMemoryDb () {
 
     saveRankings (rankings) {
       this.rankings.push(...rankings);
-      return Promise.resolve(rankings);
+      return Promise.resolve(true);
     }
   };
 };

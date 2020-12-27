@@ -1,4 +1,5 @@
 import { initSqliteDB } from '../interfaces/db';
+import { stakes as fixtureStakes } from '../../tests/fixtures';
 // import { axiosGet } from '../interfaces/get';
 // import { createScaleSerpSearch } from '../interfaces/search';
 // import { cycleRank } from '../domain/cycles';
@@ -11,18 +12,7 @@ async function main () {
   console.info(`${stakes.length} stakes found`);
 
   if (stakes.length === 0) {
-    const saveResult = await db.saveStakes([
-      {
-        frequency: 'daily',
-        pages: ['azure.microsoft.com', 'aws.amazon.com', 'firebase.google.com'],
-        terms: ['cloud']
-      },
-      {
-        frequency: 'weekly',
-        pages: ['vuejs.org', 'reactjs.org', 'angular.io', 'svelte.dev'],
-        terms: ['js front end library']
-      }
-    ]);
+    const saveResult = await db.saveStakes(fixtureStakes);
     console.info(`feeded db, now with ${saveResult} records`);
   }
 

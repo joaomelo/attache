@@ -55,14 +55,15 @@ export async function initSqliteDB ({ memory, filename, reset }) {
       return stakes;
     },
 
-    saveStakes (stakes) {
+    async saveStakes (stakes) {
       const dbStakes = stakes.map(stake => ({
         id: stake.id,
         frequency: stake.frequency,
         pages: JSON.stringify(stake.pages),
         terms: JSON.stringify(stake.terms)
       }));
-      return knex('stakes').insert(dbStakes);
+      await knex('stakes').insert(dbStakes);
+      return true;
     },
 
     async queryRankings () {
@@ -74,12 +75,14 @@ export async function initSqliteDB ({ memory, filename, reset }) {
       return rankings;
     },
 
-    saveRankings (rankings) {
+    async saveRankings (rankings) {
       const dbRankings = rankings.map(rankings => ({
         ...rankings,
         when: rankings.when.toISOString()
       }));
-      return knex('rankings').insert(dbRankings);
+      await knex('rankings').insert(dbRankings);
+
+      return true;
     }
 
   };
