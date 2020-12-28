@@ -1,5 +1,5 @@
 export async function searchTerm ({ term, cache }, { search }) {
-  const cachedSnapshot = cache && cache.find(s => s.term === term);
+  const cachedSnapshot = cache && cache.find(s => s.term === term && s.success);
   if (cachedSnapshot) return cachedSnapshot;
 
   const freshSnapshot = {
