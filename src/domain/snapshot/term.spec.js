@@ -36,6 +36,21 @@ describe('searchTerm', () => {
     expect(search).toHaveBeenCalledTimes(0);
   });
 
+  test('ignores failed cached snapshots', async () => {
+    const dummySearch = createDummySearch();
+    const search = jest.fn(term => dummySearch(term));
+    const cache = [{
+      term,
+      when: new Date(),
+      success: false,
+      size: 2
+    }];
+
+    await searchTerm({ term, cache }, { search });
+
+    expect(search).toHaveBeenCalledTimes(1);
+  });
+
   test('returns a failed snapshot if search throws', async () => {
     const search = async () => { throw new Error('some search error'); };
 

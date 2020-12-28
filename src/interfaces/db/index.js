@@ -1,2 +1,2 @@
 export * from './memory';
-export * from './sqlite';
+export * from './nedb';

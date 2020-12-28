@@ -32,6 +32,9 @@ export const rankings = [
   }
 ];
 
+const yesterday = new Date();
+yesterday.setDate(yesterday.getDate() - 1);
+
 export const snapshots = [
   {
     id: '304145c3-b694-431b-8f19-0ce6f678e3c0',
@@ -44,7 +47,7 @@ export const snapshots = [
   {
     id: 'd0efdeb3-919b-4bc6-aaff-c845afa5c55a',
     term: 'service my-city',
-    when: new Date(),
+    when: yesterday,
     success: false,
     error: 'quota exceeded',
     size: 2

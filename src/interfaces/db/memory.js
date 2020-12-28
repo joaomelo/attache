@@ -26,6 +26,10 @@ export function initMemoryDb () {
       return Promise.resolve([...this.snapshots]);
     },
 
+    querySnapshotsSince (start) {
+      return Promise.resolve(this.snapshots.filter(s => s.when >= start));
+    },
+
     saveSnapshots (snapshots) {
       this.snapshots.push(...snapshots);
       return Promise.resolve(true);

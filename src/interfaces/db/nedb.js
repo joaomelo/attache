@@ -17,9 +17,9 @@ function saveItems (datastore, items) {
   });
 }
 
-function findItems (datastore) {
+function findItems (datastore, filter = {}) {
   return new Promise((resolve, reject) => {
-    datastore.find({}, (error, docs) => {
+    datastore.find(filter, (error, docs) => {
       if (error) reject(error);
 
       const items = convertField(docs, '_id', 'id');
@@ -61,6 +61,10 @@ export async function initNedb ({ memory, filePrefix }) {
 
     querySnapshots () {
       return findItems(db.snapshots);
+    },
+
+    querySnapshotsSince (start) {
+      return findItems(db.snapshots, { when: { $gte: start } });
     },
 
     saveSnapshots (snapshots) {
