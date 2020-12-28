@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid';
+import { createId } from '../../helpers';
 
 export function rankPage ({ page, snapshot }) {
   const { term, result, size, when } = snapshot;
@@ -8,7 +8,7 @@ export function rankPage ({ page, snapshot }) {
   }, -1);
 
   const ranking = {
-    id: uuidv4(),
+    id: createId(),
     page,
     term,
     position,

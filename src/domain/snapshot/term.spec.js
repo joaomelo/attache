@@ -11,6 +11,7 @@ describe('searchTerm', () => {
 
     expect(snapshot).toEqual(
       expect.objectContaining({
+        id: expect.any(String),
         term,
         when: expect.any(Date),
         success: true,

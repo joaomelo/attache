@@ -14,14 +14,8 @@ A typical use case would be: every week, I want to receive in my WhatsApp the ra
 
 **Ranking:** the position of a page against a specifically snapshot.
 
-**Stake:** combination of pages and terms to be ranked periodically. Represents an product, service or any personal interest.
+**Stake:** combination of pages and terms to be ranked daily. Represents an product, service or any personal interest.
 
 **Contact:** a channel setup to send reports to - e.g: WhatsApp +1 (555) 555-5555 or email me@email.com.
 
-**Subscription:** a stake and some contacts to receive reports about its rankings.
-
-# Frequencies
-
-Snapshots for all stakes' terms are attempted daily. This frequency is adopted also for creating rankings for stakes pages.
-
-Stakes reports are dispatched accordingly to each subscription setup. The options are daily, weekly or monthly. 
+**Subscription:** a stake, some contacts and a frequency to receive reports about its rankings. Frequency options are daily, weekly or monthly. 
