@@ -1,5 +1,8 @@
-export async function searchTerm ({ term }, { search }) {
-  const snapshot = {
+export async function searchTerm ({ term, cache }, { search }) {
+  const cachedSnapshot = cache && cache.find(s => s.term === term);
+  if (cachedSnapshot) return cachedSnapshot;
+
+  const freshSnapshot = {
     term: term,
     when: new Date()
   };
@@ -8,13 +11,13 @@ export async function searchTerm ({ term }, { search }) {
     const { result, size } = await search(term);
     if (!Array.isArray(result) || isNaN(size)) throw new Error('Invalid search data');
 
-    snapshot.result = result;
-    snapshot.size = size;
-    snapshot.success = true;
+    freshSnapshot.result = result;
+    freshSnapshot.size = size;
+    freshSnapshot.success = true;
   } catch (error) {
-    snapshot.success = false;
-    snapshot.error = error.message;
+    freshSnapshot.success = false;
+    freshSnapshot.error = error.message;
   }
 
-  return snapshot;
+  return freshSnapshot;
 }

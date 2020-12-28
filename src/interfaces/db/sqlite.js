@@ -4,7 +4,8 @@ async function syncSchema ({ knex, reset }) {
   if (reset) {
     await Promise.all([
       knex.schema.dropTable('stakes'),
-      knex.schema.dropTable('rankings')
+      knex.schema.dropTable('rankings'),
+      knex.schema.dropTable('snapshots')
     ]);
   }
 
@@ -31,9 +32,23 @@ async function syncSchema ({ knex, reset }) {
       });
     }
   });
+
+  await knex.schema.hasTable('snapshots').then(exists => {
+    if (!exists) {
+      return knex.schema.createTable('snapshots', t => {
+        t.uuid('id').primary();
+        t.text('term');
+        t.text('when');
+        t.boolean('success');
+        t.text('error');
+        t.integer('size');
+        t.text('result');
+      });
+    }
+  });
 }
 
-export async function initSqliteDB ({ memory, filename, reset }) {
+export async function initSqliteDb ({ memory, filename, reset }) {
   const connection = memory ? ':memory:' : { filename };
   const knex = initKnex({
     client: 'sqlite3',
@@ -47,8 +62,7 @@ export async function initSqliteDB ({ memory, filename, reset }) {
     async queryStakes () {
       const dbStakes = await knex.select().table('stakes');
       const stakes = dbStakes.map(record => ({
-        id: record.id,
-        frequency: record.frequency,
+        ...record,
         pages: JSON.parse(record.pages),
         terms: JSON.parse(record.terms)
       }));
@@ -57,12 +71,34 @@ export async function initSqliteDB ({ memory, filename, reset }) {
 
     async saveStakes (stakes) {
       const dbStakes = stakes.map(stake => ({
-        id: stake.id,
-        frequency: stake.frequency,
+        ...stake,
         pages: JSON.stringify(stake.pages),
         terms: JSON.stringify(stake.terms)
       }));
       await knex('stakes').insert(dbStakes);
+      return true;
+    },
+
+    async querySnapshots () {
+      const dbSnapshots = await knex.select().table('snapshots');
+      const snapshots = dbSnapshots.map(record => ({
+        ...record,
+        success: !!record.success,
+        when: new Date(record.when),
+        result: JSON.parse(record.result)
+      }));
+
+      return snapshots;
+    },
+
+    async saveSnapshots (snapshots) {
+      const dbSnapshots = snapshots.map(snapshot => ({
+        ...snapshot,
+        when: snapshot.when.toISOString(),
+        result: JSON.stringify(snapshot.result)
+      }));
+
+      await knex('snapshots').insert(dbSnapshots);
       return true;
     },
 

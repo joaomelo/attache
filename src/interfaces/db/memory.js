@@ -2,6 +2,7 @@ export function initMemoryDb () {
   return {
     stakes: [],
     rankings: [],
+    snapshots: [],
 
     queryStakes () {
       return Promise.resolve([...this.stakes]);
@@ -18,6 +19,15 @@ export function initMemoryDb () {
 
     saveRankings (rankings) {
       this.rankings.push(...rankings);
+      return Promise.resolve(true);
+    },
+
+    querySnapshots () {
+      return Promise.resolve([...this.snapshots]);
+    },
+
+    saveSnapshots (snapshots) {
+      this.snapshots.push(...snapshots);
       return Promise.resolve(true);
     }
   };

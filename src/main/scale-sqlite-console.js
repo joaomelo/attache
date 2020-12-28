@@ -1,4 +1,4 @@
-import { initSqliteDB } from '../interfaces/db';
+import { initSqliteDb } from '../interfaces/db';
 import { stakes as fixtureStakes } from '../../tests/fixtures';
 import { axiosGet } from '../interfaces/get';
 import { createScaleSerpSearch } from '../interfaces/search';
@@ -6,7 +6,7 @@ import { cycleRank } from '../domain/cycles';
 
 async function main () {
   const filename = process.env.SQLITE_FILENAME;
-  const db = await initSqliteDB({ filename, reset: false });
+  const db = await initSqliteDb({ filename, reset: false });
 
   let stakes = await db.queryStakes();
   console.info(`${stakes.length} stakes found`);

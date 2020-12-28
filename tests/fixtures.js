@@ -31,3 +31,38 @@ export const rankings = [
     when: new Date()
   }
 ];
+
+export const snapshots = [
+  {
+    id: '304145c3-b694-431b-8f19-0ce6f678e3c0',
+    term: 'cloud',
+    when: new Date(1789, 6, 14),
+    success: true,
+    size: 2,
+    result: ['www.some-page.com', 'www.another-page.net']
+  },
+  {
+    id: 'd0efdeb3-919b-4bc6-aaff-c845afa5c55a',
+    term: 'service my-city',
+    when: new Date(),
+    success: false,
+    error: 'quota exceeded',
+    size: 2
+  },
+  {
+    id: '2fb25055-af54-4611-8dd9-e1cdc700929b',
+    term: 'js front end library',
+    when: new Date(),
+    success: true,
+    size: 2,
+    result: ['www.some-page.com', 'www.another-page.net']
+  },
+  {
+    id: '37ef78fb-6d23-48b6-adc9-336e1ce122f1',
+    term: 'service',
+    when: new Date(),
+    success: true,
+    size: 2,
+    result: ['www.some-page.com', 'www.another-page.net']
+  }
+];
