@@ -19,6 +19,6 @@ describe('searchStakes', () => {
 
     const snapshots = await searchStakes({ stakes }, { search });
 
-    expect(snapshots.size).toBe(2);
+    expect(snapshots).toHaveLength(2);
   });
 });

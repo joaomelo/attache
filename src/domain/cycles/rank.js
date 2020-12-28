@@ -7,7 +7,10 @@ export async function cycleRank ({ db, search }) {
   const snapshots = await searchStakes({ stakes }, { search });
   const rankings = rankStakes({ stakes, snapshots });
 
-  await db.saveRankings(rankings);
+  await Promise.all([
+    db.saveRankings(rankings),
+    db.saveSnapshots(snapshots)
+  ]);
 
-  return rankings;
+  return { rankings, snapshots };
 }
