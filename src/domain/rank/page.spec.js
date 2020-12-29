@@ -1,4 +1,4 @@
-import { rankPage } from './rank-page';
+import { rankPage } from './page';
 
 describe('rankPage', () => {
   const term = 'service';

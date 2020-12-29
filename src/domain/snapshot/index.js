@@ -1,0 +1,1 @@
+export { snapshotTerms } from './terms';

@@ -1,4 +1,4 @@
-import { snapshotTerm } from './snapshot-term';
+import { snapshotTerm } from './term';
 
 export async function snapshotTerms ({ terms, cache }, { search }) {
   const promises = [];

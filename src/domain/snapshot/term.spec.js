@@ -1,5 +1,5 @@
 import { createDummySearch } from '../../interfaces/search';
-import { snapshotTerm } from './snapshot-term';
+import { snapshotTerm } from './term';
 
 describe('snapshotTerm', () => {
   const term = 'service city';

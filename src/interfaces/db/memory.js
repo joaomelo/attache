@@ -4,12 +4,17 @@ export function initMemoryDb () {
     rankings: [],
     snapshots: [],
 
+    saveStakes (stakes) {
+      this.stakes.push(...stakes);
+      return Promise.resolve(true);
+    },
+
     queryStakes () {
       return Promise.resolve([...this.stakes]);
     },
 
-    saveStakes (stakes) {
-      this.stakes.push(...stakes);
+    saveRankings (rankings) {
+      this.rankings.push(...rankings);
       return Promise.resolve(true);
     },
 
@@ -17,8 +22,12 @@ export function initMemoryDb () {
       return Promise.resolve([...this.rankings]);
     },
 
-    saveRankings (rankings) {
-      this.rankings.push(...rankings);
+    queryRankingsSince (start) {
+      return Promise.resolve(this.rankings.filter(r => r.when >= start));
+    },
+
+    saveSnapshots (snapshots) {
+      this.snapshots.push(...snapshots);
       return Promise.resolve(true);
     },
 
@@ -28,11 +37,6 @@ export function initMemoryDb () {
 
     querySnapshotsSince (start) {
       return Promise.resolve(this.snapshots.filter(s => s.when >= start));
-    },
-
-    saveSnapshots (snapshots) {
-      this.snapshots.push(...snapshots);
-      return Promise.resolve(true);
     }
   };
 };

@@ -51,12 +51,20 @@ export async function initNedb ({ memory, filePrefix }) {
       return saveItems(db.stakes, stakes);
     },
 
+    saveRankings (rankings) {
+      return saveItems(db.rankings, rankings);
+    },
+
     queryRankings () {
       return findItems(db.rankings);
     },
 
-    saveRankings (rankings) {
-      return saveItems(db.rankings, rankings);
+    queryRankingsSince (start) {
+      return findItems(db.rankings, { when: { $gte: start } });
+    },
+
+    saveSnapshots (snapshots) {
+      return saveItems(db.snapshots, snapshots);
     },
 
     querySnapshots () {
@@ -65,10 +73,6 @@ export async function initNedb ({ memory, filePrefix }) {
 
     querySnapshotsSince (start) {
       return findItems(db.snapshots, { when: { $gte: start } });
-    },
-
-    saveSnapshots (snapshots) {
-      return saveItems(db.snapshots, snapshots);
     }
   };
 };

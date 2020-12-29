@@ -1,5 +1,4 @@
 import { initSqliteDb } from '../interfaces/db';
-import { stakes as fixtureStakes } from '../../tests/fixtures';
 import { axiosGet } from '../interfaces/get';
 import { createScaleSerpSearch } from '../interfaces/search';
 import { cycleRank } from '../domain/cycles';

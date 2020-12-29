@@ -36,7 +36,7 @@ describe('cycleRank', () => {
     expect(Object.entries(db.snapshots)).toHaveLength(2);
   });
 
-  it('snapshots cache is properly passed down', async () => {
+  it('snapshots cache is properly passed and not saved again', async () => {
     const dummySearch = createDummySearch();
     const mockSearch = jest.fn(term => dummySearch(term));
 
@@ -47,22 +47,18 @@ describe('cycleRank', () => {
     await cycleRank({ db, search: mockSearch });
 
     expect(mockSearch).toHaveBeenCalledTimes(0);
+    expect(Object.entries(db.snapshots)).toHaveLength(2);
   });
 
-  it('snapshots are not saved more than once', async () => {
+  it('rankings cache is properly passed and not saved again', async () => {
     const search = createDummySearch();
 
     const db = initMemoryDb();
     db.saveStakes(stakes);
     await cycleRank({ db, search });
+
     await cycleRank({ db, search });
 
-    expect(Object.entries(db.snapshots)).toHaveLength(2);
-  });
-
-  it('rankings cache is properly passed down', async () => {
-  });
-
-  it('rankings are not saved more than once', async () => {
+    expect(Object.entries(db.rankings)).toHaveLength(7);
   });
 });
