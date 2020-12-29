@@ -1,4 +1,4 @@
-import { rankPage } from './page';
+import { rankPage } from './rank-page';
 
 export function rankStakes ({ stakes, snapshots }) {
   const stakesRankings = new Map();

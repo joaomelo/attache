@@ -1,13 +1,13 @@
 import { createDummySearch } from '../../interfaces/search';
-import { searchTerm } from './term';
+import { snapshotTerm } from './snapshot-term';
 
-describe('searchTerm', () => {
+describe('snapshotTerm', () => {
   const term = 'service city';
 
   test('return search snapshot for term', async () => {
     const search = createDummySearch();
 
-    const snapshot = await searchTerm({ term }, { search });
+    const snapshot = await snapshotTerm({ term }, { search });
 
     expect(snapshot).toEqual(
       expect.objectContaining({
@@ -32,7 +32,7 @@ describe('searchTerm', () => {
       result: ['www.some-page.com', 'www.another-page.net']
     }];
 
-    await searchTerm({ term, cache }, { search });
+    await snapshotTerm({ term, cache }, { search });
 
     expect(search).toHaveBeenCalledTimes(0);
   });
@@ -47,7 +47,7 @@ describe('searchTerm', () => {
       size: 2
     }];
 
-    await searchTerm({ term, cache }, { search });
+    await snapshotTerm({ term, cache }, { search });
 
     expect(search).toHaveBeenCalledTimes(1);
   });
@@ -55,7 +55,7 @@ describe('searchTerm', () => {
   test('returns a failed snapshot if search throws', async () => {
     const search = async () => { throw new Error('some search error'); };
 
-    const snapshot = await searchTerm({ term }, { search });
+    const snapshot = await snapshotTerm({ term }, { search });
 
     expect(snapshot).toEqual(
       expect.objectContaining({
@@ -70,7 +70,7 @@ describe('searchTerm', () => {
   test('returns a failed snapshot if search data is out of spec', async () => {
     const search = async () => { return { size: 100 }; };
 
-    const snapshot = await searchTerm({ term }, { search });
+    const snapshot = await snapshotTerm({ term }, { search });
 
     expect(snapshot).toEqual(
       expect.objectContaining({

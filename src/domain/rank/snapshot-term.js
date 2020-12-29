@@ -1,6 +1,6 @@
 import { createId } from '../../helpers';
 
-export async function searchTerm ({ term, cache }, { search }) {
+export async function snapshotTerm ({ term, cache }, { search }) {
   const cachedSnapshot = cache && cache.find(s => s.term === term && s.success);
   if (cachedSnapshot) return cachedSnapshot;
 

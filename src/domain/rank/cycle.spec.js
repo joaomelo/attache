@@ -1,18 +1,14 @@
 import { initMemoryDb } from '../../interfaces/db';
 import { createDummySearch } from '../../interfaces/search';
-import { cycleRank } from './rank';
+import { cycleRank } from './cycle';
 
 describe('cycleRank', () => {
   const stakes = [
     {
-      id: '87178090-383e-4780-a363-a076a6f952dd',
-      frequency: 'daily',
       pages: ['azure.microsoft.com', 'aws.amazon.com', 'firebase.google.com'],
       terms: ['cloud']
     },
     {
-      id: 'd1584b65-7361-46ee-a807-e1a3ec0ddb33',
-      frequency: 'weekly',
       pages: ['vuejs.org', 'reactjs.org', 'angular.io', 'svelte.dev'],
       terms: ['js front end library']
     }
@@ -40,7 +36,7 @@ describe('cycleRank', () => {
     expect(Object.entries(db.snapshots)).toHaveLength(2);
   });
 
-  it('snapshots cache is properly managed', async () => {
+  it('snapshots cache is properly passed down', async () => {
     const dummySearch = createDummySearch();
     const mockSearch = jest.fn(term => dummySearch(term));
 
@@ -51,5 +47,22 @@ describe('cycleRank', () => {
     await cycleRank({ db, search: mockSearch });
 
     expect(mockSearch).toHaveBeenCalledTimes(0);
+  });
+
+  it('snapshots are not saved more than once', async () => {
+    const search = createDummySearch();
+
+    const db = initMemoryDb();
+    db.saveStakes(stakes);
+    await cycleRank({ db, search });
+    await cycleRank({ db, search });
+
+    expect(Object.entries(db.snapshots)).toHaveLength(2);
+  });
+
+  it('rankings cache is properly passed down', async () => {
+  });
+
+  it('rankings are not saved more than once', async () => {
   });
 });

@@ -1,6 +1,6 @@
-import { rankPage } from './page';
+import { rankPage } from './rank-page';
 
-describe('position', () => {
+describe('rankPage', () => {
   const term = 'service';
   const when = new Date();
   const success = true;
