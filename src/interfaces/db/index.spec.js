@@ -114,22 +114,18 @@ describe('db adapters', () => {
     expect(retrieved).toEqual(fixture);
   });
 
-  const testTableQuerySince = [[memory], [nedb]];
-  test.each(testTableQuerySince)('query snapshots using date filter with %p', async initDb => {
+  const testTableQuerySince = [
+    ['Rankings', memory, rankings, 2],
+    ['Rankings', nedb, rankings, 2],
+    ['Snapshots', memory, snapshots, 2],
+    ['Snapshots', nedb, snapshots, 2]
+  ];
+  test.each(testTableQuerySince)('query %p using date filter with %p', async (dbMethod, initDb, fixture, length) => {
     const db = await initDb();
-    await db.saveSnapshots(snapshots);
+    await db[`save${dbMethod}`](fixture);
 
-    const todaySnapshots = await db.querySnapshotsSince(today);
+    const todayItems = await db[`query${dbMethod}Since`](today);
 
-    expect(todaySnapshots).toHaveLength(2);
-  });
-
-  test.each(testTableQuerySince)('query rankings using date filter with %p', async initDb => {
-    const db = await initDb();
-    await db.saveRankings(snapshots);
-
-    const todayRankings = await db.queryRankingsSince(today);
-
-    expect(todayRankings).toHaveLength(2);
+    expect(todayItems).toHaveLength(length);
   });
 });
