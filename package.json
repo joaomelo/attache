@@ -7,8 +7,7 @@
     "serve": "firebase emulators:start",
     "test": "jest --watchAll",
     "lint": "eslint --fix --ext .js,.vue src/",
-    "main:memory": "babel-node -r dotenv/config src/main/scale-memory-console.js",
-    "main:sqlite": "babel-node -r dotenv/config src/main/scale-sqlite-console.js"
+    "main:cli": "babel-node -r dotenv/config src/main/scale-nedb-cli.js"
   },
   "author": "",
   "license": "ISC",

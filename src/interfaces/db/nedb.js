@@ -32,7 +32,7 @@ export async function initNedb ({ memory, filePrefix }) {
   const createDataStore = filePostfix => memory
     ? new Datastore()
     : new Datastore({
-      filename: `${filePrefix}.${filePostfix}`,
+      filename: `${filePrefix}.${filePostfix}.nedb`,
       autoload: true
     });
 
