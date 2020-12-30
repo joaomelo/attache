@@ -13,6 +13,12 @@ export function initMemoryDb () {
       return Promise.resolve([...this.stakes]);
     },
 
+    deleteStake (id) {
+      const index = this.stakes.findIndex(stake => stake.id === id);
+      this.stakes.splice(index, 1);
+      return Promise.resolve(index !== -1);
+    },
+
     saveRankings (rankings) {
       this.rankings.push(...rankings);
       return Promise.resolve(true);

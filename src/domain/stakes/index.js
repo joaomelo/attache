@@ -1,16 +1,21 @@
-const stakes = await db.queryStakes();
-if (stakes.length === 0) {
-  const fixtureStakes = [
-    {
-      id: '87178090-383e-4780-a363-a076a6f952dd',
-      pages: ['azure.microsoft.com', 'aws.amazon.com', 'firebase.google.com'],
-      terms: ['cloud']
-    },
-    {
-      id: 'd1584b65-7361-46ee-a807-e1a3ec0ddb33',
-      pages: ['vuejs.org', 'reactjs.org', 'angular.io', 'svelte.dev'],
-      terms: ['js front end library']
-    }
-  ];
-  await db.saveStakes(fixtureStakes);
+import { createId } from '../../helpers';
+
+export function listStakes ({ db }) {
+  return db.queryStakes();
+}
+
+export function addStake ({ stake }, { db }) {
+  const { pages, terms } = stake;
+  if (!Array.isArray(pages)) throw new Error('Can not add stake with invalid pages array');
+  if (!Array.isArray(terms)) throw new Error('Can not add stake with invalid terms array');
+
+  return db.saveStakes([{
+    id: createId(),
+    pages,
+    terms
+  }]);
+}
+
+export function deleteStake ({ id }, { db }) {
+  return db.deleteStake(id);
 }

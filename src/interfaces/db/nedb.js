@@ -28,6 +28,16 @@ function findItems (datastore, filter = {}) {
   });
 }
 
+function deleteItem (datastore, id) {
+  return new Promise((resolve, reject) => {
+    datastore.remove({ _id: id }, {}, (error, numRemoved) => {
+      if (error) reject(error);
+
+      return resolve(numRemoved > 0);
+    });
+  });
+}
+
 export async function initNedb ({ memory, filePrefix }) {
   const createDataStore = filePostfix => memory
     ? new Datastore()
@@ -49,6 +59,10 @@ export async function initNedb ({ memory, filePrefix }) {
 
     saveStakes (stakes) {
       return saveItems(db.stakes, stakes);
+    },
+
+    deleteStake (id) {
+      return deleteItem(db.stakes, id);
     },
 
     saveRankings (rankings) {

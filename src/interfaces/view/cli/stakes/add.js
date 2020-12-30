@@ -1,6 +1,6 @@
 import inquirer from 'inquirer';
 
-export async function addStake ({ saveStake }) {
+export async function addStake ({ addStake }) {
   const questions = [
     {
       type: 'input',
@@ -22,7 +22,7 @@ export async function addStake ({ saveStake }) {
   const terms = breakList(answers.terms);
   const stake = { pages, terms };
 
-  await saveStake(stake);
+  await addStake(stake);
 
   console.info('stake saved:');
   console.info(stake);

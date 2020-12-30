@@ -3,6 +3,7 @@ import { axiosGet } from '../interfaces/get';
 import { createScaleSerpSearch } from '../interfaces/search';
 import { cycleRank } from '../domain/rank';
 import { initUiService } from '../interfaces/view/cli';
+import { listStakes, addStake, deleteStake } from '../domain/stakes';
 
 async function main () {
   const filePrefix = process.env.NEDB_FILENAME_PREFIX;
@@ -12,8 +13,9 @@ async function main () {
   const search = createScaleSerpSearch({ get: axiosGet, key });
 
   initUiService({
-    queryStakes: () => db.queryStakes(),
-    saveStake: stake => db.saveStakes([stake]),
+    listStakes: () => listStakes({ db }),
+    addStake: stake => addStake({ stake }, { db }),
+    deleteStake: id => deleteStake({ id }, { db }),
     queryRankings: () => db.queryRankings(),
     cycleRank: () => cycleRank({ db, search })
   });

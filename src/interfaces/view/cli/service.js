@@ -26,21 +26,24 @@ const uiMachine = Machine({
     listStakes: {
       invoke: {
         id: 'listStakes',
-        src: () => listStakes({ queryStakes: dependencies.queryStakes }),
+        src: () => listStakes({ listStakes: dependencies.listStakes }),
         onDone: { target: 'menu' }
       }
     },
     addStake: {
       invoke: {
         id: 'addStake',
-        src: () => addStake({ saveStake: dependencies.saveStake }),
+        src: () => addStake({ addStake: dependencies.addStake }),
         onDone: { target: 'menu' }
       }
     },
     deleteStake: {
       invoke: {
         id: 'deleteStake',
-        src: () => deleteStake({ queryStakes: dependencies.queryStakes }),
+        src: () => deleteStake({
+          listStakes: dependencies.listStakes,
+          deleteStake: dependencies.deleteStake
+        }),
         onDone: { target: 'menu' }
       }
     },

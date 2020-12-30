@@ -1,7 +1,7 @@
 import inquirer from 'inquirer';
 
-export async function deleteStake ({ queryStakes, deleteStake }) {
-  const stakes = await queryStakes();
+export async function deleteStake ({ listStakes, deleteStake }) {
+  const stakes = await listStakes();
   const stakesIds = stakes.map(stake => stake.id);
   const choices = ['cancel'].concat(stakesIds);
 
@@ -18,7 +18,7 @@ export async function deleteStake ({ queryStakes, deleteStake }) {
 
   const stakeId = answers.selectedStake;
 
-  // await saveStake(stake);
+  await deleteStake(stakeId);
 
   console.info(`deleted stake with id ${stakeId}`);
   console.info('------------------------');

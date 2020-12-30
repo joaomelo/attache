@@ -114,6 +114,25 @@ describe('db adapters', () => {
     expect(retrieved).toEqual(fixture);
   });
 
+  const testTableDelete = [
+    ['Stake', memory, stakes, '87178090-383e-4780-a363-a076a6f952dd'],
+    ['Stake', nedb, stakes, '87178090-383e-4780-a363-a076a6f952dd']
+  ];
+
+  test.each(testTableDelete)('delete %p with %p', async (dbMethod, initDb, fixture, id) => {
+    const db = await initDb();
+    await db[`save${dbMethod}s`](fixture);
+    const before = await db[`query${dbMethod}s`]();
+
+    await db[`delete${dbMethod}`](id);
+
+    const after = await db[`query${dbMethod}s`]();
+    const deletedIndex = after.findIndex(stake => stake.id === id);
+
+    expect(before.length).toBe(after.length + 1);
+    expect(deletedIndex).toBe(-1);
+  });
+
   const testTableQuerySince = [
     ['Rankings', memory, rankings, 2],
     ['Rankings', nedb, rankings, 2],
