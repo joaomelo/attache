@@ -1,5 +1,5 @@
 import { renderMenu } from './menu';
-import { listStakes } from './stakes';
+import { listStakes, addStake, deleteStake } from './stakes';
 import { listRankings, runCycleRank } from './rankings';
 import { Machine, interpret } from 'xstate';
 
@@ -15,20 +15,36 @@ const uiMachine = Machine({
         src: renderMenu
       },
       on: {
-        STAKES: 'stakes',
-        RANKINGS: 'rankings',
+        LIST_STAKES: 'listStakes',
+        ADD_STAKE: 'addStake',
+        DELETE_STAKE: 'deleteStake',
+        LIST_RANKINGS: 'listRankings',
         CYCLE_RANK: 'cycleRank',
         QUIT: 'quit'
       }
     },
-    stakes: {
+    listStakes: {
       invoke: {
         id: 'listStakes',
         src: () => listStakes({ queryStakes: dependencies.queryStakes }),
         onDone: { target: 'menu' }
       }
     },
-    rankings: {
+    addStake: {
+      invoke: {
+        id: 'addStake',
+        src: () => addStake({ saveStake: dependencies.saveStake }),
+        onDone: { target: 'menu' }
+      }
+    },
+    deleteStake: {
+      invoke: {
+        id: 'deleteStake',
+        src: () => deleteStake({ queryStakes: dependencies.queryStakes }),
+        onDone: { target: 'menu' }
+      }
+    },
+    listRankings: {
       invoke: {
         id: 'listRankings',
         src: () => listRankings({ queryRankings: dependencies.queryRankings }),

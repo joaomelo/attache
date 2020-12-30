@@ -13,6 +13,7 @@ async function main () {
 
   initUiService({
     queryStakes: () => db.queryStakes(),
+    saveStake: stake => db.saveStakes([stake]),
     queryRankings: () => db.queryRankings(),
     cycleRank: () => cycleRank({ db, search })
   });
