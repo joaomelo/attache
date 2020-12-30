@@ -4,6 +4,7 @@ import { createScaleSerpSearch } from '../interfaces/search';
 import { cycleRank } from '../domain/rank';
 import { initUiService } from '../interfaces/view/cli';
 import { listStakes, addStake, deleteStake } from '../domain/stakes';
+import { listRankings } from '../domain/rankings';
 
 async function main () {
   const filePrefix = process.env.NEDB_FILENAME_PREFIX;
@@ -16,7 +17,7 @@ async function main () {
     listStakes: () => listStakes({ db }),
     addStake: stake => addStake({ stake }, { db }),
     deleteStake: id => deleteStake({ id }, { db }),
-    queryRankings: () => db.queryRankings(),
+    listRankings: () => listRankings({ db }),
     cycleRank: () => cycleRank({ db, search })
   });
 }

@@ -1,6 +1,6 @@
 import inquirer from 'inquirer';
 
-export async function addStake ({ addStake }) {
+export async function viewAddStake ({ addStake }) {
   const questions = [
     {
       type: 'input',

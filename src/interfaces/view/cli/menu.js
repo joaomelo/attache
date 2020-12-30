@@ -1,7 +1,7 @@
 import { Subject } from 'rxjs';
 import inquirer from 'inquirer';
 
-export function renderMenu () {
+export function viewMenu () {
   const questions = [{
     type: 'list',
     name: 'menuList',

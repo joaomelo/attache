@@ -1,6 +1,6 @@
-import { renderMenu } from './menu';
-import { listStakes, addStake, deleteStake } from './stakes';
-import { listRankings, runCycleRank } from './rankings';
+import { viewMenu } from './menu';
+import { viewListStakes, viewAddStake, viewDeleteStake } from './stakes';
+import { viewListRankings, viewCycleRank } from './rankings';
 import { Machine, interpret } from 'xstate';
 
 let dependencies;
@@ -12,7 +12,7 @@ const uiMachine = Machine({
     menu: {
       invoke: {
         id: 'renderMenu',
-        src: renderMenu
+        src: viewMenu
       },
       on: {
         LIST_STAKES: 'listStakes',
@@ -26,21 +26,21 @@ const uiMachine = Machine({
     listStakes: {
       invoke: {
         id: 'listStakes',
-        src: () => listStakes({ listStakes: dependencies.listStakes }),
+        src: () => viewListStakes({ listStakes: dependencies.listStakes }),
         onDone: { target: 'menu' }
       }
     },
     addStake: {
       invoke: {
         id: 'addStake',
-        src: () => addStake({ addStake: dependencies.addStake }),
+        src: () => viewAddStake({ addStake: dependencies.addStake }),
         onDone: { target: 'menu' }
       }
     },
     deleteStake: {
       invoke: {
         id: 'deleteStake',
-        src: () => deleteStake({
+        src: () => viewDeleteStake({
           listStakes: dependencies.listStakes,
           deleteStake: dependencies.deleteStake
         }),
@@ -50,14 +50,14 @@ const uiMachine = Machine({
     listRankings: {
       invoke: {
         id: 'listRankings',
-        src: () => listRankings({ queryRankings: dependencies.queryRankings }),
+        src: () => viewListRankings({ listRankings: dependencies.listRankings }),
         onDone: { target: 'menu' }
       }
     },
     cycleRank: {
       invoke: {
         id: 'cycleRank',
-        src: () => runCycleRank({ cycleRank: dependencies.cycleRank }),
+        src: () => viewCycleRank({ cycleRank: dependencies.cycleRank }),
         onDone: { target: 'menu' }
       }
     },
