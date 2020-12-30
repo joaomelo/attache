@@ -25,5 +25,5 @@ export async function cycleRank ({ db, search }) {
     db.saveSnapshots(newSnapshots)
   ]);
 
-  return { rankings, snapshots };
+  return { rankings, newRankings, snapshots, newSnapshots };
 }

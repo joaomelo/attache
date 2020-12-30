@@ -1,0 +1,1 @@
+export { initUiService } from './service';
