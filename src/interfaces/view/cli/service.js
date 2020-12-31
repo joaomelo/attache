@@ -3,16 +3,14 @@ import { viewListStakes, viewAddStake, viewDeleteStake } from './stakes';
 import { viewListRankings, viewCycleRank } from './rankings';
 import { Machine, interpret } from 'xstate';
 
-let dependencies;
-
 const uiMachine = Machine({
   id: 'attache',
   initial: 'menu',
   states: {
     menu: {
       invoke: {
-        id: 'renderMenu',
-        src: viewMenu
+        id: 'menuInvoke',
+        src: 'viewMenuService'
       },
       on: {
         LIST_STAKES: 'listStakes',
@@ -25,39 +23,36 @@ const uiMachine = Machine({
     },
     listStakes: {
       invoke: {
-        id: 'listStakes',
-        src: () => viewListStakes({ listStakes: dependencies.listStakes }),
+        id: 'listStakesInvoke',
+        src: 'viewListStakesService',
         onDone: { target: 'menu' }
       }
     },
     addStake: {
       invoke: {
-        id: 'addStake',
-        src: () => viewAddStake({ addStake: dependencies.addStake }),
+        id: 'addStakeInvoke',
+        src: 'viewAddStakeService',
         onDone: { target: 'menu' }
       }
     },
     deleteStake: {
       invoke: {
-        id: 'deleteStake',
-        src: () => viewDeleteStake({
-          listStakes: dependencies.listStakes,
-          deleteStake: dependencies.deleteStake
-        }),
+        id: 'deleteStakeInvoke',
+        src: 'viewDeleteStakeService',
         onDone: { target: 'menu' }
       }
     },
     listRankings: {
       invoke: {
-        id: 'listRankings',
-        src: () => viewListRankings({ listRankings: dependencies.listRankings }),
+        id: 'listRankingsInvoke',
+        src: 'viewListRankingsService',
         onDone: { target: 'menu' }
       }
     },
     cycleRank: {
       invoke: {
-        id: 'cycleRank',
-        src: () => viewCycleRank({ cycleRank: dependencies.cycleRank }),
+        id: 'cycleRankInvoke',
+        src: 'viewCycleRankService',
         onDone: { target: 'menu' }
       }
     },
@@ -67,9 +62,25 @@ const uiMachine = Machine({
   }
 });
 
-export function initUiService (config) {
-  dependencies = { ...config };
+export function initUiService (dependencies) {
+  const {
+    listStakes,
+    addStake,
+    deleteStake,
+    listRankings,
+    cycleRank
+  } = dependencies;
 
-  const uiService = interpret(uiMachine);
+  const services = {
+    viewMenuService: viewMenu,
+    viewListStakesService: () => viewListStakes({ listStakes }),
+    viewAddStakeService: () => viewAddStake({ addStake }),
+    viewDeleteStakeService: () => viewDeleteStake({ listStakes, deleteStake }),
+    viewListRankingsService: () => viewListRankings({ listRankings }),
+    viewCycleRankService: () => viewCycleRank({ cycleRank })
+  };
+
+  const uiMachineWithServices = uiMachine.withConfig({ services });
+  const uiService = interpret(uiMachineWithServices);
   uiService.start();
 }

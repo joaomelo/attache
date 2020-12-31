@@ -18,4 +18,20 @@ A typical use case would be: every week, I want to receive in my WhatsApp the ra
 
 **Contact:** a channel setup to send reports to - e.g: WhatsApp +1 (555) 555-5555 or email me@email.com.
 
-**Subscription:** a stake, some contacts and a frequency to receive reports about its rankings. Frequency options are daily, weekly or monthly. 
+**Subscription:** a stake, some contacts and a frequency to receive reports about its rankings. Frequency options are daily, weekly or monthly.
+
+# Reports
+
+Reports should be available in a rendered form but also in CSV data format.
+
+## Metrics
+
+This base data series are the base to create configurable reports.
+
+**Page Ranking Evolution Metrics:** The available daily ranking of a page against a term during a time period.
+
+**Page Ranking Aggregation Metrics:** The same page ranking against a terms during a time period, but now presented in a monthly pace. For each month there is the average ranking and how many positions the page variated from the last month and the same month in last year.
+
+## Reports
+
+...
