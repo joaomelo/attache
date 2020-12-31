@@ -2,7 +2,7 @@ import { initNedb } from '../interfaces/db';
 import { axiosGet } from '../interfaces/get';
 import { createScaleSerpSearch } from '../interfaces/search';
 import { cycleRank } from '../domain/rank';
-import { initUiService } from '../interfaces/view/cli';
+import { initCliUi } from '../interfaces/view/cli';
 import { listStakes, addStake, deleteStake } from '../domain/stakes';
 import { listRankings } from '../domain/rankings';
 
@@ -13,7 +13,7 @@ async function main () {
   const key = process.env.SCALE_SERP_KEY;
   const search = createScaleSerpSearch({ get: axiosGet, key });
 
-  initUiService({
+  initCliUi({
     listStakes: () => listStakes({ db }),
     addStake: stake => addStake({ stake }, { db }),
     deleteStake: id => deleteStake({ id }, { db }),

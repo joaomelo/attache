@@ -1,1 +1,1 @@
-export { initUiService } from './service';
+export { initCliUi } from './ui';

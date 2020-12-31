@@ -1,9 +1,6 @@
-import { viewMenu } from './menu';
-import { viewListStakes, viewAddStake, viewDeleteStake } from './stakes';
-import { viewListRankings, viewCycleRank } from './rankings';
-import { Machine, interpret } from 'xstate';
+import { Machine } from 'xstate';
 
-const uiMachine = Machine({
+export const uiMachine = Machine({
   id: 'attache',
   initial: 'menu',
   states: {
@@ -61,26 +58,3 @@ const uiMachine = Machine({
     }
   }
 });
-
-export function initUiService (dependencies) {
-  const {
-    listStakes,
-    addStake,
-    deleteStake,
-    listRankings,
-    cycleRank
-  } = dependencies;
-
-  const services = {
-    viewMenuService: viewMenu,
-    viewListStakesService: () => viewListStakes({ listStakes }),
-    viewAddStakeService: () => viewAddStake({ addStake }),
-    viewDeleteStakeService: () => viewDeleteStake({ listStakes, deleteStake }),
-    viewListRankingsService: () => viewListRankings({ listRankings }),
-    viewCycleRankService: () => viewCycleRank({ cycleRank })
-  };
-
-  const uiMachineWithServices = uiMachine.withConfig({ services });
-  const uiService = interpret(uiMachineWithServices);
-  uiService.start();
-}
