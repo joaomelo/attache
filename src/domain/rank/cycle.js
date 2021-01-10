@@ -14,7 +14,7 @@ export async function cycleRank ({ db, search }) {
   const todaySnapshots = await db.querySnapshotsSince(today);
   const snapshotsCache = todaySnapshots.filter(s => s.success);
   const snapshots = await snapshotTerms({ terms, cache: snapshotsCache }, { search });
-  const newSnapshots = snapshots.filter(s => !snapshotsCache.find(c => c.id === s.id));
+  const freshSnapshots = snapshots.filter(s => !snapshotsCache.find(c => c.id === s.id));
 
   const rankingsCache = await db.queryRankingsSince(today);
   const rankings = rankStakes({ stakes, snapshots, cache: rankingsCache });
@@ -22,8 +22,8 @@ export async function cycleRank ({ db, search }) {
 
   await Promise.all([
     db.saveRankings(newRankings),
-    db.saveSnapshots(newSnapshots)
+    db.saveSnapshots(freshSnapshots)
   ]);
 
-  return { rankings, newRankings, snapshots, newSnapshots };
+  return { rankings, newRankings, snapshots, freshSnapshots };
 }
