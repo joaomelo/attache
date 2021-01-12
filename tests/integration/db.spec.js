@@ -1,10 +1,10 @@
-import { calcToday, sortByField } from '../../src/helpers';
+import { calcToday, calcSomedayFromToday, sortByField } from '../../src/helpers';
+import { del } from '../../src/interfaces/request';
 import { initDb } from '../../src/interfaces/db';
 
 describe('db module', () => {
   const today = calcToday();
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
+  const yesterday = calcSomedayFromToday(-1);
 
   const stakes = [
     {
@@ -83,10 +83,14 @@ describe('db module', () => {
     }
   ];
 
+  const initVanillaDb = () => initDb('vanilla');
+  const initNedb = () => initDb('nedb', { memory: true });
+  const initFirestoreDb = () => initDb('firestore', { projectId: 'attache-11863', emulatorHost: 'localhost:8080', del });
+
   const dbTestTable = [
-    ['vanilla', () => initDb('vanilla')],
-    ['nedb', () => initDb('nedb', { memory: true })],
-    ['firestore', () => initDb('firestore', { emulator: '9099' })]
+    ['vanilla', initVanillaDb],
+    ['nedb', initNedb],
+    ['firestore', initFirestoreDb]
   ];
   describe.each(dbTestTable)('%p db', (type, initFn) => {
     const saveAndQueryTestTable = [
@@ -135,6 +139,18 @@ describe('db module', () => {
       const todayRecords = await db[`query${dbMethod}Since`](today);
 
       expect(todayRecords).toHaveLength(expectedLength);
+    });
+  });
+
+  describe('database specific scenarios', () => {
+    test('firestore emulator is cleared during initialization', async () => {
+      const db = await initFirestoreDb();
+      db.saveStakes(stakes);
+
+      await initFirestoreDb();
+
+      const savedStakes = await db.queryStakes();
+      expect(savedStakes).toHaveLength(0);
     });
   });
 

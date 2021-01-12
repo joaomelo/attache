@@ -1,18 +1,9 @@
 import Datastore from 'nedb';
-
-function convertField (originals, from, to) {
-  const converteds = originals.map(original => {
-    const converted = { ...original };
-    delete converted[from];
-    converted[to] = original[from];
-    return converted;
-  });
-  return converteds;
-};
+import { convertFieldName } from '../../helpers';
 
 function saveItems (datastore, items) {
   return new Promise((resolve, reject) => {
-    const records = convertField(items, 'id', '_id');
+    const records = convertFieldName(items, 'id', '_id');
     datastore.insert(records, error => error ? reject(error) : resolve(true));
   });
 }
@@ -22,7 +13,7 @@ function findItems (datastore, filter = {}) {
     datastore.find(filter, (error, docs) => {
       if (error) reject(error);
 
-      const items = convertField(docs, '_id', 'id');
+      const items = convertFieldName(docs, '_id', 'id');
       return resolve(items);
     });
   });
