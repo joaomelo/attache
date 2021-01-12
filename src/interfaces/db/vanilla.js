@@ -1,4 +1,4 @@
-export function initMemoryDb () {
+export function initVanillaDb () {
   return {
     stakes: [],
     rankings: [],

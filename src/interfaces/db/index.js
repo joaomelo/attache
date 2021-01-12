@@ -1,2 +1,1 @@
-export * from './memory';
-export * from './nedb';
+export { initDb } from './facade';

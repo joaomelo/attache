@@ -1,13 +1,13 @@
 import { calcSomedayFromToday } from '../../src/helpers';
 import { createDummySearch } from '../../src/interfaces/search';
-import { initMemoryDb } from '../../src/interfaces/db';
+import { initDb } from '../../src/interfaces/db';
 import { saveFreshSnapshotsFor } from '../../src/domain/snapshots';
 
 describe('snapshot module', () => {
   describe('happy path', () => {
     test('save a new snapshot for every term', async () => {
       const search = createDummySearch();
-      const db = initMemoryDb();
+      const db = initDb('vanilla');
 
       const terms = ['cloud', 'js front end library'];
 
@@ -33,7 +33,7 @@ describe('snapshot module', () => {
     test('do not save new snapshot and avoid search service if fresh snapshot is available', async () => {
       const term = 'service';
 
-      const db = initMemoryDb();
+      const db = initDb('vanilla');
       db.saveSnapshots([{
         term,
         when: new Date(),
@@ -53,7 +53,7 @@ describe('snapshot module', () => {
     test('ignores unsuccessful and old snapshots', async () => {
       const term = 'my name';
 
-      const db = initMemoryDb();
+      const db = initDb('vanilla');
       db.saveSnapshots([
         {
           term,
@@ -84,7 +84,7 @@ describe('snapshot module', () => {
       const terms = ['what is the best test framework'];
 
       const search = async () => { return { message: 'search limit reached' }; };
-      const db = initMemoryDb();
+      const db = initDb('vanilla');
 
       await saveFreshSnapshotsFor(terms, { search, db });
 
@@ -102,7 +102,7 @@ describe('snapshot module', () => {
       const terms = ['best programming language'];
 
       const search = async () => { throw new Error('some search error'); };
-      const db = initMemoryDb();
+      const db = initDb('vanilla');
 
       await saveFreshSnapshotsFor(terms, { search, db });
 

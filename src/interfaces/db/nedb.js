@@ -1,13 +1,13 @@
 import Datastore from 'nedb';
 
 function convertField (originals, from, to) {
-  const converted = originals.map(o => {
-    const c = { ...o };
-    delete c[from];
-    c[to] = o[from];
-    return c;
+  const converteds = originals.map(original => {
+    const converted = { ...original };
+    delete converted[from];
+    converted[to] = original[from];
+    return converted;
   });
-  return converted;
+  return converteds;
 };
 
 function saveItems (datastore, items) {
