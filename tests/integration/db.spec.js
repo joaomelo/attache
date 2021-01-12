@@ -85,8 +85,8 @@ describe('db module', () => {
 
   const dbTestTable = [
     ['vanilla', () => initDb('vanilla')],
-    ['nedb', () => initDb('nedb', { memory: true })]
-    // ['firestore', () => initDb('firestore', { emulator: '9099' })]
+    ['nedb', () => initDb('nedb', { memory: true })],
+    ['firestore', () => initDb('firestore', { emulator: '9099' })]
   ];
   describe.each(dbTestTable)('%p db', (type, initFn) => {
     const saveAndQueryTestTable = [
