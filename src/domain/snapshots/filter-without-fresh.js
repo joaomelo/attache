@@ -1,6 +1,6 @@
 import { loadFreshSnapshots } from './load-fresh';
 
-export async function filterWithoutFreshSnapshotFrom (terms, dependencies) {
+export async function filterTermsWithoutFreshSnapshot (terms, dependencies) {
   const freshSnapshots = await loadFreshSnapshots(dependencies);
 
   const isFresh = term => !!freshSnapshots.find(s => s.term === term);

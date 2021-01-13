@@ -1,1 +1,1 @@
-export { saveFreshSnapshotsForStakes } from './save-stakes';
+export { saveFreshSnapshotsForStakes } from './save-for-stakes';

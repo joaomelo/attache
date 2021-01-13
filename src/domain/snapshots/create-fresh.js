@@ -1,8 +1,8 @@
-import { filterWithoutFreshSnapshotFrom } from './filter-without-fresh';
-import { createSnapshotsFor } from './create-snapshots';
+import { filterTermsWithoutFreshSnapshot } from './filter-without-fresh';
+import { createSnapshots } from './create-snapshots';
 
 export async function createFreshSnapshots (terms, dependencies) {
-  const termsWithoutFreshSnapshot = await filterWithoutFreshSnapshotFrom(terms, dependencies);
-  const freshSnapshots = await createSnapshotsFor(termsWithoutFreshSnapshot, dependencies);
+  const termsWithoutFreshSnapshot = await filterTermsWithoutFreshSnapshot(terms, dependencies);
+  const freshSnapshots = await createSnapshots(termsWithoutFreshSnapshot, dependencies);
   return freshSnapshots;
 }

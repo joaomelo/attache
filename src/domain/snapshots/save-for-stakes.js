@@ -1,4 +1,4 @@
-import { saveFreshSnapshotsForTerms } from './save-terms';
+import { saveFreshSnapshotsForTerms } from './save-for-terms';
 
 export async function saveFreshSnapshotsForStakes (dependencies) {
   const { db } = dependencies;

@@ -1,8 +1,8 @@
-import { createSnapshotFor } from './create-snapshot';
+import { createSingleSnapshot } from './create-single';
 
-export async function createSnapshotsFor (terms, dependencies) {
+export async function createSnapshots (terms, dependencies) {
   const promises = [];
-  terms.forEach(term => promises.push(createSnapshotFor(term, dependencies)));
+  terms.forEach(term => promises.push(createSingleSnapshot(term, dependencies)));
 
   const snapshots = await Promise.all(promises);
   return snapshots;
