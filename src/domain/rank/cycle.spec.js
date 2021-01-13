@@ -2,7 +2,7 @@ import { initMemoryDb } from '../../interfaces/db';
 import { createDummySearch } from '../../interfaces/search';
 import { cycleRank } from './cycle';
 
-describe('cycleRank', () => {
+describe.skip('cycleRank', () => {
   const stakes = [
     {
       pages: ['azure.microsoft.com', 'aws.amazon.com', 'firebase.google.com'],

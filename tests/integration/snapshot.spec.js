@@ -1,17 +1,33 @@
 import { calcSomedayFromToday } from '../../src/helpers';
 import { createDummySearch } from '../../src/interfaces/search';
 import { initDb } from '../../src/interfaces/db';
-import { saveFreshSnapshotsFor } from '../../src/domain/snapshots';
+import { saveFreshSnapshotsForStakes } from '../../src/domain/snapshots';
 
 describe('snapshot module', () => {
+  let db;
+
+  beforeEach(async () => {
+    const stakes = [
+      {
+        id: '87178090-383e-4780-a363-a076a6f952dd',
+        pages: ['azure.microsoft.com', 'aws.amazon.com', 'firebase.google.com'],
+        terms: ['cloud']
+      },
+      {
+        id: 'd1584b65-7361-46ee-a807-e1a3ec0ddb33',
+        pages: ['vuejs.org', 'reactjs.org', 'angular.io', 'svelte.dev'],
+        terms: ['js front end library']
+      }
+    ];
+    db = initDb('vanilla');
+    await db.saveStakes(stakes);
+  });
+
   describe('happy path', () => {
     test('save a new snapshot for every term', async () => {
       const search = createDummySearch();
-      const db = initDb('vanilla');
 
-      const terms = ['cloud', 'js front end library'];
-
-      await saveFreshSnapshotsFor(terms, { search, db });
+      await saveFreshSnapshotsForStakes({ search, db });
 
       expect(db.snapshots).toHaveLength(2);
       expect(db.snapshots).toEqual(
@@ -31,88 +47,76 @@ describe('snapshot module', () => {
 
   describe('alternate scenarios', () => {
     test('do not save new snapshot and avoid search service if fresh snapshot is available', async () => {
-      const term = 'service';
-
-      const db = initDb('vanilla');
-      db.saveSnapshots([{
-        term,
+      await db.saveSnapshots([{
+        term: 'cloud',
         when: new Date(),
         success: true,
         size: 2,
         result: ['www.some-page.com', 'www.another-page.net']
       }]);
-
       const search = jest.fn(createDummySearch());
 
-      await saveFreshSnapshotsFor([term], { search, db });
+      await saveFreshSnapshotsForStakes({ search, db });
 
-      expect(search).toHaveBeenCalledTimes(0);
-      expect(db.snapshots).toHaveLength(1);
+      expect(search).toHaveBeenCalledTimes(1);
+      expect(db.snapshots).toHaveLength(2);
     });
 
     test('ignores unsuccessful and old snapshots', async () => {
-      const term = 'my name';
-
-      const db = initDb('vanilla');
-      db.saveSnapshots([
+      await db.saveSnapshots([
         {
-          term,
+          term: 'cloud',
           when: new Date(),
           success: false,
           size: 2
         },
         {
-          term,
+          term: 'cloud',
           when: calcSomedayFromToday(-1),
           success: true,
           size: 2,
           result: ['www.some-page.com', 'www.another-page.net']
         }
       ]);
-
       const search = jest.fn(createDummySearch());
 
-      await saveFreshSnapshotsFor([term], { search, db });
+      await saveFreshSnapshotsForStakes({ search, db });
 
-      expect(search).toHaveBeenCalledTimes(1);
-      expect(db.snapshots).toHaveLength(3);
+      expect(search).toHaveBeenCalledTimes(2);
+      expect(db.snapshots).toHaveLength(4);
     });
   });
 
   describe('exception scenarios', () => {
     test('create a failed snapshot if search returns out of spec data', async () => {
-      const terms = ['what is the best test framework'];
+      const search = () => ({ message: 'search limit reached' });
 
-      const search = async () => { return { message: 'search limit reached' }; };
-      const db = initDb('vanilla');
+      await saveFreshSnapshotsForStakes({ search, db });
 
-      await saveFreshSnapshotsFor(terms, { search, db });
-
-      expect(db.snapshots[0]).toEqual(
-        expect.objectContaining({
-          term: terms[0],
-          success: false,
-          error: expect.any(String),
-          when: expect.any(Date)
-        })
+      expect(db.snapshots).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            success: false,
+            error: expect.any(String),
+            when: expect.any(Date)
+          })
+        ])
       );
     });
 
     test('create a failed snapshot if search throws', async () => {
-      const terms = ['best programming language'];
+      const search = () => { throw new Error('some search error'); };
 
-      const search = async () => { throw new Error('some search error'); };
-      const db = initDb('vanilla');
+      await saveFreshSnapshotsForStakes({ search, db });
 
-      await saveFreshSnapshotsFor(terms, { search, db });
-
-      expect(db.snapshots[0]).toEqual(
-        expect.objectContaining({
-          term: terms[0],
-          success: false,
-          error: expect.any(String),
-          when: expect.any(Date)
-        })
+      expect(db.snapshots).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            success: false,
+            error: expect.any(String),
+            when: expect.any(Date)
+          })
+        ])
       );
     });
   });
