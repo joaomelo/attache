@@ -1,4 +1,4 @@
-import { loadFreshSnapshots } from './load-fresh';
+import { calcToday } from '../../helpers';
 
 export async function filterTermsWithoutFreshSnapshot (terms, dependencies) {
   const freshSnapshots = await loadFreshSnapshots(dependencies);
@@ -7,4 +7,14 @@ export async function filterTermsWithoutFreshSnapshot (terms, dependencies) {
   const termsWithoutFreshSnapshot = terms.filter(t => !isFresh(t));
 
   return termsWithoutFreshSnapshot;
+}
+
+async function loadFreshSnapshots (dependencies) {
+  const { db } = dependencies;
+  const today = calcToday();
+
+  const todaySnapshots = await db.querySnapshotsSince(today);
+  const todaySuccessfulSnapshots = todaySnapshots.filter(s => s.success);
+
+  return todaySuccessfulSnapshots;
 }
