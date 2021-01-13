@@ -85,7 +85,10 @@ describe('db module', () => {
 
   const initVanillaDb = () => initDb('vanilla');
   const initNedb = () => initDb('nedb', { memory: true });
-  const initFirestoreDb = () => initDb('firestore', { projectId: 'attache-11863', emulatorHost: 'localhost:8080', del });
+
+  const projectId = process.env.FIREBASE_PROJECT_ID;
+  const emulatorHost = process.env.FIRESTORE_EMULATOR_HOST;
+  const initFirestoreDb = () => initDb('firestore', { projectId, emulatorHost, del });
 
   const dbTestTable = [
     ['vanilla', initVanillaDb],
