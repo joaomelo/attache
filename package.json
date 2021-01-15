@@ -2,25 +2,22 @@
   "name": "attache",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "start": "npm run main",
-    "emulator": "firebase emulators:start --only firestore",
+    "build": "rimraf dist/* && webpack --config webpack.config.js",
     "test": "jest --watchAll --detectOpenHandles",
     "lint": "eslint --fix --ext .js,.vue src/",
     "main": "npm run main:scheduled",
-    "main:scheduled": "babel-node -r dotenv/config src/main/scale-nedb-scheduled.js",
+    "main:scheduled": "node --enable-source-maps -r dotenv/config dist/index.js",
     "main:cli": "babel-node -r dotenv/config src/main/scale-nedb-cli.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.21.0",
-    "babel-jest": "^26.6.3",
     "core-js": "^3.8.1",
     "dotenv": "^8.2.0",
-    "firebase-admin": "^9.4.2",
-    "firebase-functions": "^3.13.0",
     "inquirer": "^7.3.3",
     "nedb": "^1.8.0",
     "regenerator-runtime": "^0.13.7",
@@ -34,6 +31,7 @@
     "@babel/eslint-parser": "^7.12.1",
     "@babel/node": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
+    "babel-jest": "^26.6.3",
     "babel-loader": "^8.2.2",
     "eslint": "^7.16.0",
     "eslint-config-standard": "^16.0.2",
@@ -45,6 +43,10 @@
     "eslint-plugin-vue": "^7.3.0",
     "eslint-webpack-plugin": "^2.4.1",
     "jest": "^26.6.3",
-    "vue-eslint-parser": "^7.3.0"
+    "rimraf": "^3.0.2",
+    "vue-eslint-parser": "^7.3.0",
+    "webpack": "^5.15.0",
+    "webpack-cli": "^4.3.1",
+    "webpack-node-externals": "^2.5.2"
   }
 }

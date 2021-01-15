@@ -4,6 +4,7 @@ import { createSingleSnapshot } from './create-snapshot';
 export async function saveFreshSnapshotsForTerms (terms, db, search) {
   const termsWithoutFreshSnapshot = await filterTermsWithoutFreshSnapshot(terms, db);
   const freshSnapshots = await createSnapshots(termsWithoutFreshSnapshot, search);
+
   await db.saveSnapshots(freshSnapshots);
 }
 

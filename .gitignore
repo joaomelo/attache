@@ -1,3 +1,6 @@
+dist/
+
+# database flat files
 *.nedb
 
 # cypress media
