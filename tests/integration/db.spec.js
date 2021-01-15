@@ -1,9 +1,68 @@
-import { calcToday, calcSomedayFromToday, sortByField } from '../../src/helpers';
-import { del } from '../../src/interfaces/request';
+import { calcSomedayFromToday, sortByField } from '../../src/helpers';
 import { initDb } from '../../src/interfaces/db';
 
 describe('db module', () => {
-  const today = calcToday();
+  const { stakes, rankings, snapshots } = createFixtures();
+
+  const dbTestTable = [
+    ['vanilla', () => initDb('vanilla')],
+    ['nedb', () => initDb('nedb', { memory: true })]
+  ];
+  describe.each(dbTestTable)('%p db', (type, initFn) => {
+    const saveAndQueryTestTable = [
+      ['Stakes', stakes],
+      ['Rankings', rankings],
+      ['Snapshots', snapshots]
+    ];
+    test.each(saveAndQueryTestTable)('save and query %p', async (dbMethod, fixture) => {
+      const db = await initFn();
+
+      const result = await db[`save${dbMethod}`](fixture);
+      const retrieved = await db[`query${dbMethod}`]();
+
+      const fixtureSorted = sortByField(fixture, 'id');
+      const retrievedSorted = sortByField(retrieved, 'id');
+
+      expect(result).toBe(true);
+      expect(retrievedSorted).toEqual(fixtureSorted);
+    });
+
+    const deleteTestTable = [
+      ['Stake', stakes, '87178090-383e-4780-a363-a076a6f952dd']
+    ];
+    test.each(deleteTestTable)('delete %p', async (dbMethod, fixture, idToDelete) => {
+      const db = await initFn();
+      await db[`save${dbMethod}s`](fixture);
+      const retrievedBefore = await db[`query${dbMethod}s`]();
+
+      await db[`delete${dbMethod}`](idToDelete);
+
+      const after = await db[`query${dbMethod}s`]();
+      const deletedIndex = after.findIndex(record => record.id === idToDelete);
+
+      expect(retrievedBefore.length).toBe(after.length + 1);
+      expect(deletedIndex).toBe(-1);
+    });
+
+    const querySinceTestTable = [
+      ['Rankings', rankings, 2],
+      ['Snapshots', snapshots, 2]
+    ];
+    test.each(querySinceTestTable)('query %p using date filter', async (dbMethod, fixture, expectedLength) => {
+      const db = await initFn();
+      await db[`save${dbMethod}`](fixture);
+    });
+  });
+
+  describe('exception scenarios', () => {
+    test('throws if wrong db type passed to initialization', () => {
+      expect(() => initDb('wrong-type')).toThrow();
+      expect(() => initDb()).toThrow();
+    });
+  });
+});
+
+function createFixtures () {
   const yesterday = calcSomedayFromToday(-1);
 
   const stakes = [
@@ -81,84 +140,5 @@ describe('db module', () => {
     }
   ];
 
-  const initVanillaDb = () => initDb('vanilla');
-  const initNedb = () => initDb('nedb', { memory: true });
-
-  const projectId = process.env.FIREBASE_PROJECT_ID;
-  const emulatorHost = process.env.FIRESTORE_EMULATOR_HOST;
-  const initFirestoreDb = () => initDb('firestore', { projectId, emulatorHost, del });
-
-  const dbTestTable = [
-    ['vanilla', initVanillaDb],
-    ['nedb', initNedb],
-    ['firestore', initFirestoreDb]
-  ];
-  describe.each(dbTestTable)('%p db', (type, initFn) => {
-    const saveAndQueryTestTable = [
-      ['Stakes', stakes],
-      ['Rankings', rankings],
-      ['Snapshots', snapshots]
-    ];
-    test.each(saveAndQueryTestTable)('save and query %p', async (dbMethod, fixture) => {
-      const db = await initFn();
-
-      const result = await db[`save${dbMethod}`](fixture);
-      const retrieved = await db[`query${dbMethod}`]();
-
-      const fixtureSorted = sortByField(fixture, 'id');
-      const retrievedSorted = sortByField(retrieved, 'id');
-
-      expect(result).toBe(true);
-      expect(retrievedSorted).toEqual(fixtureSorted);
-    });
-
-    const deleteTestTable = [
-      ['Stake', stakes, '87178090-383e-4780-a363-a076a6f952dd']
-    ];
-    test.each(deleteTestTable)('delete %p', async (dbMethod, fixture, idToDelete) => {
-      const db = await initFn();
-      await db[`save${dbMethod}s`](fixture);
-      const retrievedBefore = await db[`query${dbMethod}s`]();
-
-      await db[`delete${dbMethod}`](idToDelete);
-
-      const after = await db[`query${dbMethod}s`]();
-      const deletedIndex = after.findIndex(record => record.id === idToDelete);
-
-      expect(retrievedBefore.length).toBe(after.length + 1);
-      expect(deletedIndex).toBe(-1);
-    });
-
-    const querySinceTestTable = [
-      ['Rankings', rankings, 2],
-      ['Snapshots', snapshots, 2]
-    ];
-    test.each(querySinceTestTable)('query %p using date filter', async (dbMethod, fixture, expectedLength) => {
-      const db = await initFn();
-      await db[`save${dbMethod}`](fixture);
-
-      const todayRecords = await db[`query${dbMethod}Since`](today);
-
-      expect(todayRecords).toHaveLength(expectedLength);
-    });
-  });
-
-  describe('database specific scenarios', () => {
-    test('firestore emulator is cleared during initialization', async () => {
-      const db = await initFirestoreDb();
-      db.saveStakes(stakes);
-
-      await initFirestoreDb();
-
-      const savedStakes = await db.queryStakes();
-      expect(savedStakes).toHaveLength(0);
-    });
-  });
-
-  describe('exception scenarios', () => {
-    test('throws if wrong db type passed to initialization', () => {
-      expect(() => initDb('wrong-type')).toThrow();
-      expect(() => initDb()).toThrow();
-    });
-  });
-});
+  return { stakes, rankings, snapshots };
+}

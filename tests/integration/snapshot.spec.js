@@ -27,7 +27,7 @@ describe('snapshot module', () => {
     test('save a new snapshot for every term', async () => {
       const search = createDummySearch();
 
-      await saveFreshSnapshotsForStakes({ search, db });
+      await saveFreshSnapshotsForStakes(db, search);
 
       expect(db.snapshots).toHaveLength(2);
       expect(db.snapshots).toEqual(
@@ -56,7 +56,7 @@ describe('snapshot module', () => {
       }]);
       const search = jest.fn(createDummySearch());
 
-      await saveFreshSnapshotsForStakes({ search, db });
+      await saveFreshSnapshotsForStakes(db, search);
 
       expect(search).toHaveBeenCalledTimes(1);
       expect(db.snapshots).toHaveLength(2);
@@ -80,7 +80,7 @@ describe('snapshot module', () => {
       ]);
       const search = jest.fn(createDummySearch());
 
-      await saveFreshSnapshotsForStakes({ search, db });
+      await saveFreshSnapshotsForStakes(db, search);
 
       expect(search).toHaveBeenCalledTimes(2);
       expect(db.snapshots).toHaveLength(4);
@@ -91,7 +91,7 @@ describe('snapshot module', () => {
     test('create a failed snapshot if search returns out of spec data', async () => {
       const search = () => ({ message: 'search limit reached' });
 
-      await saveFreshSnapshotsForStakes({ search, db });
+      await saveFreshSnapshotsForStakes(db, search);
 
       expect(db.snapshots).toEqual(
         expect.arrayContaining([
@@ -107,7 +107,7 @@ describe('snapshot module', () => {
     test('create a failed snapshot if search throws', async () => {
       const search = () => { throw new Error('some search error'); };
 
-      await saveFreshSnapshotsForStakes({ search, db });
+      await saveFreshSnapshotsForStakes(db, search);
 
       expect(db.snapshots).toEqual(
         expect.arrayContaining([

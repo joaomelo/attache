@@ -1,8 +1,6 @@
 import { createId } from '../../helpers';
 
-export async function createSingleSnapshot (term, dependencies) {
-  const { search } = dependencies;
-
+export async function createSingleSnapshot (term, search) {
   const freshSnapshot = {
     id: createId(),
     term: term,
