@@ -4,10 +4,13 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
+    "dev:up": "docker-compose up",
+    "dev:plug": "docker container exec -it app bash",
     "start": "npm run main",
-    "build": "rimraf dist/* && webpack --config webpack.config.js",
-    "test": "jest --watchAll --detectOpenHandles",
+    "test": "npm run test:jest",
+    "test:jest": "jest --watch --runInBand",
     "lint": "eslint --fix --ext .js,.vue src/",
+    "build": "rimraf dist/* && webpack --config webpack.config.js",
     "main": "npm run main:scheduled",
     "main:scheduled": "node --enable-source-maps -r dotenv/config dist/index.js",
     "main:cli": "babel-node -r dotenv/config src/main/scale-nedb-cli.js"

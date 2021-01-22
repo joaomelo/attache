@@ -9,7 +9,7 @@ async function main () {
 
   if (!filePrefix || !key) throw new Error('Required environment variables not loaded');
 
-  const db = await initDb('nedb', { filePrefix, reset: false });
+  const db = await initDb('mongo', { filePrefix, reset: false });
   const search = createScaleSerpSearch({ get, key });
 
   await saveFreshSnapshotsForStakes(db, search);

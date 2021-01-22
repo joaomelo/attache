@@ -6,7 +6,7 @@ describe('db module', () => {
 
   const dbTestTable = [
     ['vanilla', () => initDb('vanilla')],
-    ['nedb', () => initDb('nedb', { memory: true })]
+    ['mongo', () => initDb('mongo', { memory: true })]
   ];
   describe.each(dbTestTable)('%p db', (type, initFn) => {
     const saveAndQueryTestTable = [
