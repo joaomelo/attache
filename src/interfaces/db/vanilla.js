@@ -4,9 +4,8 @@ export function initVanillaDb () {
     rankings: [],
     snapshots: [],
 
-    saveStakes (stakes) {
-      this.stakes.push(...stakes);
-      return Promise.resolve(true);
+    saveStakes (newStakes) {
+      return saveItems(this.stakes, newStakes);
     },
 
     queryStakes () {
@@ -19,9 +18,8 @@ export function initVanillaDb () {
       return Promise.resolve(index !== -1);
     },
 
-    saveRankings (rankings) {
-      this.rankings.push(...rankings);
-      return Promise.resolve(true);
+    saveRankings (newRankings) {
+      return saveItems(this.rankings, newRankings);
     },
 
     queryRankings () {
@@ -32,9 +30,8 @@ export function initVanillaDb () {
       return Promise.resolve(this.rankings.filter(r => r.when >= start));
     },
 
-    saveSnapshots (snapshots) {
-      this.snapshots.push(...snapshots);
-      return Promise.resolve(true);
+    saveSnapshots (newSnapshots) {
+      return saveItems(this.snapshots, newSnapshots);
     },
 
     querySnapshots () {
@@ -46,3 +43,9 @@ export function initVanillaDb () {
     }
   };
 };
+
+function saveItems (collection, items) {
+  if (!Array.isArray(items) || items.length === 0) return true;
+  collection.push(...items);
+  return Promise.resolve(true);
+}

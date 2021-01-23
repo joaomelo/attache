@@ -52,6 +52,17 @@ describe('db module', () => {
       const db = await initFn();
       await db[`save${dbMethod}`](fixture);
     });
+
+    const saveEmptyDataTable = [
+      ['empty array', []],
+      ['undefined', undefined]
+    ];
+    test.each(saveEmptyDataTable)('deals with saving %p gracefully', async (description, data) => {
+      const db = await initFn();
+      await db.saveStakes(data);
+      const stakes = await db.queryStakes();
+      expect(stakes).toEqual([]);
+    });
   });
 
   describe('exception scenarios', () => {

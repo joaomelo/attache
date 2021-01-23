@@ -53,6 +53,8 @@ async function connectClient (uri) {
 };
 
 async function saveItems (collection, items) {
+  if (!Array.isArray(items) || items.length === 0) return true;
+
   const records = convertFieldName(items, 'id', '_id');
   await collection.insertMany(records);
   return true;

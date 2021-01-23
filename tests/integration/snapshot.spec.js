@@ -46,6 +46,15 @@ describe('snapshot module', () => {
   });
 
   describe('alternate scenarios', () => {
+    test('run gracefully if no stakes is available', async () => {
+      const search = () => ({ message: 'search limit reached' });
+      const emptyDb = initDb('vanilla');
+
+      await saveFreshSnapshotsForStakes(emptyDb, search);
+
+      expect(db.snapshots).toEqual([]);
+    });
+
     test('do not save new snapshot and avoid search service if fresh snapshot is available', async () => {
       await db.saveSnapshots([{
         term: 'cloud',

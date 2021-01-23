@@ -2,8 +2,7 @@ import { saveFreshSnapshotsForTerms } from './save-for-terms';
 
 export async function saveFreshSnapshotsForStakes (db, search) {
   const stakes = await db.queryStakes();
-
-  console.log({ stakes });
+  if (stakes.length === 0) return true;
 
   const terms = extractTermsFromStakes(stakes);
 
