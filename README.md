@@ -35,3 +35,13 @@ This base data series are the base to create configurable reports.
 ## Reports
 
 ...
+
+# How to Use It
+
+## Snapshooter Service
+
+The snapshooter service while running will take snapshots for every term of all stakes periodically.
+
+The frequency is a positive integer extracted the ENV_VARIABLE environment variable. The variable unit is minute. The default value is 60.
+
+Snapshots are taken once a day. So, multiple daily cycles (every hour for example) are useful only to catch new terms added during the same day.
