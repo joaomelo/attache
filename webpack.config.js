@@ -4,10 +4,10 @@ const nodeExternals = require('webpack-node-externals');
 module.exports = {
   target: 'node',
   mode: 'production',
-  entry: './src/main/scale-nedb-scheduled.js',
+  entry: './src/main/snapshooter.js',
   externals: [nodeExternals()],
   output: {
-    filename: 'index.js',
+    filename: 'snapshooter.js',
     path: path.resolve(__dirname, 'dist')
   },
   node: {

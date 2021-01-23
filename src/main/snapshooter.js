@@ -13,7 +13,10 @@ async function main () {
   if (!key) throw new Error('SCALE SERP api key not found as environment variable');
   const search = createScaleSerpSearch({ get, key });
 
-  const callback = () => saveFreshSnapshotsForStakes(db, search);
+  const callback = async () => {
+    await saveFreshSnapshotsForStakes(db, search);
+    console.info('snapshot just ran');
+  };
 
   const oneHourInMinutes = 60;
   const frequency = parseInt(process.env.SNAPSHOOTER_FREQUENCY) || oneHourInMinutes;

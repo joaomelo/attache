@@ -11,8 +11,8 @@
     "test:jest": "jest --watch --runInBand",
     "lint": "eslint --fix --ext .js,.vue src/",
     "build": "rimraf dist/* && webpack --config webpack.config.js",
-    "main": "npm run main:scheduled",
-    "main:scheduled": "node --enable-source-maps -r dotenv/config dist/index.js",
+    "main": "npm run main:snapshooter",
+    "main:snapshooter": "node --enable-source-maps -r dotenv/config dist/snapshooter.js",
     "main:cli": "babel-node -r dotenv/config src/main/scale-nedb-cli.js"
   },
   "author": "",
