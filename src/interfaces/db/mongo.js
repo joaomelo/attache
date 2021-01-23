@@ -1,8 +1,9 @@
-import Datastore from 'nedb';
-import { convertFieldName } from '../../helpers';
+import { MongoClient } from 'mongodb';
+import { MongoMemoryServer } from 'mongodb-memory-server-core';
+import { convertFieldName, createId } from '../../helpers';
 
 export async function initMongo (options) {
-  const { stakesCol, rankingsCol, snapshotsCol } = createCollections(options);
+  const { stakesCol, rankingsCol, snapshotsCol } = await createCollections(options);
 
   return {
     queryStakes: () => findItems(stakesCol),
@@ -17,49 +18,53 @@ export async function initMongo (options) {
   };
 };
 
-function createCollections (options) {
+async function createCollections (options) {
   const { memory } = options;
-  return memory
-    ? createNedbCollections(options)
-    : connectMongoCollections(options);
-}
+  const connectToDb = memory ? connectToNewInMemoryDb : connectToLocalDb;
+  const db = await connectToDb(options);
 
-function createNedbCollections () {
   return {
-    stakesCol: new Datastore(),
-    rankingsCol: new Datastore(),
-    snapshotsCol: new Datastore()
+    stakesCol: db.collection('stakes'),
+    rankingsCol: db.collection('rankings'),
+    snapshotsCol: db.collection('snapshots')
   };
 }
 
-function connectMongoCollections (options) {
-  return null;
+async function connectToNewInMemoryDb (options) {
+  const mongoInMemory = new MongoMemoryServer();
+  const uri = await mongoInMemory.getUri();
+
+  const client = await connectClient(uri);
+
+  const uniqueDbName = createId();
+  return client.db(uniqueDbName);
+};
+
+async function connectToLocalDb (options) {
+  const { uri } = options;
+  const client = await connectClient(uri);
+  return client.db('attache-db');
+};
+
+async function connectClient (uri) {
+  const client = new MongoClient(uri, { useUnifiedTopology: true });
+  await client.connect();
+  return client;
+};
+
+async function saveItems (collection, items) {
+  const records = convertFieldName(items, 'id', '_id');
+  await collection.insertMany(records);
+  return true;
 }
 
-function saveItems (datastore, items) {
-  return new Promise((resolve, reject) => {
-    const records = convertFieldName(items, 'id', '_id');
-    datastore.insert(records, error => error ? reject(error) : resolve(true));
-  });
+async function findItems (collection, filter = {}) {
+  const cursor = collection.find(filter);
+  const recordsArray = await cursor.toArray();
+  const itemsArray = convertFieldName(recordsArray, '_id', 'id');
+  return itemsArray;
 }
 
-function findItems (datastore, filter = {}) {
-  return new Promise((resolve, reject) => {
-    datastore.find(filter, (error, docs) => {
-      if (error) reject(error);
-
-      const items = convertFieldName(docs, '_id', 'id');
-      return resolve(items);
-    });
-  });
-}
-
-function deleteItem (datastore, id) {
-  return new Promise((resolve, reject) => {
-    datastore.remove({ _id: id }, {}, (error, numRemoved) => {
-      if (error) reject(error);
-
-      return resolve(numRemoved > 0);
-    });
-  });
+function deleteItem (collection, id) {
+  return collection.deleteOne({ _id: id });
 }

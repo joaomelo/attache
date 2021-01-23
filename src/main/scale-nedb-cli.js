@@ -7,8 +7,8 @@ import { listStakes, addStake, deleteStake } from '../domain/stakes';
 import { listRankings } from '../domain/rankings';
 
 async function main () {
-  const filePrefix = process.env.NEDB_FILENAME_PREFIX;
-  const db = await initMongo({ filePrefix, reset: false });
+  const uri = process.env.NEDB_FILENAME_PREFIX;
+  const db = await initMongo({ uri, reset: false });
 
   const key = process.env.SCALE_SERP_KEY;
   const search = createScaleSerpSearch({ get: axiosGet, key });

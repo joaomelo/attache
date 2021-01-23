@@ -4,12 +4,12 @@ import { createScaleSerpSearch } from '../interfaces/search';
 import { saveFreshSnapshotsForStakes } from '../domain/snapshots';
 
 async function main () {
-  const filePrefix = process.env.NEDB_FILENAME_PREFIX;
+  const uri = process.env.MONGO_URI;
   const key = process.env.SCALE_SERP_KEY;
 
-  if (!filePrefix || !key) throw new Error('Required environment variables not loaded');
+  if (!uri || !key) throw new Error('Required environment variables not loaded');
 
-  const db = await initDb('mongo', { filePrefix, reset: false });
+  const db = await initDb('mongo', { uri });
   const search = createScaleSerpSearch({ get, key });
 
   await saveFreshSnapshotsForStakes(db, search);
