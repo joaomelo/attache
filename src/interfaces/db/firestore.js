@@ -3,24 +3,34 @@ import * as admin from 'firebase-admin';
 let app;
 
 export async function initFirestore (options) {
-  const { projectId, emulatorHost } = options;
-
-  if (emulatorHost) {
-    await initEmulator(options);
-  }
+  const { projectId } = options;
 
   if (!app) {
     app = admin.initializeApp({ projectId });
   }
 
-  const adapter = createAdapter(admin.firestore());
+  const db = admin.firestore();
+
+  if (process.env.FIRESTORE_EMULATOR_HOST) {
+    /*
+      emulator is triggered differently depending where the firebase sdk is used.
+      here, the initialization is based on the admin sdk use case, which rely on the
+      FIRESTORE_EMULATOR_HOST environment variable been set. the only thing the
+      following function do is clean the emulator db. more in:
+      https://firebase.google.com/docs/emulator-suite/connect_firestore#admin_sdks
+    */
+    await clearEmulatorFirestore(db, options);
+  }
+
+  const adapter = createAdapter(db);
   return adapter;
 };
 
-async function initEmulator (options) {
-  const { projectId, emulatorHost, del } = options;
-  process.env.FIRESTORE_EMULATOR_HOST = emulatorHost;
-  await del(`http://${emulatorHost}/emulator/v1/projects/${projectId}/databases/(default)/documents`);
+async function clearEmulatorFirestore (db, options) {
+  const { projectId, del } = options;
+
+  const clearFirestoreEndpoint = `http://${process.env.FIRESTORE_EMULATOR_HOST}/emulator/v1/projects/${projectId}/databases/(default)/documents`;
+  await del(clearFirestoreEndpoint);
 }
 
 function createAdapter (db) {
@@ -44,6 +54,8 @@ function createAdapter (db) {
 }
 
 async function saveItems (collection, items) {
+  if (!Array.isArray(items) || items.length === 0) return true;
+
   const promises = [];
   items.forEach(item => {
     const docRef = collection.doc(item.id);

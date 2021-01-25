@@ -1,13 +1,11 @@
 import { calcSomedayFromToday, sortByField } from '../../src/helpers';
+import { del } from '../../src/interfaces/request';
 import { initDb } from '../../src/interfaces/db';
 
 describe('db module', () => {
   const { stakes, rankings, snapshots } = createFixtures();
 
-  const dbTestTable = [
-    ['vanilla', () => initDb('vanilla')],
-    ['mongo', () => initDb('mongo', { memory: true })]
-  ];
+  const dbTestTable = createDbTestTable();
   describe.each(dbTestTable)('%p db', (type, initFn) => {
     const saveAndQueryTestTable = [
       ['Stakes', stakes],
@@ -73,11 +71,18 @@ describe('db module', () => {
   });
 });
 
-// function createDbInitializers(){
-//   const projectId = process.env.FIREBASE_PROJECT_ID;
-//   const emulatorHost = process.env.FIRESTORE_EMULATOR_HOST;
-//   const initFirestoreDb = () => initDb('firestore', { projectId, emulatorHost, del });
-// }
+function createDbTestTable () {
+  const initVanillaDb = () => initDb('vanilla');
+
+  const projectId = process.env.FIREBASE_PROJECT_ID;
+  const initFirestoreDb = () => initDb('firestore', { projectId, del });
+
+  const dbTestTable = [
+    ['vanilla', initVanillaDb],
+    ['firestore', initFirestoreDb]
+  ];
+  return dbTestTable;
+}
 
 function createFixtures () {
   const yesterday = calcSomedayFromToday(-1);
