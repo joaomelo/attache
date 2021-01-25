@@ -1,6 +1,8 @@
+Attache is in early development so most of the documentation bellow must be interpret as specs to be fulfilled by the project.
+
 # TL;DR
 
-Attache is in early development. The goal is to build a SERP tracker. It crosses the presence of pages against results of search terms and reports that periodically.
+Attache is a SERP tracker. It crosses the presence of pages against results of search terms and reports that periodically.
 
 A typical use case would be: every week, I want to receive in my WhatsApp the ranking of pages `company.com` and `landing-page.com` in Google searches against terms `service`, `service my-city` and `service my-neighborhood`.
 
@@ -38,10 +40,32 @@ This base data series are the base to create configurable reports.
 
 # How to Use It
 
-## Snapshooter Service
+The main app start a schedule function to take snapshots.
 
 The snapshooter service while running will take snapshots for every term of all stakes periodically.
 
 The frequency is a positive integer extracted the ENV_VARIABLE environment variable. The variable unit is minute. The default value is 60.
 
 Snapshots are taken once a day. So, multiple daily cycles (every hour for example) are useful only to catch new terms added during the same day.
+
+# How to Develop
+"docker-compose -f docker/compose-base.yml up",
+docker container exec -it app bash",
+
+# Deploy App
+
+The first step is execute the command `npm run deploy`, which will:
+- lint the code
+- run tests
+- build the app inside `dist` folder
+- build app docker image as specified in `/docker/app.Dockerfile`
+
+Upload
+- dist folder
+- package.json
+- docker-compose
+- docker-compose-production
+
+At Server
+
+Run docker compose up to

@@ -7,7 +7,7 @@ export async function cycleRank ({ db, search }) {
   const stakes = await db.queryStakes();
 
   const rankingsCache = await db.queryRankingsSince(today);
-  const rankings = rankStakes({ stakes, snapshots, cache: rankingsCache });
+  const rankings = rankStakes({ stakes, cache: rankingsCache });
   const newRankings = rankings.filter(r => !rankingsCache.find(c => c.id === r.id));
 
   await Promise.all([

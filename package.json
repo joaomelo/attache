@@ -1,19 +1,18 @@
 {
   "name": "attache",
   "version": "0.0.1",
-  "description": "",
-  "main": "dist/index.js",
+  "description": "attache is a serp tracker. it crosses the presence of pages against results of search terms and reports that periodically.",
+  "main": "dist/app.js",
   "scripts": {
-    "env:up": "docker-compose up",
-    "env:plug": "docker container exec -it app bash",
-    "start": "npm run build && npm run main",
-    "test": "npm run test:jest",
-    "test:jest": "jest --watch --runInBand",
+    "start": "npm run main:app",
     "lint": "eslint --fix --ext .js,.vue src/",
+    "test": "npm run test:build",
+    "test:build": "jest",
+    "test:dev": "jest --watch --runInBand",
+    "main:app": "node --enable-source-maps -r dotenv/config dist/app.js",
+    "main:cli": "babel-node -r dotenv/config src/main/scale-nedb-cli.js",
     "build": "rimraf dist/* && webpack --config webpack.config.js",
-    "main": "npm run main:snapshooter",
-    "main:snapshooter": "node --enable-source-maps -r dotenv/config dist/snapshooter.js",
-    "main:cli": "babel-node -r dotenv/config src/main/scale-nedb-cli.js"
+    "artifacts": "npm run lint && npm run test && npm run build"
   },
   "author": "",
   "license": "ISC",

@@ -4,10 +4,10 @@ const nodeExternals = require('webpack-node-externals');
 module.exports = {
   target: 'node',
   mode: 'production',
-  entry: './src/main/snapshooter.js',
+  entry: './src/main/app.js',
   externals: [nodeExternals()],
   output: {
-    filename: 'snapshooter.js',
+    filename: 'app.js',
     path: path.resolve(__dirname, 'dist')
   },
   node: {

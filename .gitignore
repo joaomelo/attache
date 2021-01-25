@@ -1,3 +1,6 @@
+# text files with secrets for docker
+secret-*
+
 dist/
 
 # database flat files
