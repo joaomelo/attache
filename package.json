@@ -8,6 +8,7 @@
     "lint": "eslint --fix --ext .js,.vue src/",
     "test": "npm run test:build",
     "test:build": "jest",
+    "firestore": "firebase emulators:start --only firestore",
     "test:dev": "jest --watch --runInBand",
     "main:app": "node --enable-source-maps -r dotenv/config dist/app.js",
     "main:cli": "babel-node -r dotenv/config src/main/scale-nedb-cli.js",
