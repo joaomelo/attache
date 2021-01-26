@@ -1,11 +1,11 @@
 import { calcSomedayFromToday, sortByField } from '../../src/helpers';
-import { del } from '../../src/interfaces/request';
 import { initDb } from '../../src/interfaces/db';
+import { createListOfDbInits } from '../helpers';
 
 describe('db module', () => {
   const { stakes, rankings, snapshots } = createFixtures();
 
-  const dbTestTable = createDbTestTable();
+  const dbTestTable = createListOfDbInits();
   describe.each(dbTestTable)('%p db', (type, initFn) => {
     const saveAndQueryTestTable = [
       ['Stakes', stakes],
@@ -70,19 +70,6 @@ describe('db module', () => {
     });
   });
 });
-
-function createDbTestTable () {
-  const initVanillaDb = () => initDb('vanilla');
-
-  const projectId = process.env.FIREBASE_PROJECT_ID;
-  const initFirestoreDb = () => initDb('firestore', { projectId, del });
-
-  const dbTestTable = [
-    ['vanilla', initVanillaDb],
-    ['firestore', initFirestoreDb]
-  ];
-  return dbTestTable;
-}
 
 function createFixtures () {
   const yesterday = calcSomedayFromToday(-1);

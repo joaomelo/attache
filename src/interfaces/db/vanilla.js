@@ -3,6 +3,7 @@ export function initVanillaDb () {
     stakes: [],
     rankings: [],
     snapshots: [],
+    logs: [],
 
     saveStakes (newStakes) {
       return saveItems(this.stakes, newStakes);
@@ -40,6 +41,14 @@ export function initVanillaDb () {
 
     querySnapshotsSince (start) {
       return Promise.resolve(this.snapshots.filter(s => s.when >= start));
+    },
+
+    saveLog (newLog) {
+      return saveItems(this.logs, [newLog]);
+    },
+
+    queryLogs () {
+      return Promise.resolve([...this.logs]);
     }
   };
 };

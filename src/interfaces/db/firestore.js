@@ -37,7 +37,8 @@ function createAdapter (db) {
   const collections = {
     stakes: db.collection('stakes'),
     rankings: db.collection('rankings'),
-    snapshots: db.collection('snapshots')
+    snapshots: db.collection('snapshots'),
+    logs: db.collection('logs')
   };
 
   return {
@@ -49,7 +50,9 @@ function createAdapter (db) {
     queryRankingsSince: start => findItems(collections.rankings, { field: 'when', operator: '>=', value: start }),
     saveSnapshots: snapshots => saveItems(collections.snapshots, snapshots),
     querySnapshots: () => findItems(collections.snapshots),
-    querySnapshotsSince: start => findItems(collections.snapshots, { field: 'when', operator: '>=', value: start })
+    querySnapshotsSince: start => findItems(collections.snapshots, { field: 'when', operator: '>=', value: start }),
+    saveLog: log => saveItems(collections.logs, [log]),
+    queryLogs: () => findItems(collections.logs)
   };
 }
 

@@ -1,1 +1,1 @@
-export { initDb } from './facade';
+export { initDb } from './factory';
