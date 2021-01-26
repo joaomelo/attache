@@ -1,4 +1,4 @@
-import { createLogger } from '../../src/interfaces/log';
+import { createLogger } from '../../src/app/log';
 import { createListOfDbInits } from '../helpers';
 
 describe('log module', () => {

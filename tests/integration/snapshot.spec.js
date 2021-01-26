@@ -1,6 +1,6 @@
 import { calcSomedayFromToday } from '../../src/helpers';
-import { createDummySearch } from '../../src/interfaces/search';
-import { initDb } from '../../src/interfaces/db';
+import { createDummySearch } from '../../src/app/search';
+import { initDb } from '../../src/app/db';
 import { saveFreshSnapshotsForStakes } from '../../src/domain/snapshots';
 
 describe('snapshot module', () => {

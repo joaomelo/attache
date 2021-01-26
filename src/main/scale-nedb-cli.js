@@ -1,8 +1,8 @@
-import { initMongo } from '../interfaces/db';
-import { axiosGet } from '../interfaces/get';
-import { createScaleSerpSearch } from '../interfaces/search';
+import { initMongo } from '../app/db';
+import { axiosGet } from '../app/get';
+import { createScaleSerpSearch } from '../app/search';
 import { cycleRank } from '../domain/rank';
-import { initCliUi } from '../interfaces/view/cli';
+import { initCliUi } from '../app/view/cli';
 import { listStakes, addStake, deleteStake } from '../domain/stakes';
 import { listRankings } from '../domain/rankings';
 

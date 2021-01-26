@@ -1,5 +1,5 @@
-import { initMemoryDb } from '../../interfaces/db';
-import { createDummySearch } from '../../interfaces/search';
+import { initMemoryDb } from '../../app/db';
+import { createDummySearch } from '../../app/search';
 import { cycleRank } from './cycle';
 
 describe.skip('cycleRank', () => {

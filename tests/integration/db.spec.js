@@ -1,5 +1,5 @@
 import { calcSomedayFromToday, sortByField } from '../../src/helpers';
-import { initDb } from '../../src/interfaces/db';
+import { initDb } from '../../src/app/db';
 import { createListOfDbInits } from '../helpers';
 
 describe('db module', () => {

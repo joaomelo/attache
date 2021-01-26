@@ -1,5 +1,5 @@
-import { del } from '../../src/interfaces/request';
-import { initDb } from '../../src/interfaces/db';
+import { del } from '../../src/app/request';
+import { initDb } from '../../src/app/db';
 
 export function createListOfDbInits () {
   const initVanillaDb = () => initDb('vanilla');

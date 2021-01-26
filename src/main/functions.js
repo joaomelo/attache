@@ -1,6 +1,6 @@
-import { initDb } from '../interfaces/db';
-import { get } from '../interfaces/request';
-import { createScaleSerpSearch } from '../interfaces/search';
+import { initDb } from '../app/db';
+import { get } from '../app/request';
+import { createScaleSerpSearch } from '../app/search';
 import { saveFreshSnapshotsForStakes } from '../domain/snapshots';
 
 // const frequency = process.env.ENV === 'development' ? 1 : 60;

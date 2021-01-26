@@ -1,4 +1,4 @@
-import { schedule } from '../../src/interfaces/scheduler';
+import { schedule } from '../../src/app/scheduler';
 
 jest.useFakeTimers();
 
