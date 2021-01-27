@@ -3,10 +3,11 @@ import * as admin from 'firebase-admin';
 let app;
 
 export async function initFirestore (options) {
-  const { projectId } = options;
-
   if (!app) {
-    app = admin.initializeApp({ projectId });
+    // inside firebase runtime a projectId is unnecessary
+    app = options && options.projectId
+      ? admin.initializeApp({ projectId: options.projectId })
+      : admin.initializeApp();
   }
 
   const db = admin.firestore();
@@ -27,6 +28,7 @@ export async function initFirestore (options) {
 };
 
 async function clearEmulatorFirestore (db, options) {
+  if (!options) return;
   const { projectId, del } = options;
 
   const clearFirestoreEndpoint = `http://${process.env.FIRESTORE_EMULATOR_HOST}/emulator/v1/projects/${projectId}/databases/(default)/documents`;
