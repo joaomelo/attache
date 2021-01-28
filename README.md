@@ -48,9 +48,21 @@ The frequency is a positive integer extracted the ENV_VARIABLE environment varia
 
 Snapshots are taken once a day. So, multiple daily cycles (every hour for example) are useful only to catch new terms added during the same day.
 
+## Environment Variables
+FIREBASE_PROJECT_ID=attache-11863
+FIRESTORE_EMULATOR_HOST=localhost:8080
+SCALE_SERP_KEY=jhgjhgjhgjh
+SNAPSHOOTER_FREQUENCY=60
+
+Just the last two should be provided in the production build
 # How to Develop
-"docker-compose -f docker/compose-base.yml up",
-docker container exec -it app bash",
+
+Install gulp
+Run gulp dev
+- firebase emulator
+- firebase shell functions
+- test watch
+- build watch
 
 # Deploy App
 

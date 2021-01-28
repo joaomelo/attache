@@ -9,7 +9,7 @@ describe('log module', () => {
     test.each(dbTestTable)('using %p db', async (type, initFn) => {
       const db = await initFn();
       const logger = createLogger(db);
-      const msg = 'this just happened';
+      const msg = 'error message during log module tests';
 
       await logger[logType](msg);
 
