@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "start": "npm run dev:test",
-    "prod:lint": "eslint --fix --ext .js,.vue src/",
+    "prod:lint": "eslint --ext .js,.vue src/",
     "prod:test": "set NODE_ENV=prod&& jest",
     "prod:build": "rimraf dist/* && webpack --env prod --config webpack.config.js",
     "prod:upload": "firebase deploy --only functions",

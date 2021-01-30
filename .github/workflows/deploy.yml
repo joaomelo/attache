@@ -1,0 +1,54 @@
+name: publish
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: "actions/checkout@v2"
+        with:
+          ref: ${{ github.ref }}
+      - run: sed -n 3p ./package.json
+      - uses: "actions/setup-node@v2"
+        with:
+          node-version: '14'
+      - name: "version bump"
+        uses: "phips28/gh-action-bump-version@main"
+        with:
+          tag-prefix: ''
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: sed -n 3p ./package.json
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: "actions/setup-node@v2"
+        with:
+          node-version: '14'
+      - run: npm ci
+      - run: npm run prod:lint
+      - run: npm run prod:test
+
+  deploy:
+    needs: [bump, test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: main
+      - uses: "actions/setup-node@v2"
+        with:
+          node-version: '14'
+      - run: npm ci
+      - run: npm run prod:build
+      - run: curl -sL firebase.tools | bash
+      - name: deploy
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: npm run prod:upload --token 
