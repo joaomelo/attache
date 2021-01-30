@@ -10,8 +10,8 @@ module.exports = (env, argv) => {
 
   return {
     target: 'node',
-    mode: 'production',
-    entry: './src/main/service-snapshot.js',
+    mode: env.prod ? 'production' : 'development',
+    entry: './src/main/services.js',
     externals: [nodeExternals()],
     output: {
       filename: 'index.js',

@@ -49,8 +49,9 @@ describe('snapshot module', () => {
     test('run gracefully if no stakes is available', async () => {
       const search = () => ({ message: 'search limit reached' });
       const emptyDb = initDb('vanilla');
+      const logger = { info: () => undefined };
 
-      await saveFreshSnapshotsForStakes(emptyDb, search);
+      await saveFreshSnapshotsForStakes(emptyDb, search, logger);
 
       expect(db.snapshots).toEqual([]);
     });
