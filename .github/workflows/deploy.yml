@@ -40,5 +40,10 @@ jobs:
           node-version: '14'
       - run: npm install -g firebase-tools@9.1.2          
       - run: firebase use --add $FIREBASE_PROJECT
+      - uses: actions/cache@v2
+        id: cache-emulators
+        with:
+          path: /home/runner/.cache/firebase/emulators
+          key: ${{ runner.os }}-firebase-cli-v9.1.2
       - run: npm ci
       - run: npm run prod:ci:deploy
