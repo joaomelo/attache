@@ -1,16 +1,15 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 const GenerateJsonPlugin = require('generate-json-webpack-plugin');
-const Dotenv = require('dotenv-webpack');
+const loadEnvironmentVariables = require('./env-loader');
 const pkg = require('./package.json');
 
 module.exports = (env, argv) => {
-  const envFileName = `env-${env.prod ? 'prod' : 'dev'}.env`;
-  const pathToEnv = path.resolve(__dirname, envFileName);
+  const envPlugin = loadEnvironmentVariables(env);
 
   return {
     target: 'node',
-    mode: env.prod ? 'production' : 'development',
+    mode: env.dev ? 'development' : 'production',
     entry: './src/main/services.js',
     externals: [nodeExternals()],
     output: {
@@ -18,6 +17,7 @@ module.exports = (env, argv) => {
       path: path.resolve(__dirname, 'dist'),
       libraryTarget: 'commonjs'
     },
+    watch: env.dev,
     node: {
       __dirname: false,
       __filename: false
@@ -26,8 +26,8 @@ module.exports = (env, argv) => {
       minimize: false
     },
     plugins: [
-      new GenerateJsonPlugin('package.json', genFirebaseFunctionsPackage()),
-      new Dotenv({ path: pathToEnv })
+      envPlugin,
+      new GenerateJsonPlugin('package.json', genFirebaseFunctionsPackage())
     ]
   };
 };

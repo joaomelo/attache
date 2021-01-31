@@ -53,7 +53,6 @@ The report then will be an instantiation of some metric in a channel with a stan
 FIREBASE_PROJECT_ID=attache-11863
 FIRESTORE_EMULATOR_HOST=localhost:8080
 SCALE_SERP_KEY=KJKLEWKHR879845HUIHFWJ
-SNAPSHOOTER_FREQUENCY=60
 
 # Deploy App
 
@@ -61,7 +60,6 @@ SNAPSHOOTER_FREQUENCY=60
 
 ## Production Environment Variables
 SCALE_SERP_KEY=KJKLEWKHR879845HUIHFWJ
-SNAPSHOOTER_FREQUENCY=60
 
 # License
 Made by [João Melo](https://twitter.com/joaomeloplus) and licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.

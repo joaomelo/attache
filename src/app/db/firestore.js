@@ -14,10 +14,10 @@ export async function initFirestore (options) {
 
   if (process.env.FIRESTORE_EMULATOR_HOST) {
     /*
-      emulator is triggered differently depending where the firebase sdk is used.
+      emulator is triggered depending with which firebase sdk is used.
       here, the initialization is based on the admin sdk use case, which rely on the
       FIRESTORE_EMULATOR_HOST environment variable been set. the only thing the
-      following function do is clean the emulator db. more in:
+      following function do is clean the emulator firestore db. more in:
       https://firebase.google.com/docs/emulator-suite/connect_firestore#admin_sdks
     */
     await clearEmulatorFirestore(db, options);
