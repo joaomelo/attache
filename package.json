@@ -1,6 +1,6 @@
 {
   "name": "attache",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Attaché is a SERP tracker. It crosses the presence of pages against results of search terms and reports that periodically.",
   "main": "dist/index.js",
   "scripts": {
