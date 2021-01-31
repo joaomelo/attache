@@ -1,16 +1,17 @@
 import { saveFreshSnapshotsForTerms } from './save-for-terms';
 
 export async function saveFreshSnapshotsForStakes (db, search, logger) {
+  let savedSnapshots = 0;
   const stakes = await db.queryStakes();
   if (stakes.length === 0) {
     logger.info('no stakes found for snapshot taking');
-    return true;
+    return savedSnapshots;
   };
 
   const terms = extractTermsFromStakes(stakes);
-  await saveFreshSnapshotsForTerms(terms, db, search);
+  savedSnapshots = await saveFreshSnapshotsForTerms(terms, db, search);
 
-  return true;
+  return savedSnapshots;
 }
 
 function extractTermsFromStakes (stakes) {

@@ -6,6 +6,7 @@ export async function saveFreshSnapshotsForTerms (terms, db, search) {
   const freshSnapshots = await createSnapshots(termsWithoutFreshSnapshot, search);
 
   await db.saveSnapshots(freshSnapshots);
+  return freshSnapshots.length;
 }
 
 async function createSnapshots (terms, search) {

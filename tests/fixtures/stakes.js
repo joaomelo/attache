@@ -1,4 +1,4 @@
-export const stakesFixtures = [
+export const stakes = [
   {
     id: '87178090-383e-4780-a363-a076a6f952dd',
     pages: ['azure.microsoft.com', 'aws.amazon.com', 'firebase.google.com'],

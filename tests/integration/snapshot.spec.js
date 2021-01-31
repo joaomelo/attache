@@ -24,11 +24,12 @@ describe('snapshot module', () => {
   });
 
   describe('happy path', () => {
-    test('save a new snapshot for every term', async () => {
+    test('save a snapshot for every term and return saved quantity', async () => {
       const search = createDummySearch();
 
-      await saveFreshSnapshotsForStakes(db, search);
+      const savedSnapshots = await saveFreshSnapshotsForStakes(db, search);
 
+      expect(savedSnapshots).toBe(2);
       expect(db.snapshots).toHaveLength(2);
       expect(db.snapshots).toEqual(
         expect.arrayContaining([
@@ -51,8 +52,9 @@ describe('snapshot module', () => {
       const emptyDb = initDb('vanilla');
       const logger = { info: () => undefined };
 
-      await saveFreshSnapshotsForStakes(emptyDb, search, logger);
+      const savedSnapshots = await saveFreshSnapshotsForStakes(emptyDb, search, logger);
 
+      expect(savedSnapshots).toBe(0);
       expect(db.snapshots).toEqual([]);
     });
 
@@ -66,8 +68,9 @@ describe('snapshot module', () => {
       }]);
       const search = jest.fn(createDummySearch());
 
-      await saveFreshSnapshotsForStakes(db, search);
+      const savedSnapshots = await saveFreshSnapshotsForStakes(db, search);
 
+      expect(savedSnapshots).toBe(1);
       expect(search).toHaveBeenCalledTimes(1);
       expect(db.snapshots).toHaveLength(2);
     });
@@ -90,19 +93,21 @@ describe('snapshot module', () => {
       ]);
       const search = jest.fn(createDummySearch());
 
-      await saveFreshSnapshotsForStakes(db, search);
+      const savedSnapshots = await saveFreshSnapshotsForStakes(db, search);
 
+      expect(savedSnapshots).toBe(2);
       expect(search).toHaveBeenCalledTimes(2);
       expect(db.snapshots).toHaveLength(4);
     });
   });
 
   describe('exception scenarios', () => {
-    test('create a failed snapshot if search returns out of spec data', async () => {
+    test('create failed snapshots if unexpected return from search', async () => {
       const search = () => ({ message: 'search limit reached' });
 
-      await saveFreshSnapshotsForStakes(db, search);
+      const savedSnapshots = await saveFreshSnapshotsForStakes(db, search);
 
+      expect(savedSnapshots).toBe(2);
       expect(db.snapshots).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -114,11 +119,12 @@ describe('snapshot module', () => {
       );
     });
 
-    test('create a failed snapshot if search throws', async () => {
+    test('create failed snapshots if search throws', async () => {
       const search = () => { throw new Error('some search error'); };
 
-      await saveFreshSnapshotsForStakes(db, search);
+      const savedSnapshots = await saveFreshSnapshotsForStakes(db, search);
 
+      expect(savedSnapshots).toBe(2);
       expect(db.snapshots).toEqual(
         expect.arrayContaining([
           expect.objectContaining({

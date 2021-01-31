@@ -87,7 +87,8 @@ function createPluginReducingFromEnvDevFile () {
 function createPluginFromEnvInMemory () {
   console.info('attempting to inject env vars from memory using webpack plugin');
   const dotEnvPlugin = new webpack.DefinePlugin({
-    'process.env.SCALE_SERP_KEY': JSON.stringify(process.env.SCALE_SERP_KEY)
+    'process.env.SCALE_SERP_KEY': JSON.stringify(process.env.SCALE_SERP_KEY),
+    'process.env.SEND_GRID_KEY': JSON.stringify(process.env.SEND_GRID_KEY)
   });
   return dotEnvPlugin;
 }

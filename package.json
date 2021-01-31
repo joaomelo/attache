@@ -23,6 +23,7 @@
   "author": "joão melo <j@melo.plus> (https://blog.melo.plus)",
   "license": "GPL-3.0",
   "dependencies": {
+    "@sendgrid/mail": "^7.4.2",
     "axios": "^0.21.0",
     "core-js": "^3.8.1",
     "firebase-admin": "^9.4.2",
