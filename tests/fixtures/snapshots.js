@@ -1,17 +1,24 @@
-import { calcSomedayFromToday } from '../../src/helpers';
+import { createId, calcSomedayFromToday } from '../../src/helpers';
 
 export const snapshots = [
-  {
-    term: 'cloud',
-    when: new Date(),
-    success: false,
-    size: 2
-  },
-  {
-    term: 'cloud',
-    when: calcSomedayFromToday(-1),
-    success: true,
-    size: 2,
-    result: ['www.some-page.com', 'www.another-page.net']
-  }
+  { ...cloudTemplate(), success: false },
+  { ...cloudTemplate(-1), result: ['azure.microsoft.com', 'www.some-page.com', 'www.another-page.net'] },
+  { ...cloudTemplate(-2), result: ['www.some-page.com', 'azure.microsoft.com', 'www.another-page.net'] },
+  { ...cloudTemplate(-3), result: ['www.some-page.com', 'www.another-page.net', 'azure.microsoft.com'] },
+  { ...cloudTemplate(-4), result: ['www.some-page.com', 'www.another-page.net', 'aws.amazon.com'] },
+  { ...cloudTemplate(-5), result: ['www.some-page.com', 'azure.microsoft.com', 'www.another-page.net'] },
+  { ...cloudTemplate(-6), result: ['www.some-page.com', 'azure.microsoft.com', 'www.another-page.net'] },
+  { ...cloudTemplate(-7), result: ['www.some-page.com', 'azure.microsoft.com', 'www.another-page.net'] }
 ];
+
+function cloudTemplate (delta) {
+  const when = delta ? calcSomedayFromToday(delta) : new Date();
+
+  return {
+    id: createId(),
+    term: 'cloud',
+    size: 3,
+    when,
+    success: true
+  };
+};

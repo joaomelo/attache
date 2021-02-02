@@ -1,3 +1,3 @@
-export function listRankings ({ db }) {
-  return db.queryRankings();
+export function dispatchFreshRankingsForStakes (dependencies) {
+  return 0;
 }

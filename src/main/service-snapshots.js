@@ -1,6 +1,6 @@
+import { get } from '../app/request';
 import { initDb } from '../app/db';
 import { createLogger } from '../app/log';
-import { get } from '../app/request';
 import { createScaleSerpSearch } from '../app/search';
 import { saveFreshSnapshotsForStakes } from '../domain/snapshots';
 
