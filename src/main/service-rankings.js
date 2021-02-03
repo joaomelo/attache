@@ -13,9 +13,7 @@ export async function runRankingsService () {
     if (!key) throw new Error('SEND GRID api key not found');
     const dispatcher = createDispatcher('sendGrid', { key, logger });
 
-    logger.info('rankings cycle started');
     rankingsSent = await dispatchFreshRankingsForStakes({ db, dispatcher, logger });
-    logger.info(`rankings cycle finished with ${rankingsSent} rankings dispatched`);
   } catch (error) {
     logger.error(error.message);
   };

@@ -1,3 +1,1 @@
-export function dispatchFreshRankingsForStakes (dependencies) {
-  return 0;
-}
+export { dispatchFreshRankingsForStakes } from './dispatch-for-stakes';
