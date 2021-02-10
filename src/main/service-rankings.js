@@ -1,7 +1,7 @@
 import { initDb } from '../app/db';
 import { createLogger } from '../app/log';
 import { createDispatcher } from '../app/dispatcher';
-import { dispatchFreshRankingsForStakes } from '../domain/rankings';
+import { dispatchFreshRankingsForStakes } from '../cases/dispatch-rankings';
 
 export async function runRankingsService () {
   const db = await initDb('firestore');

@@ -10,6 +10,6 @@ const snapshotsFrequencyInMinutes = 60 * 8;
 export const snapshotsService = runtime
   .createScheduledService(runSnapshotsService, snapshotsFrequencyInMinutes);
 
-const rankingsFrequencyInMinutes = 60 * 12;
+const rankingsFrequencyInMinutes = 60 * 24;
 export const rankingsService = runtime
   .createScheduledService(runRankingsService, rankingsFrequencyInMinutes);
