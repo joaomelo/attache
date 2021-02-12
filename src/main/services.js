@@ -6,7 +6,7 @@ import { runSnapshotsService } from './service-snapshots';
 
 const runtime = initServicesRuntime('firebase');
 
-const snapshotsFrequencyInMinutes = 60 * 8;
+const snapshotsFrequencyInMinutes = 60 * 12;
 export const snapshotsService = runtime
   .createScheduledService(runSnapshotsService, snapshotsFrequencyInMinutes);
 

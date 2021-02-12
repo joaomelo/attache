@@ -2,7 +2,7 @@ import { get } from '../app/request';
 import { initDb } from '../app/db';
 import { createLogger } from '../app/log';
 import { createScaleSerpSearch } from '../app/search';
-import { saveFreshSnapshotsForStakes } from '../domain/snapshots';
+import { saveFreshSnapshotsForStakes } from '../entities/snapshots';
 
 export async function runSnapshotsService () {
   const db = await initDb('firestore');

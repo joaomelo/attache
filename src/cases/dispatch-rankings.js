@@ -1,5 +1,5 @@
 import { calcSomedayFromToday } from '../helpers';
-import { rankStakes } from '../domain/rankings';
+import { rankStakes } from '../entities/rankings';
 
 export async function dispatchFreshRankingsForStakes ({ db, dispatcher, logger }) {
   let dispatchedRankings = 0;
