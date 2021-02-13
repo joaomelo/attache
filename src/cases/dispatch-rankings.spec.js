@@ -8,7 +8,7 @@ describe('dispatchFreshRankingsForStakes', () => {
       id: '9164167b-6588-4dc1-a710-19a43a836df5',
       pages: ['cloud.google', 'firebase.google'],
       terms: ['cloud', 'serverless'],
-      emails: ['some@email.com']
+      emails: ['some@email.com', 'another@email.com']
     },
     {
       id: 'efcd94d9-cfe9-47bd-b128-57c03ca12a96',
@@ -43,26 +43,41 @@ describe('dispatchFreshRankingsForStakes', () => {
     }
   ];
 
-  let db, dispatcher, logger;
+  let db, dispatch, logger;
   beforeEach(async () => {
     db = initDb('vanilla');
     await db.saveStakes(stakes);
     await db.saveSnapshots(snapshots);
 
-    dispatcher = { send: jest.fn() };
+    dispatch = jest.fn();
     logger = { info: jest.fn() };
   });
 
   describe('happy path', () => {
-    test('dispatch a ranking for every stake', async () => {
-      const dispatchedRankings = await dispatchFreshRankingsForStakes({ db, logger, dispatcher });
+    test('dispatch a ranking for every email', async () => {
+      const expectedEmails = 3;
 
-      expect(dispatchedRankings).toBe(stakes.length);
-      expect(dispatcher.send).toHaveBeenCalledTimes(stakes.length);
+      const dispatchedRankings = await dispatchFreshRankingsForStakes({ db, logger, dispatch });
+
+      expect(dispatchedRankings).toBe(expectedEmails);
+      expect(dispatch).toHaveBeenCalledTimes(expectedEmails);
 
       const lastCall = logger.info.mock.calls.length - 1;
       const lastLogCallParam = logger.info.mock.calls[lastCall][0];
-      expect(lastLogCallParam).toEqual(expect.stringContaining(stakes.length.toString()));
+      expect(lastLogCallParam).toEqual(expect.stringContaining(expectedEmails.toString()));
+    });
+
+    test('dispatch with correct mail object shape', async () => {
+      await dispatchFreshRankingsForStakes({ db, logger, dispatch });
+
+      const callsParams = dispatch.mock.calls.flat();
+      expect(callsParams).toEqual(expect.arrayContaining([
+        expect.objectContaining({
+          to: expect.any(String),
+          subject: expect.any(String),
+          message: expect.any(String)
+        })
+      ]));
     });
   });
 
@@ -72,7 +87,7 @@ describe('dispatchFreshRankingsForStakes', () => {
       await db.saveStakes([]);
       await db.saveSnapshots(snapshots);
 
-      const dispatchedRankings = await dispatchFreshRankingsForStakes({ db, logger, dispatcher });
+      const dispatchedRankings = await dispatchFreshRankingsForStakes({ db, logger, dispatch });
       expect(dispatchedRankings).toBe(0);
 
       const logCallParam = logger.info.mock.calls[0][0];
@@ -84,7 +99,7 @@ describe('dispatchFreshRankingsForStakes', () => {
       await db.saveStakes(stakes);
       await db.saveSnapshots([]);
 
-      const dispatchedRankings = await dispatchFreshRankingsForStakes({ db, logger, dispatcher });
+      const dispatchedRankings = await dispatchFreshRankingsForStakes({ db, logger, dispatch });
       expect(dispatchedRankings).toBe(0);
 
       const logCallParam = logger.info.mock.calls[0][0];

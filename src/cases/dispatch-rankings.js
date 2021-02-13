@@ -1,7 +1,7 @@
 import { calcSomedayFromToday } from '../helpers';
 import { rankStakes } from '../entities/rankings';
 
-export async function dispatchFreshRankingsForStakes ({ db, dispatcher, logger }) {
+export async function dispatchFreshRankingsForStakes ({ db, dispatch, logger }) {
   let dispatchedRankings = 0;
 
   const stakes = await db.queryStakes();
@@ -19,14 +19,25 @@ export async function dispatchFreshRankingsForStakes ({ db, dispatcher, logger }
 
   const rankings = rankStakes(stakes, snapshots);
 
-  dispatchedRankings = await dispatchRankings(rankings, { dispatcher });
+  dispatchedRankings = await dispatchRankings(rankings, { dispatch });
   logger.info(`rankings cycle finished with ${dispatchedRankings} dispatches`);
 
   return dispatchedRankings;
 }
 
-async function dispatchRankings (rankings, { dispatcher }) {
-  const promises = rankings.map(ranking => dispatcher.send(ranking));
+async function dispatchRankings (rankings, { dispatch }) {
+  const mails = parseRankingsToMail(rankings);
+  const promises = mails.map(mail => dispatch(mail));
   const results = await Promise.all(promises);
   return results.length;
+}
+
+function parseRankingsToMail (rankings) {
+  return rankings.flatMap(r =>
+    r.stake.emails.map(to => ({
+      to,
+      subject: 'updated ranking',
+      message: JSON.stringify(r.terms)
+    }))
+  );
 }

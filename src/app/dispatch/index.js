@@ -1,0 +1,1 @@
+export { createDispatch } from './factory';
