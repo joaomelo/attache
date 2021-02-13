@@ -10,8 +10,9 @@ export async function runRankingsService () {
   let rankingsSent = 0;
   try {
     const key = process.env.SEND_GRID_KEY;
-    if (!key) throw new Error('SEND GRID api key not found');
-    const dispatch = createDispatch('sendGrid', { key });
+    const defaults = { from: process.env.DEFAULT_FROM_EMAIL };
+    if (!(key && defaults.from)) throw new Error('SEND GRID api key not found');
+    const dispatch = createDispatch('sendGrid', { key, defaults });
 
     rankingsSent = await dispatchFreshRankingsForStakes({ db, dispatch, logger });
   } catch (error) {

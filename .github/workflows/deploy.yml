@@ -32,6 +32,7 @@ jobs:
       FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
       SCALE_SERP_KEY: ${{ secrets.SCALE_SERP_KEY }}
       SEND_GRID_KEY: ${{ secrets.SEND_GRID_KEY }}
+      DEFAULT_FROM_EMAIL: ${{ secrets.DEFAULT_FROM_EMAIL }}
     steps:
       - uses: actions/checkout@v2
         with:
