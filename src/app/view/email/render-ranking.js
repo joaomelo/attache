@@ -1,16 +1,16 @@
 import { sortByField } from '../../../helpers';
 
 export function renderRanking (ranking) {
-  return `
+  return `    
     <h1>Ranking Report</h1>
-    ${ranking.terms.map(t => renderTerm(t))}
+    ${ranking.terms.map(t => renderTerm(t)).join('')}
   `;
 }
 
 function renderTerm (term) {
   return `
     <h2>${term.term}</h2>
-    ${term.pages.map(p => renderPage(p))}
+    ${term.pages.map(p => renderPage(p)).join('')}
   `;
 }
 
@@ -19,15 +19,15 @@ function renderPage (page) {
 
   return `
     <h3>${page.page}</h3>
-    ${sortedPosition.map(p => renderPosition(p))}
+    ${sortedPosition.map(p => renderPosition(p)).join('')}
   `;
 }
 
 function renderPosition (position) {
   const prettyWhen = prettifyWhen(position.when);
-  const prettyPosition = position.position === 0 ? 'Not found' : position.position;
+  const prettyPosition = position.position === 0 ? 'Not found' : `${position.position}º`;
   return `
-    <p>${prettyWhen}: ${prettyPosition}</p>
+    <p style="margin:0px">${prettyWhen}: ${prettyPosition}</p>
   `;
 }
 

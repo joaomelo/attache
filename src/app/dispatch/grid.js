@@ -7,7 +7,7 @@ export function createSendGridDispatch ({ defaults, key, logger }) {
     const completeMail = {
       to: mail.to,
       subject: mail.subject,
-      html: `<pre>${mail.message}</pre>`,
+      html: mail.message,
       ...defaults
     };
 

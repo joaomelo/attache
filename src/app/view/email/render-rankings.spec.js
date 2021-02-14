@@ -61,7 +61,6 @@ describe('view email module', () => {
 
   test('render ranking', () => {
     const message = renderRanking(ranking);
-
     ranking.terms.forEach(t => {
       expect(message).toEqual(expect.stringContaining(t.term));
       t.pages.forEach(p => {
