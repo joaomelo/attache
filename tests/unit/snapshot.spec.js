@@ -1,4 +1,4 @@
-import { calcSomedayFromToday } from '../../src/helpers';
+import { fromToday } from '../../src/helpers';
 import { createDummySearch } from '../../src/app/search';
 import { initDb } from '../../src/app/db';
 import { saveFreshSnapshotsForStakes } from '../../src/entities/snapshots';
@@ -85,7 +85,7 @@ describe('snapshot module', () => {
         },
         {
           term: 'cloud',
-          when: calcSomedayFromToday(-1),
+          when: fromToday(-1),
           success: true,
           size: 2,
           result: ['www.some-page.com', 'www.another-page.net']

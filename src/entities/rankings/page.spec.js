@@ -1,4 +1,4 @@
-import { calcSomedayFromToday } from '../../helpers';
+import { fromToday } from '../../helpers';
 import { serializePagePositions } from './page';
 
 describe('serializePagePositions', () => {
@@ -10,11 +10,11 @@ describe('serializePagePositions', () => {
       result: ['www.some.com', 'www.another.com']
     },
     {
-      when: calcSomedayFromToday(-2),
+      when: fromToday(-2),
       success: false
     },
     {
-      when: calcSomedayFromToday(-1),
+      when: fromToday(-1),
       success: true,
       result: ['www.some.com', 'www.another.com/landing-page', 'www.another.com']
     }

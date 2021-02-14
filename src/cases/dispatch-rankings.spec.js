@@ -1,4 +1,4 @@
-import { calcSomedayFromToday } from '../helpers';
+import { fromToday } from '../helpers';
 import { initDb } from '../app/db';
 import { dispatchFreshRankingsForStakes } from './dispatch-rankings';
 
@@ -25,18 +25,18 @@ describe('dispatchFreshRankingsForStakes', () => {
       result: ['azure.microsoft.com', 'aws.amazon.com', 'firebase.google.com']
     },
     {
-      when: calcSomedayFromToday(-2),
+      when: fromToday(-2),
       success: true,
       term: 'serverless',
       result: ['azure.microsoft.com', 'firebase.google.com', 'aws.amazon.com']
     },
     {
-      when: calcSomedayFromToday(-2),
+      when: fromToday(-2),
       term: 'cloud',
       success: false
     },
     {
-      when: calcSomedayFromToday(-1),
+      when: fromToday(-1),
       success: true,
       term: 'cloud',
       result: ['azure.microsoft.com', 'aws.amazon.com', 'cloud.google.com', 'firebase.google.com']

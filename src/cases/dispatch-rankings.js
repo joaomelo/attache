@@ -1,4 +1,5 @@
-import { calcSomedayFromToday } from '../helpers';
+import { fromToday } from '../helpers';
+import { renderRanking } from '../app/view/email';
 import { rankStakes } from '../entities/rankings';
 
 export async function dispatchFreshRankingsForStakes ({ db, dispatch, logger }) {
@@ -10,7 +11,7 @@ export async function dispatchFreshRankingsForStakes ({ db, dispatch, logger }) 
     return dispatchedRankings;
   };
 
-  const lastWeek = calcSomedayFromToday(-7);
+  const lastWeek = fromToday(-7);
   const snapshots = await db.querySnapshotsSince(lastWeek);
   if (snapshots.length === 0) {
     logger.info('no snapshots found for rankings dispatch');
@@ -36,8 +37,8 @@ function parseRankingsToMail (rankings) {
   return rankings.flatMap(r =>
     r.stake.emails.map(to => ({
       to,
-      subject: 'updated ranking',
-      message: JSON.stringify(r.terms)
+      subject: 'attache - stake ranking',
+      message: renderRanking(r)
     }))
   );
 }

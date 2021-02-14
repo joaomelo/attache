@@ -1,4 +1,4 @@
-import { calcSomedayFromToday, sortByField } from '../../src/helpers';
+import { fromToday, sortByField } from '../../src/helpers';
 import { initDb } from '../../src/app/db';
 import { createListOfDbInits } from '../helpers';
 
@@ -72,7 +72,7 @@ describe('db module', () => {
 });
 
 function createFixtures () {
-  const yesterday = calcSomedayFromToday(-1);
+  const yesterday = fromToday(-1);
 
   const stakes = [
     {
