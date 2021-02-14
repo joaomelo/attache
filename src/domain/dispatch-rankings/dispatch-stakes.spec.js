@@ -1,6 +1,6 @@
-import { fromToday } from '../helpers';
-import { initDb } from '../app/db';
-import { dispatchFreshRankingsForStakes } from './dispatch-rankings';
+import { fromToday } from '../../helpers';
+import { initDb } from '../../app/db';
+import { dispatchFreshRankingsForStakes } from './dispatch-stakes';
 
 describe('dispatchFreshRankingsForStakes', () => {
   const stakes = [

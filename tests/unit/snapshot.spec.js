@@ -1,7 +1,7 @@
 import { fromToday } from '../../src/helpers';
 import { createDummySearch } from '../../src/app/search';
 import { initDb } from '../../src/app/db';
-import { saveFreshSnapshotsForStakes } from '../../src/entities/snapshots';
+import { saveFreshSnapshotsForStakes } from '../../src/domain/snapshots';
 
 describe('snapshot module', () => {
   let db;
