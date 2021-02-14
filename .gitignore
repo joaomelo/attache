@@ -1,3 +1,6 @@
+# test html files generated during tests
+*.test.html
+
 # text files with secrets for docker
 secret-*
 

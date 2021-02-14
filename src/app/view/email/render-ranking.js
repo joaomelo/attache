@@ -9,7 +9,7 @@ export function renderRanking (ranking) {
 
 function renderTerm (term) {
   return `
-    <h2>${term.term}</h2>
+    <h2>Term: ${term.term}</h2>
     ${term.pages.map(p => renderPage(p)).join('')}
   `;
 }
@@ -18,7 +18,7 @@ function renderPage (page) {
   const sortedPosition = sortByField(page.positions, 'when', false);
 
   return `
-    <h3>${page.page}</h3>
+    <h3>Page: ${page.page}</h3>
     ${sortedPosition.map(p => renderPosition(p)).join('')}
   `;
 }
