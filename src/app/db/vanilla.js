@@ -1,60 +1,39 @@
 export function initVanillaDb () {
+  const collections = {};
+
+  const assertCollection = name => {
+    if (!collections[name]) {
+      collections[name] = [];
+    };
+    return collections[name];
+  };
+
   return {
-    stakes: [],
-    rankings: [],
-    snapshots: [],
-    logs: [],
+    saveItems (collectionName, items) {
+      if (!Array.isArray(items) || items.length === 0) return true;
 
-    saveStakes (newStakes) {
-      return saveItems(this.stakes, newStakes);
+      const collection = assertCollection(collectionName);
+      collection.push(...items);
+
+      return Promise.resolve(true);
     },
 
-    queryStakes () {
-      return Promise.resolve([...this.stakes]);
+    queryAllItems (collectionName) {
+      const collection = assertCollection(collectionName);
+      return Promise.resolve([...collection]);
     },
 
-    deleteStake (id) {
-      const index = this.stakes.findIndex(stake => stake.id === id);
-      this.stakes.splice(index, 1);
-      return Promise.resolve(index !== -1);
+    queryItemsSince (collectionName, start) {
+      const collection = assertCollection(collectionName);
+      return Promise.resolve(collection.filter(r => r.when >= start));
     },
 
-    saveRankings (newRankings) {
-      return saveItems(this.rankings, newRankings);
-    },
-
-    queryRankings () {
-      return Promise.resolve([...this.rankings]);
-    },
-
-    queryRankingsSince (start) {
-      return Promise.resolve(this.rankings.filter(r => r.when >= start));
-    },
-
-    saveSnapshots (newSnapshots) {
-      return saveItems(this.snapshots, newSnapshots);
-    },
-
-    querySnapshots () {
-      return Promise.resolve([...this.snapshots]);
-    },
-
-    querySnapshotsSince (start) {
-      return Promise.resolve(this.snapshots.filter(s => s.when >= start));
-    },
-
-    saveLog (newLog) {
-      return saveItems(this.logs, [newLog]);
-    },
-
-    queryLogs () {
-      return Promise.resolve([...this.logs]);
-    }
+    saveStakes (newStakes) { return this.saveItems('stakes', newStakes); },
+    queryStakes () { return this.queryAllItems('stakes'); },
+    saveSnapshots (newSnapshots) { return this.saveItems('snapshots', newSnapshots); },
+    querySnapshots () { return this.queryAllItems('snapshots'); },
+    querySnapshotsSince (start) { return this.queryItemsSince('snapshots', start); },
+    saveLog (newLog) { return this.saveItems('logs', [newLog]); },
+    queryLogs () { return this.queryAllItems('logs'); }
   };
 };
-
-function saveItems (collection, items) {
-  if (!Array.isArray(items) || items.length === 0) return true;
-  collection.push(...items);
-  return Promise.resolve(true);
-}

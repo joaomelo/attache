@@ -1,15 +1,14 @@
-import { fromToday, sortByField } from '../../src/helpers';
-import { initDb } from '../../src/app/db';
-import { createListOfDbInits } from '../helpers';
+import { fromToday, sortByField } from '../../helpers';
+import { initDb } from './factory';
+import { del } from '../request';
 
 describe('db module', () => {
-  const { stakes, rankings, snapshots } = createFixtures();
-
+  const { stakes, snapshots } = createFixtures();
   const dbTestTable = createListOfDbInits();
+
   describe.each(dbTestTable)('%p db', (type, initFn) => {
     const saveAndQueryTestTable = [
       ['Stakes', stakes],
-      ['Rankings', rankings],
       ['Snapshots', snapshots]
     ];
     test.each(saveAndQueryTestTable)('save and query %p', async (dbMethod, fixture) => {
@@ -25,25 +24,7 @@ describe('db module', () => {
       expect(retrievedSorted).toEqual(fixtureSorted);
     });
 
-    const deleteTestTable = [
-      ['Stake', stakes, '87178090-383e-4780-a363-a076a6f952dd']
-    ];
-    test.each(deleteTestTable)('delete %p', async (dbMethod, fixture, idToDelete) => {
-      const db = await initFn();
-      await db[`save${dbMethod}s`](fixture);
-      const retrievedBefore = await db[`query${dbMethod}s`]();
-
-      await db[`delete${dbMethod}`](idToDelete);
-
-      const after = await db[`query${dbMethod}s`]();
-      const deletedIndex = after.findIndex(record => record.id === idToDelete);
-
-      expect(retrievedBefore.length).toBe(after.length + 1);
-      expect(deletedIndex).toBe(-1);
-    });
-
     const querySinceTestTable = [
-      ['Rankings', rankings, 2],
       ['Snapshots', snapshots, 2]
     ];
     test.each(querySinceTestTable)('query %p using date filter', async (dbMethod, fixture, expectedLength) => {
@@ -150,4 +131,22 @@ function createFixtures () {
   ];
 
   return { stakes, rankings, snapshots };
+}
+
+function createListOfDbInits () {
+  const initVanillaDb = () => initDb('vanilla');
+
+  const dbTestTable = [
+    ['vanilla', initVanillaDb]
+  ];
+
+  const shouldEmulatorBeRunning = process.env.FIRESTORE_EMULATOR_HOST &&
+    process.env.FIREBASE_PROJECT_ID;
+  if (shouldEmulatorBeRunning) {
+    const projectId = process.env.FIREBASE_PROJECT_ID;
+    const initFirestoreDb = () => initDb('firestore', { projectId, del });
+    dbTestTable.push(['firestore', initFirestoreDb]);
+  }
+
+  return dbTestTable;
 }

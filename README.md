@@ -2,24 +2,21 @@ Attaché is in early development. Most of the documentation below are specs that
 
 # TL;DR
 
-Attaché is a minimal SERP tracker. It crosses the presence of pages against results of search terms and reports that periodically.
+Attaché is a minimal SERP tracker built with only personal use in mind. It periodically reports the position of pages in organic search results.
 
-A valid use case would be: every week, I want to receive in my email the updated ranking of pages `company.com` and `landing-page.com` in Google searches against terms `service`, `service my-city` and `service my-neighborhood`.
-# Stakes
+The use case would be: every week, I want to receive in my email the updated ranking of pages `company.com` and `landing-page.com` in searches against the terms `service`, `service my-city` and `service my-neighborhood`.
 
-A  Stake is a record combining pages and terms that Attaché will take snapshots daily. The Stake will also contain a list of emails to send weekly ranking reports.
+# Main concepts
+
+**Stake:** a combination pages and terms that Attaché will take snapshots daily. The Stake will also contain a list of emails to send weekly ranking reports.
 
 **Page:** a [URL](https://en.wikipedia.org/wiki/URL) (or part of it) to be checked against search results. The page is what we want to appear as close to the first search result as possible.
 
 **Term:** one or more keywords to search periodically. Something as `my service` or `my service my city`.
 
-**Snapshot:** the ordered list of pages as they appear in the result of an organic search. The snapshot also holds metadata like when the search ran. The app takes snapshots for every term daily.
+**Snapshot:** an ordered list of pages as they appear in the result of an organic search. The snapshot also holds metadata like when the search ran. The app takes dailies snapshots for every term.
 
-# Rankings
-
-A Ranking is a weekly report exploring the position of Pages in Snapshots. It is an e-mail with one or more synthetic charts and an annexed CSV file with the details.
-
-The Ranking will have a chart for every term in the corresponding Stake. Every page in the Stake will be a line in the chart. The line will show the page position in that term search results during time. 
+**Rankings:** weekly report exploring the position of Pages in Snapshots. It is an e-mail with one or more synthetic charts and an annexed CSV file with the details. The Ranking will have a chart for every term in the corresponding Stake. Every page in the Stake will be a line in the chart. The line will show the page position in that term search results during time. 
 
 # Stack
 

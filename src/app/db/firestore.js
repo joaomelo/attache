@@ -16,8 +16,7 @@ export async function initFirestore (options) {
     /*
       emulator is triggered depending with which firebase sdk is used.
       here, the initialization is based on the admin sdk use case, which rely on the
-      FIRESTORE_EMULATOR_HOST environment variable been set. the only thing the
-      following function do is clean the emulator firestore db. more in:
+      FIRESTORE_EMULATOR_HOST environment variable been set. more in:
       https://firebase.google.com/docs/emulator-suite/connect_firestore#admin_sdks
     */
     await clearEmulatorFirestore(db, options);
@@ -36,39 +35,40 @@ async function clearEmulatorFirestore (db, options) {
 }
 
 function createAdapter (db) {
-  const collections = {
-    stakes: db.collection('stakes'),
-    rankings: db.collection('rankings'),
-    snapshots: db.collection('snapshots'),
-    logs: db.collection('logs')
-  };
-
   return {
-    queryStakes: () => findItems(collections.stakes),
-    saveStakes: stakes => saveItems(collections.stakes, stakes),
-    deleteStake: id => deleteItem(collections.stakes, id),
-    saveRankings: rankings => saveItems(collections.rankings, rankings),
-    queryRankings: () => findItems(collections.rankings),
-    queryRankingsSince: start => findItems(collections.rankings, { field: 'when', operator: '>=', value: start }),
-    saveSnapshots: snapshots => saveItems(collections.snapshots, snapshots),
-    querySnapshots: () => findItems(collections.snapshots),
-    querySnapshotsSince: start => findItems(collections.snapshots, { field: 'when', operator: '>=', value: start }),
-    saveLog: log => saveItems(collections.logs, [log]),
-    queryLogs: () => findItems(collections.logs)
+    async saveItems (collectionName, items) {
+      if (!Array.isArray(items) || items.length === 0) return true;
+
+      const collection = db.collection(collectionName);
+      const batch = db.batch();
+
+      items.forEach(item => {
+        const docRef = collection.doc(item.id);
+        batch.set(docRef, item);
+      });
+
+      await batch.commit();
+      return true;
+    },
+
+    async queryAllItems (collectionName) {
+      const collection = db.collection(collectionName);
+      return findItems(collection);
+    },
+
+    queryItemsSince (collectionName, start) {
+      const collection = db.collection(collectionName);
+      return findItems(collection, { field: 'when', operator: '>=', value: start });
+    },
+
+    saveStakes (newStakes) { return this.saveItems('stakes', newStakes); },
+    queryStakes () { return this.queryAllItems('stakes'); },
+    saveSnapshots (newSnapshots) { return this.saveItems('snapshots', newSnapshots); },
+    querySnapshots () { return this.queryAllItems('snapshots'); },
+    querySnapshotsSince (start) { return this.queryItemsSince('snapshots', start); },
+    saveLog (newLog) { return this.saveItems('logs', [newLog]); },
+    queryLogs () { return this.queryAllItems('logs'); }
   };
-}
-
-async function saveItems (collection, items) {
-  if (!Array.isArray(items) || items.length === 0) return true;
-
-  const promises = [];
-  items.forEach(item => {
-    const docRef = collection.doc(item.id);
-    promises.push(docRef.set(item));
-  });
-
-  await Promise.all(promises);
-  return true;
 }
 
 async function findItems (collection, filter) {
@@ -81,7 +81,7 @@ async function findItems (collection, filter) {
   const snapshot = await query.get();
   const items = snapshot.docs.map(convertDocToItem);
   return items;
-}
+};
 
 function convertDocToItem (doc) {
   const item = {};
@@ -95,9 +95,4 @@ function convertDocToItem (doc) {
   }
 
   return item;
-}
-
-async function deleteItem (collection, id) {
-  await collection.doc(id).delete();
-  return true;
-}
+};
