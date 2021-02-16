@@ -1,1 +1,1 @@
-export { dispatchFreshRankingsForStakes } from './dispatch-stakes';
+export * from './dispatch-stakes';

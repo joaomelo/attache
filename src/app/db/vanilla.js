@@ -26,14 +26,6 @@ export function initVanillaDb () {
     queryItemsSince (collectionName, start) {
       const collection = assertCollection(collectionName);
       return Promise.resolve(collection.filter(r => r.when >= start));
-    },
-
-    saveStakes (newStakes) { return this.saveItems('stakes', newStakes); },
-    queryStakes () { return this.queryAllItems('stakes'); },
-    saveSnapshots (newSnapshots) { return this.saveItems('snapshots', newSnapshots); },
-    querySnapshots () { return this.queryAllItems('snapshots'); },
-    querySnapshotsSince (start) { return this.queryItemsSince('snapshots', start); },
-    saveLog (newLog) { return this.saveItems('logs', [newLog]); },
-    queryLogs () { return this.queryAllItems('logs'); }
+    }
   };
 };

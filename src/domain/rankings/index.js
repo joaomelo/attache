@@ -1,1 +1,1 @@
-export { rankStakes } from './stakes';
+export * from './stakes';

@@ -1,4 +1,4 @@
-import { initServicesRuntime } from '../../src/app/runtime';
+import { initServicesRuntime } from './index';
 
 jest.useFakeTimers();
 

@@ -1,9 +1,9 @@
 import { createId } from '../../helpers';
 
-export async function createSingleSnapshot (term, search) {
+export async function fishSnapshot (term, { search }) {
   const freshSnapshot = {
     id: createId(),
-    term: term,
+    term,
     when: new Date()
   };
 

@@ -59,15 +59,7 @@ function createAdapter (db) {
     queryItemsSince (collectionName, start) {
       const collection = db.collection(collectionName);
       return findItems(collection, { field: 'when', operator: '>=', value: start });
-    },
-
-    saveStakes (newStakes) { return this.saveItems('stakes', newStakes); },
-    queryStakes () { return this.queryAllItems('stakes'); },
-    saveSnapshots (newSnapshots) { return this.saveItems('snapshots', newSnapshots); },
-    querySnapshots () { return this.queryAllItems('snapshots'); },
-    querySnapshotsSince (start) { return this.queryItemsSince('snapshots', start); },
-    saveLog (newLog) { return this.saveItems('logs', [newLog]); },
-    queryLogs () { return this.queryAllItems('logs'); }
+    }
   };
 }
 

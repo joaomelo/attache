@@ -6,5 +6,5 @@ export function createDispatch (type, options) {
     case 'vanilla': return createSendGridSandboxDispatch(options);
     case 'sendGrid': return createSendGridDispatch(options);
     default: throw new Error(`dispatch type ${type} is invalid`);
-  }
-}
+  };
+};

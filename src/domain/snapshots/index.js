@@ -1,1 +1,1 @@
-export { saveFreshSnapshotsForStakes } from './save-for-stakes';
+export * from './factory';

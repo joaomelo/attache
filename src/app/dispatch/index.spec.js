@@ -1,4 +1,4 @@
-import { createDispatch } from './factory';
+import { createDispatch } from './index';
 
 describe('dispatch module', () => {
   const key = process.env.SEND_GRID_KEY;
