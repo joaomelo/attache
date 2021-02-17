@@ -27,9 +27,11 @@ The use case would be: every week, I want to receive in my email the updated ran
 *The steps needed to get the repo and put things in motion in the local development and testing*
 
 ## Development Environment Variables
-FIREBASE_PROJECT_ID=attache-11863
+FIREBASE_PROJECT_ID=asdasdasd
 FIRESTORE_EMULATOR_HOST=localhost:8080
-SCALE_SERP_KEY=KJKLEWKHR879845HUIHFWJ
+SCALE_SERP_KEY=asdasdasd
+SEND_GRID_KEY=SG.asdasdasdadasdasdd
+DEFAULT_FROM_EMAIL=asdsadasdasdasd@sdfdsfsdf.hoisach
 
 # Deploy App
 

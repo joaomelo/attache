@@ -40,6 +40,13 @@ jobs:
       - uses: "actions/setup-node@v2"
         with:
           node-version: '14'
+      - uses: actions/cache@v2
+        id: cache-npm
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hash('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-npm-
       - run: npm install -g firebase-tools@9.1.2          
       - run: firebase use --add $FIREBASE_PROJECT
       - uses: actions/cache@v2
