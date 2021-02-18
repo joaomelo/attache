@@ -1,18 +1,12 @@
-import { initServicesRuntime } from './index';
+import { createScheduledService } from './index';
 
 jest.useFakeTimers();
 
 describe('schedule module', () => {
-  let runtime;
-
-  beforeAll(() => {
-    runtime = initServicesRuntime('vanilla');
-  });
-
   test('happy path', () => {
     const callback = jest.fn(() => null);
 
-    runtime.createScheduledService(callback, 1);
+    createScheduledService('vanilla', { callback, frequencyInMinutes: 1 });
 
     const twoMinutes = 2 * 60 * 1000;
     jest.advanceTimersByTime(twoMinutes);
@@ -22,11 +16,12 @@ describe('schedule module', () => {
 
   test('will throw if frequency is not a positive integer', () => {
     const callback = () => null;
+    const createService = frequencyInMinutes => createScheduledService('vanilla', { callback, frequencyInMinutes });
 
-    expect(() => runtime.createScheduledService(callback, -1)).toThrow();
-    expect(() => runtime.createScheduledService(callback, NaN)).toThrow();
-    expect(() => runtime.createScheduledService(callback, 1 / 2)).toThrow();
-    expect(() => runtime.createScheduledService(callback, 'iAmNotANumber')).toThrow();
-    expect(() => runtime.createScheduledService(callback, undefined)).toThrow();
+    expect(() => createService(-1)).toThrow();
+    expect(() => createService(NaN)).toThrow();
+    expect(() => createService(1 / 2)).toThrow();
+    expect(() => createService('iAmNotANumber')).toThrow();
+    expect(() => createService(undefined)).toThrow();
   });
 });

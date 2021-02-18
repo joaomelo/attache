@@ -1,10 +1,10 @@
-import { initVanillaRuntime } from './vanilla';
-import { initFirebaseRuntime } from './firebase';
+import { createVanillaScheduledService } from './vanilla';
+import { createFirebaseScheduledService } from './firebase';
 
-export function initServicesRuntime (type, options) {
+export function createScheduledService (type, options) {
   switch (type) {
-    case 'vanilla': return initVanillaRuntime(options);
-    case 'firebase': return initFirebaseRuntime(options);
+    case 'vanilla': return createVanillaScheduledService(options);
+    case 'firebase': return createFirebaseScheduledService(options);
     default: throw new Error(`runtime type "${type}" is invalid`);
   }
 }

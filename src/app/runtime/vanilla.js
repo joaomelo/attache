@@ -1,4 +1,4 @@
-export function createScheduledService (callback, frequencyInMinutes) {
+export function createVanillaScheduledService ({ callback, frequencyInMinutes }) {
   if (!Number.isInteger(frequencyInMinutes)) throw new Error('Frequency must be a integer');
   if (Math.sign(frequencyInMinutes) !== 1) throw new Error('Frequency must be positive');
 
