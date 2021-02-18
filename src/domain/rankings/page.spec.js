@@ -1,26 +1,10 @@
-import { fromToday } from '../../helpers';
+import { snapshots } from '../../../tests/fixtures';
 import { serializePagePositions } from './page';
 
 describe('serializePagePositions', () => {
-  const page = 'www.another.com';
-  const snapshots = [
-    {
-      when: new Date(),
-      success: true,
-      result: ['www.some.com', 'www.another.com']
-    },
-    {
-      when: fromToday(-2),
-      success: false
-    },
-    {
-      when: fromToday(-1),
-      success: true,
-      result: ['www.some.com', 'www.another.com/landing-page', 'www.another.com']
-    }
-  ];
+  const page = 'azure.microsoft.com';
 
-  test('correctly calculate page positions', () => {
+  test('correctly serialize page positions', () => {
     const pagePositions = serializePagePositions(page, snapshots);
 
     expect(pagePositions).toEqual(
@@ -29,12 +13,12 @@ describe('serializePagePositions', () => {
         positions: expect.arrayContaining([
           expect.objectContaining({
             when: expect.any(Date),
-            position: 2
+            position: expect.any(Number)
           })
         ])
       })
     );
 
-    expect(pagePositions.positions).toHaveLength(2);
+    expect(pagePositions.positions).toHaveLength(4);
   });
 });
