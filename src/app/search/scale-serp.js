@@ -1,4 +1,6 @@
-export function createScaleSerpSearch ({ get, key }) {
+import { get } from '../request';
+
+export function createScaleSerpSearch ({ key }) {
   const url = 'https://api.scaleserp.com/search';
   const size = 100;
 
