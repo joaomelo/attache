@@ -1,6 +1,5 @@
 import { snapshots as items } from '../../../tests/fixtures';
 import { fromToday, sortByField } from '../../helpers';
-import { del } from '../request';
 import { initDb } from './index';
 
 describe('db module', () => {
@@ -54,11 +53,9 @@ function createListOfDbInits () {
     ['vanilla', () => initDb('vanilla')]
   ];
 
-  const shouldEmulatorBeRunning = process.env.FIRESTORE_EMULATOR_HOST &&
-    process.env.FIREBASE_PROJECT_ID;
-  if (shouldEmulatorBeRunning) {
-    const projectId = process.env.FIREBASE_PROJECT_ID;
-    const initFirestoreDb = () => initDb('firestore', { projectId, del });
+  // only unit test firestore if emulator is running
+  if (process.env.FIRESTORE_EMULATOR_HOST) {
+    const initFirestoreDb = () => initDb('firestore');
     dbTestTable.push(['firestore', initFirestoreDb]);
   }
 

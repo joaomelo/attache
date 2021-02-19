@@ -1,35 +1,38 @@
 import * as admin from 'firebase-admin';
+import { del } from '../request';
 
 let app;
 
-export async function initFirestore (options) {
+export async function initFirestore () {
+  const isProduction = !process.env.FIRESTORE_EMULATOR_HOST;
+  const projectId = process.env.FIREBASE_PROJECT_ID;
+
   if (!app) {
-    // inside firebase runtime a projectId is unnecessary
-    app = options && options.projectId
-      ? admin.initializeApp({ projectId: options.projectId })
-      : admin.initializeApp();
+    app = isProduction
+      ? admin.initializeApp()
+      : admin.initializeApp({
+        credential: admin.credential.applicationDefault(),
+        projectId: projectId
+      });
   }
 
   const db = admin.firestore();
 
-  if (process.env.FIRESTORE_EMULATOR_HOST) {
+  if (!isProduction) {
     /*
       emulator is triggered depending with which firebase sdk is used.
       here, the initialization is based on the admin sdk use case, which rely on the
       FIRESTORE_EMULATOR_HOST environment variable been set. more in:
       https://firebase.google.com/docs/emulator-suite/connect_firestore#admin_sdks
     */
-    await clearEmulatorFirestore(db, options);
+    await clearEmulatorFirestore(db, projectId);
   }
 
   const adapter = createAdapter(db);
   return adapter;
 };
 
-async function clearEmulatorFirestore (db, options) {
-  if (!options) return;
-  const { projectId, del } = options;
-
+async function clearEmulatorFirestore (db, projectId) {
   const clearFirestoreEndpoint = `http://${process.env.FIRESTORE_EMULATOR_HOST}/emulator/v1/projects/${projectId}/databases/(default)/documents`;
   await del(clearFirestoreEndpoint);
 }

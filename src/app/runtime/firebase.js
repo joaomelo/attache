@@ -1,6 +1,4 @@
-import * as functions from 'firebase-functions';
-
-export function createFirebaseScheduledService ({ callback, frequencyInMinutes }) {
+export function createFirebaseScheduledService ({ callback, frequencyInMinutes, functions }) {
   const frequencyInAppEngineSyntax = `every ${frequencyInMinutes} minutes`;
 
   return functions
