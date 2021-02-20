@@ -1,12 +1,16 @@
+import firebase from 'firebase-functions-test';
 import { testIfIntegration } from '../helpers';
+import { snapshotsService } from './services';
 
 describe('fish-snapshot firebase function', () => {
-  testIfIntegration()('fish the correct number of snapshots from search service', () => {
-    // load seed data into emulator
+  testIfIntegration()('sanity run just to check firebase function integrity', async () => {
+    const test = firebase({
+      projectId: process.env.GCLOUD_PROJECT
+    });
 
-    // run function once
+    const wrappedSnapshotsService = test.wrap(snapshotsService);
+    const result = await wrappedSnapshotsService();
 
-    // assert the returned value
-    // assert database status
+    expect(result).toBe(0);
   });
 });

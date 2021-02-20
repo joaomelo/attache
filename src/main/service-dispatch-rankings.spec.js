@@ -1,11 +1,16 @@
+import firebase from 'firebase-functions-test';
 import { testIfIntegration } from '../helpers';
+import { rankingsService } from './services';
 
 describe('dispatch rankings firebase function', () => {
-  testIfIntegration()('dispatch the correct number of rankings', () => {
-    // load seed data into emulator
+  testIfIntegration()('sanity run just to check firebase function integrity', async () => {
+    const test = firebase({
+      projectId: process.env.GCLOUD_PROJECT
+    });
 
-    // run function once
+    const wrappedSnapshotsService = test.wrap(rankingsService);
+    const result = await wrappedSnapshotsService();
 
-    // assert something
+    expect(result).toBe(0);
   });
 });
