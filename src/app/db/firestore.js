@@ -5,14 +5,12 @@ let app;
 
 export async function initFirestore () {
   const isProduction = !process.env.FIRESTORE_EMULATOR_HOST;
-  const projectId = process.env.FIREBASE_PROJECT_ID;
 
   if (!app) {
     app = isProduction
       ? admin.initializeApp()
       : admin.initializeApp({
-        credential: admin.credential.applicationDefault(),
-        projectId: projectId
+        projectId: 'emulator-fake-id'
       });
   }
 
@@ -25,18 +23,18 @@ export async function initFirestore () {
       FIRESTORE_EMULATOR_HOST environment variable been set. more in:
       https://firebase.google.com/docs/emulator-suite/connect_firestore#admin_sdks
     */
-    await clearEmulatorFirestore(projectId);
+    await clearEmulatorFirestore();
   }
 
   const adapter = createAdapter(db);
   return adapter;
 };
 
-async function clearEmulatorFirestore (projectId) {
-  const clearFirestoreEndpoint = `http://${process.env.FIRESTORE_EMULATOR_HOST}/emulator/v1/projects/${projectId}/databases/(default)/documents`;
+async function clearEmulatorFirestore () {
+  const clearFirestoreEndpoint = `http://${process.env.FIRESTORE_EMULATOR_HOST}/emulator/v1/projects/emulator-fake-id/databases/(default)/documents`;
   const response = await del(clearFirestoreEndpoint);
 
-  console.log({ clearFirestoreEndpoint, response });
+  console.log({ clearFirestoreEndpoint });
 
   return response;
 }
