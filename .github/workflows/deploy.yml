@@ -33,6 +33,7 @@ jobs:
       SCALE_SERP_KEY: ${{ secrets.SCALE_SERP_KEY }}
       SEND_GRID_KEY: ${{ secrets.SEND_GRID_KEY }}
       DEFAULT_FROM_EMAIL: ${{ secrets.DEFAULT_FROM_EMAIL }}
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
     steps:
       - uses: actions/checkout@v2
         with:
@@ -56,3 +57,5 @@ jobs:
           key: ${{ runner.os }}-firebase-cli-v9.1.2
       - run: npm ci
       - run: npm run prod:ci:deploy
+      - run: npm i -g codecov
+      - run: codecov
