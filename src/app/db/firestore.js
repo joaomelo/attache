@@ -35,7 +35,6 @@ export async function initFirestore () {
 async function clearEmulatorFirestore (db, projectId) {
   const clearFirestoreEndpoint = `http://${process.env.FIRESTORE_EMULATOR_HOST}/emulator/v1/projects/${projectId}/databases/(default)/documents`;
   const response = await del(clearFirestoreEndpoint);
-  console.log({ clearFirestoreEndpoint, response });
   return response;
 }
 
@@ -44,7 +43,7 @@ function createAdapter (db) {
     async saveItems (collectionName, items) {
       if (!Array.isArray(items) || items.length === 0) return true;
 
-      console.log('saveItems ', { collectionName, items });
+      const beforeSave = await this.queryAllItems(collectionName);
 
       const collection = db.collection(collectionName);
       const batch = db.batch();
@@ -55,6 +54,16 @@ function createAdapter (db) {
       });
 
       await batch.commit();
+
+      const afterSave = await this.queryAllItems(collectionName);
+
+      console.log({
+        collectionName,
+        beforeSave,
+        toSave: items.length,
+        afterSave: afterSave.length
+      });
+
       return true;
     },
 
@@ -79,7 +88,6 @@ async function findItems (collection, filter) {
 
   const snapshot = await query.get();
   const items = snapshot.docs.map(convertDocToItem);
-  console.log('queries this items', items);
   return items;
 };
 
