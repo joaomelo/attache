@@ -35,7 +35,6 @@ describe('db module', () => {
     test.each(saveEmptyDataTable)('deals with saving %p gracefully', async (description, data) => {
       const db = await initFn();
       await db.saveItems(collectionName, data);
-      console.log('data saved was', data);
       const retrieved = await db.queryAllItems(collectionName);
       expect(retrieved).toEqual([]);
     });
@@ -56,10 +55,7 @@ function createListOfDbInits () {
 
   // only unit test firestore if emulator is running
   if (process.env.FIRESTORE_EMULATOR_HOST) {
-    const initFirestoreDb = () => {
-      console.log('about to init firestore');
-      return initDb('firestore');
-    };
+    const initFirestoreDb = () => initDb('firestore');
     dbTestTable.push(['firestore', initFirestoreDb]);
   }
 

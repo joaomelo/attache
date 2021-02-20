@@ -35,13 +35,16 @@ export async function initFirestore () {
 async function clearEmulatorFirestore (db, projectId) {
   const clearFirestoreEndpoint = `http://${process.env.FIRESTORE_EMULATOR_HOST}/emulator/v1/projects/${projectId}/databases/(default)/documents`;
   const response = await del(clearFirestoreEndpoint);
-  console.log('emptied firestore emulator with this response', response);
+  console.log({ clearFirestoreEndpoint, response });
+  return response;
 }
 
 function createAdapter (db) {
   return {
     async saveItems (collectionName, items) {
       if (!Array.isArray(items) || items.length === 0) return true;
+
+      console.log('saveItems ', { collectionName, items });
 
       const collection = db.collection(collectionName);
       const batch = db.batch();
@@ -76,6 +79,7 @@ async function findItems (collection, filter) {
 
   const snapshot = await query.get();
   const items = snapshot.docs.map(convertDocToItem);
+  console.log('queries this items', items);
   return items;
 };
 
