@@ -34,7 +34,8 @@ export async function initFirestore () {
 
 async function clearEmulatorFirestore (db, projectId) {
   const clearFirestoreEndpoint = `http://${process.env.FIRESTORE_EMULATOR_HOST}/emulator/v1/projects/${projectId}/databases/(default)/documents`;
-  await del(clearFirestoreEndpoint);
+  const response = await del(clearFirestoreEndpoint);
+  console.log('emptied firestore emulator with this response', response);
 }
 
 function createAdapter (db) {

@@ -1,15 +1,12 @@
-import { testIf } from '../helpers';
-
-const isIntegration = process.env.INTEGRATION_TESTS;
+import { testIfIntegration } from '../helpers';
 
 describe('fish-snapshot firebase function', () => {
-  testIf(isIntegration)('fish the correct number of snapshots from search service', () => {
+  testIfIntegration()('fish the correct number of snapshots from search service', () => {
     // load seed data into emulator
 
     // run function once
 
     // assert the returned value
     // assert database status
-    console.log('integration!');
   });
 });

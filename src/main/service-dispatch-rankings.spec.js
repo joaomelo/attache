@@ -1,14 +1,11 @@
-import { testIf } from '../helpers';
-
-const isIntegration = process.env.INTEGRATION_TESTS;
+import { testIfIntegration } from '../helpers';
 
 describe('dispatch rankings firebase function', () => {
-  testIf(isIntegration)('dispatch the correct number of rankings', () => {
+  testIfIntegration()('dispatch the correct number of rankings', () => {
     // load seed data into emulator
 
     // run function once
 
     // assert something
-    console.log('integration!');
   });
 });
