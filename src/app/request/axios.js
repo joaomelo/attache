@@ -19,9 +19,6 @@ export async function get (url, params) {
   return response.data;
 };
 
-export async function del (url) {
-  const response = await instance.delete(url);
-  const { status, statusText } = response;
-  const data = { status, statusText };
-  return data;
+export function del (url) {
+  return instance.delete(url);
 }
