@@ -6,14 +6,4 @@ export function sortByField (array, field, asc = true) {
     return 0;
   });
   return copy;
-}
-
-export function convertFieldName (originals, from, to) {
-  const converteds = originals.map(original => {
-    const converted = { ...original };
-    delete converted[from];
-    converted[to] = original[from];
-    return converted;
-  });
-  return converteds;
 };

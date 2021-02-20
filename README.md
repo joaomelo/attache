@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/gh/joaomelo/attache/branch/main/graph/badge.svg?token=9H7SY34E7I)](https://codecov.io/gh/joaomelo/attache)
+
 Attaché is in early development. Most of the documentation below are specs that the project aims to implement.
 
 # TL;DR
