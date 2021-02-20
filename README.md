@@ -27,8 +27,7 @@ The use case would be: every week, I want to receive in my email the updated ran
 *The steps needed to get the repo and put things in motion in the local development and testing*
 
 ## Development Environment Variables
-FIREBASE_PROJECT_ID=asdasdasd
-FIRESTORE_EMULATOR_HOST=localhost:8080
+FIRESTORE_EMULATOR_HOST=localhost:8080 // not only port but signals firebase is running in non production env
 SCALE_SERP_KEY=asdasdasd
 SEND_GRID_KEY=SG.asdasdasdadasdasdd
 DEFAULT_FROM_EMAIL=asdsadasdasdasd@sdfdsfsdf.hoisach

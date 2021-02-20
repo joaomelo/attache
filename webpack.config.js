@@ -75,7 +75,6 @@ function createPluginReducingFromEnvDevFile () {
   console.info(`attempting to inject env vars reducing from "${envDevFile}" file using webpack plugin`);
   const dotEnvPlugin = new Dotenv({ path: envDevFile });
 
-  delete dotEnvPlugin.definitions['process.env.FIREBASE_PROJECT_ID'];
   // the removal of emulator env variable is relevant to the productions app
   // since firebase node sdk automatically attempts connection to emulator host
   // if variable is set
