@@ -1,12 +1,10 @@
 [![codecov](https://codecov.io/gh/joaomelo/attache/branch/main/graph/badge.svg?token=9H7SY34E7I)](https://codecov.io/gh/joaomelo/attache)
 
-Attaché is in early development. Parts of the documentation below are specs pending implementation.
-
 # TL;DR
 
 Attaché is a minimal SERP tracker built with personal use in mind. It periodically reports the position of pages in organic search results.
 
-The use case would be: every week, I want to receive in my email the updated Ranking of pages `company.com` and `landing-page.com` in searches against the terms `service`, `service my-city` and `service my-neighborhood`.
+The use case would be: every week, I want to receive in my email the updated Ranking of pages `company.com` and `landing-page.com` in searches against the Terms `service`, `service my-city` and `service my-neighborhood`.
 
 # Main concepts
 
@@ -23,6 +21,16 @@ The use case would be: every week, I want to receive in my email the updated Ran
 **Trend:** time series of the first Page in Snapshots. 
 
 **Track Report:** weekly email report with Serp data about a Stake. Stake's Terms will be presented with its last seven days Trend and Rankings for every Page in the Stake. 
+
+# How It Works
+
+Attaché is a combination of two background services that run periodically. The first is the `snapshotsScheduledService` which takes and saves Snapshots for every Stake's Terms in the database.
+
+The second is the `tracksScheduledService`. It dispatches email reports with Rankings and Trends data for every Stake.
+
+Both services run in [Cloud Functions for Firebase](https://firebase.google.com/docs/functions) and use [Cloud Firestore](https://firebase.google.com/docs/firestore) as database. 
+
+Attaché is developed using Javascript and takes advantage of the language thriving open source library ecosystem. It also relies upon [Scale SERP](https://www.scaleserp.com/) to take search Snapshots and [Send Grid](https://sendgrid.com/) to dispatch emails. 
 
 # Stack
 
