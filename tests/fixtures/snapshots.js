@@ -5,7 +5,7 @@ export const snapshots = [
     id: '304145c3-b694-431b-8f19-0ce6f678e3c0',
     term: 'cloud',
     when: fromToday(-10),
-    result: ['azure.microsoft.com', 'aws.amazon.com', 'cloud.google.com', 'firebase.google.com'],
+    result: ['aws.amazon.com', 'azure.microsoft.com', 'cloud.google.com', 'firebase.google.com'],
     success: true,
     size: 3
   },
@@ -28,7 +28,7 @@ export const snapshots = [
     id: 'ddcb6512-103b-429c-9fe4-6f2bba15297c',
     term: 'serverless',
     when: fromToday(-2),
-    result: ['azure.microsoft.com', 'firebase.google.com', 'aws.amazon.com'],
+    result: ['firebase.google.com', 'azure.microsoft.com', 'aws.amazon.com'],
     size: 3,
     success: true
   },

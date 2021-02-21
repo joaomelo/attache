@@ -1,6 +1,6 @@
 import { stakes } from '../../../tests/fixtures';
 import { initDb } from '../../app/db';
-import { createStakesCollection } from './index';
+import { createStakesCollection } from './collection';
 
 describe('stakes module', () => {
   let db, stakesCol;

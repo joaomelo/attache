@@ -1,6 +1,6 @@
 import { fromToday } from '../../src/helpers';
 
-export const rankings = [
+export const trackReports = [
   {
     stake: {
       id: '87178090-383e-4780-a363-a076a6f952dd',
@@ -11,7 +11,13 @@ export const rankings = [
     terms: [
       {
         term: 'cloud',
-        pages: [
+        trend: [
+          { when: fromToday(0), page: 'cloud.google' },
+          { when: fromToday(-5), page: 'another-page.com' },
+          { when: fromToday(-2), page: 'another-page.com' },
+          { when: fromToday(-3), page: 'another-page.com' }
+        ],
+        rankings: [
           {
             page: 'cloud.google',
             positions: [
@@ -34,7 +40,13 @@ export const rankings = [
       },
       {
         term: 'serverless',
-        pages: [
+        trend: [
+          { when: fromToday(0), page: 'another-page.com' },
+          { when: fromToday(-5), page: 'another-page.com' },
+          { when: fromToday(-2), page: 'another-page.com' },
+          { when: fromToday(-3), page: 'another-page.com' }
+        ],
+        rankings: [
           {
             page: 'cloud.google',
             positions: [
@@ -57,5 +69,4 @@ export const rankings = [
       }
     ]
   }
-]
-;
+];

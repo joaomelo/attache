@@ -1,6 +1,6 @@
 import firebase from 'firebase-functions-test';
 import { testIfIntegration } from '../helpers';
-import { snapshotsService } from './services';
+import { snapshotsScheduledService } from './services';
 
 describe('fish-snapshot firebase function', () => {
   testIfIntegration()('sanity run just to check firebase function integrity', async () => {
@@ -8,8 +8,8 @@ describe('fish-snapshot firebase function', () => {
       projectId: process.env.GCLOUD_PROJECT
     });
 
-    const wrappedSnapshotsService = test.wrap(snapshotsService);
-    const result = await wrappedSnapshotsService();
+    const snapshotsService = test.wrap(snapshotsScheduledService);
+    const result = await snapshotsService();
 
     expect(result).toBe(0);
   });

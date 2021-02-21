@@ -1,1 +1,1 @@
-export { renderRanking } from './render-ranking';
+export { renderTrackReport } from './render-track';

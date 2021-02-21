@@ -1,15 +1,15 @@
 import firebase from 'firebase-functions-test';
 import { testIfIntegration } from '../helpers';
-import { rankingsService } from './services';
+import { tracksScheduledService } from './services';
 
-describe('dispatch rankings firebase function', () => {
+describe('dispatch tracks reports firebase function', () => {
   testIfIntegration()('sanity run just to check firebase function integrity', async () => {
     const test = firebase({
       projectId: process.env.GCLOUD_PROJECT
     });
 
-    const wrappedSnapshotsService = test.wrap(rankingsService);
-    const result = await wrappedSnapshotsService();
+    const tracksService = test.wrap(tracksScheduledService);
+    const result = await tracksService();
 
     expect(result).toBe(0);
   });

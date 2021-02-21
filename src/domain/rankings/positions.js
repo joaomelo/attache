@@ -1,5 +1,5 @@
 export function serializePagePositions (page, snapshots) {
-  const positions = snapshots
+  return snapshots
     .filter(s => s.success)
     .map(s => {
       const { result, when } = s;
@@ -9,9 +9,4 @@ export function serializePagePositions (page, snapshots) {
         position
       };
     });
-
-  return {
-    page,
-    positions
-  };
 }
