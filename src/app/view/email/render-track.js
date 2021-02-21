@@ -2,9 +2,9 @@ import { sortByField } from '../../../helpers';
 
 export function renderTrackReport (report) {
   const message = `    
-    <h1>Ranking Report</h1>
+    <h1 style="margin-bottom: 0px">Ranking Report</h1>
+    <p style="color: #AAAAAA; font-size: 8px; margin-top: 0px">Stake: ${report.stake.id}</p>
     ${report.terms.map(t => renderTerm(t)).join('')}
-    <p style="color: #AAAAAA; font-size: 8px">${report.stake.id}</p>
   `;
 
   const withoutBlankLines = message.replace(/^\s*$(?:\r\n?|\n)/gm, '');
@@ -24,7 +24,8 @@ function renderTrend (trend) {
   const sortedPosition = sortByField(trend, 'when', false);
 
   return `
-    <h3>Trend</h3>
+    <h3 style="margin-bottom: 0px">Trend</h3>
+    <p style="color: #696969; font-size: 14px; margin-top: 0px">List the first search result for this Term in the last few days</p>
     ${sortedPosition.map(p => renderTrendPosition(p)).join('')}
   `;
 }
@@ -32,7 +33,9 @@ function renderTrend (trend) {
 function renderTrendPosition (trendPosition) {
   const prettyWhen = prettifyWhen(trendPosition.when);
   return `
-    <p style="margin:0px">${prettyWhen}: ${trendPosition.page}</p>
+    <p style="margin:0px">${prettyWhen}: 
+      <a href="${trendPosition.page}">${trendPosition.page.substr(0, 15)}${trendPosition.page.length > 15 ? '...' : ''}</a>
+    </p>
   `;
 };
 
