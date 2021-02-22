@@ -1,9 +1,9 @@
 import { renderTrackReport } from '../../app/view/email';
 
-export function convertReportsToMails (reports) {
+export function convertTracksToMails (tracks) {
   const subject = 'Attaché - Track Report';
 
-  return reports.flatMap(r => {
+  return tracks.flatMap(r => {
     const message = renderTrackReport(r);
     const stakeId = r.stake.id;
 

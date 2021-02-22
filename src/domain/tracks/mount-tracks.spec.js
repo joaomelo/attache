@@ -1,19 +1,12 @@
 import { stakes, snapshots } from '../../../tests/fixtures';
-import { tupleTermsAndPages } from '../stakes';
-import { rankPagesInTerms } from '../rankings';
-import { extractTrends } from '../trends';
-import { mountReports } from './mount-reports';
+import { mountTracks } from './mount-tracks';
 
-describe('mount track reports', () => {
-  test('correct mount reports', () => {
-    const tuples = tupleTermsAndPages(stakes);
-    const rankings = rankPagesInTerms(tuples, snapshots);
-    const trends = extractTrends(snapshots);
+describe('mountTracks', () => {
+  test('correct mount tracks', () => {
+    const tracks = mountTracks(stakes, snapshots);
 
-    const reports = mountReports(stakes, rankings, trends);
-
-    expect(reports).toHaveLength(stakes.length);
-    expect(reports).toEqual(
+    expect(tracks).toHaveLength(stakes.length);
+    expect(tracks).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
           stake: expect.any(Object),

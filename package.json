@@ -11,6 +11,7 @@
     "dev:shell": "firebase functions:shell",
     "prod:local:lint": "eslint --ext .js,.vue src/",
     "prod:local:test": "jest --detectOpenHandles --setupTestFrameworkScriptFile=./tests/config/local-prod.js",
+    "test": "npm run prod:local:test:emulators",
     "prod:local:test:emulators": "firebase emulators:exec \"npm run prod:local:test\"",
     "prod:local:build": "rimraf dist/* && webpack --env prodLocal --config webpack.config.js",
     "prod:local:upload": "firebase deploy --only functions",

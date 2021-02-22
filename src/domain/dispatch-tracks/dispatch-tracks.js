@@ -1,13 +1,11 @@
 import { fromToday } from '../../helpers';
-import { extractTrends } from '../trends';
-import { rankPagesInTerms } from '../rankings';
-import { createStakesCollection, tupleTermsAndPages } from '../stakes';
+import { createStakesCollection } from '../stakes';
 import { createSnapshotsCollection } from '../snapshots';
-import { mountReports } from './mount-reports';
-import { convertReportsToMails } from './reports-to-mail';
+import { mountTracks } from '../tracks';
+import { convertTracksToMails } from './tracks-to-mail';
 import { dispatchMails } from './dispatch-mails';
 
-export async function dispatchTracksReports ({ db, dispatch, logger }) {
+export async function dispatchTracks ({ db, dispatch, logger }) {
   let dispatches = 0;
 
   const stakesCol = createStakesCollection(db);
@@ -25,11 +23,8 @@ export async function dispatchTracksReports ({ db, dispatch, logger }) {
     return dispatches;
   };
 
-  const tuples = tupleTermsAndPages(stakes);
-  const rankings = rankPagesInTerms(tuples, snapshots);
-  const trends = extractTrends(snapshots);
-  const reports = mountReports(stakes, rankings, trends);
-  const mails = convertReportsToMails(reports);
+  const tracks = mountTracks(stakes, snapshots);
+  const mails = convertTracksToMails(tracks);
 
   dispatches = await dispatchMails(mails, { dispatch });
   logger.info(`rankings cycle finished with ${dispatches.length} dispatches`);

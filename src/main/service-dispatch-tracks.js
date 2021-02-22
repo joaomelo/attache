@@ -1,7 +1,7 @@
 import { initDb } from '../app/db';
 import { createLogger } from '../app/log';
 import { createDispatch } from '../app/dispatch';
-import { dispatchTracksReports } from '../domain/dispatch-tracks';
+import { dispatchTracks } from '../domain/dispatch-tracks';
 
 export async function dispatchTracksService () {
   const db = await initDb('firestore');
@@ -14,7 +14,7 @@ export async function dispatchTracksService () {
     if (!(key && defaults.from)) throw new Error('SEND GRID config not found');
     const dispatch = createDispatch('sendGrid', { key, defaults });
 
-    tracksDispatched = await dispatchTracksReports({ db, dispatch, logger });
+    tracksDispatched = await dispatchTracks({ db, dispatch, logger });
   } catch (error) {
     logger.error(error.message);
   };

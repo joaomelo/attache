@@ -1,6 +1,6 @@
 import { stakes, snapshots } from '../../../tests/fixtures';
 import { initDb } from '../../app/db';
-import { dispatchTracksReports } from './dispatch-tracks';
+import { dispatchTracks } from './dispatch-tracks';
 
 describe('dispatch rankings module', () => {
   let db, dispatch, logger;
@@ -20,7 +20,7 @@ describe('dispatch rankings module', () => {
     test('dispatch a ranking for every email', async () => {
       const expectedQt = 3;
 
-      const dispatchedRankings = await dispatchTracksReports({ db, logger, dispatch });
+      const dispatchedRankings = await dispatchTracks({ db, logger, dispatch });
 
       expect(dispatchedRankings).toBe(expectedQt);
       expect(dispatch).toHaveBeenCalledTimes(expectedQt);
@@ -28,7 +28,7 @@ describe('dispatch rankings module', () => {
     });
 
     test('dispatch with correct mail object shape', async () => {
-      await dispatchTracksReports({ db, logger, dispatch });
+      await dispatchTracks({ db, logger, dispatch });
 
       expect(dispatch).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -46,7 +46,7 @@ describe('dispatch rankings module', () => {
       await db.saveItems('stakes', []);
       await db.saveItems('snapshots', snapshots);
 
-      const dispatchedRankings = await dispatchTracksReports({ db, logger, dispatch });
+      const dispatchedRankings = await dispatchTracks({ db, logger, dispatch });
 
       expect(dispatchedRankings).toBe(0);
       expect(logger.info).toHaveBeenLastCalledWith(expect.stringContaining('no stakes'));
@@ -57,7 +57,7 @@ describe('dispatch rankings module', () => {
       await db.saveItems('stakes', stakes);
       await db.saveItems('snapshots', []);
 
-      const dispatchedRankings = await dispatchTracksReports({ db, logger, dispatch });
+      const dispatchedRankings = await dispatchTracks({ db, logger, dispatch });
 
       expect(dispatchedRankings).toBe(0);
       expect(logger.info).toHaveBeenLastCalledWith(expect.stringContaining('no snapshots'));

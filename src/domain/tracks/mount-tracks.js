@@ -1,4 +1,12 @@
-export function mountReports (stakes, rankings, trends) {
+import { extractTrends } from '../trends';
+import { rankPagesInTerms } from '../rankings';
+import { tupleTermsAndPages } from '../stakes';
+
+export function mountTracks (stakes, snapshots) {
+  const tuples = tupleTermsAndPages(stakes);
+  const rankings = rankPagesInTerms(tuples, snapshots);
+  const trends = extractTrends(snapshots);
+
   return stakes.map(s => {
     return {
       stake: { ...s },
@@ -11,7 +19,7 @@ export function mountReports (stakes, rankings, trends) {
       })
     };
   });
-};
+}
 
 function findRanking (rankings, term, page) {
   const ranking = rankings.find(r => r.page === page && r.term === term);
