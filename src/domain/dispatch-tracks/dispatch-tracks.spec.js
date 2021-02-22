@@ -40,7 +40,18 @@ describe('dispatch rankings module', () => {
     });
   });
 
-  describe('absent data scenarios', () => {
+  describe('alternative scenarios', () => {
+    test('do not dispatch again before frequency is due', async () => {
+      db = initDb('vanilla');
+      await db.saveItems('stakes', stakes);
+      await db.saveItems('snapshots', snapshots);
+      await dispatchTracks({ db, logger, dispatch });
+
+      const dispatchedRankings = await dispatchTracks({ db, logger, dispatch });
+
+      expect(dispatchedRankings).toBe(0);
+    });
+
     test('do not dispatch rankings without stakes', async () => {
       db = initDb('vanilla');
       await db.saveItems('stakes', []);

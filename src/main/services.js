@@ -13,6 +13,6 @@ export const snapshotsScheduledService = createScheduledService('firebase', {
 
 export const tracksScheduledService = createScheduledService('firebase', {
   callback: dispatchTracksService,
-  frequencyInMinutes: 60 * 24,
+  frequencyInMinutes: 60 * 12,
   functions
 });

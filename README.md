@@ -20,7 +20,7 @@ The use case would be: every week, I want to receive in my email the updated Ran
 
 **Trend:** time series of the first Page in Snapshots. 
 
-**Track Report:** report with last seven days of Trend and Ranking data about a Stake. It is sent weekly by email.
+**Track Report:** report with last seven days of Trend and Ranking data about a Stake. It is sent every three days to the Stakes' emails.
 
 # How It Works
 
