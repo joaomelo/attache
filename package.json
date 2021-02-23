@@ -17,7 +17,7 @@
     "prod:local:upload": "firebase deploy --only functions",
     "prod:local:deploy": "npm run prod:local:lint && npm run prod:local:test:emulators && npm run prod:local:build && npm run prod:local:upload",
     "prod:ci:test": "jest --setupTestFrameworkScriptFile=./tests/config/ci.js",
-    "prod:ci:test:emulators": "firebase emulators:exec \"npm run prod:ci:test\"",
+    "prod:ci:test:emulators": "firebase emulators:exec --only firestore \"npm run prod:ci:test\"",
     "prod:ci:build": "webpack --env prodCi --config webpack.config.js",
     "prod:ci:deploy": "npm run prod:local:lint && npm run prod:ci:test:emulators && npm run prod:ci:build && npm run prod:local:upload"
   },
