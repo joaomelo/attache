@@ -1,4 +1,4 @@
-export async function dispatchMails (mails, { dispatch }) {
+export async function dispatchMail (mails, { dispatch }) {
   const promises = mails.map(async mail => {
     await dispatch(mail);
     return mail;

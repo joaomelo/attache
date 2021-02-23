@@ -1,4 +1,5 @@
 import * as admin from 'firebase-admin';
+import { createId } from '../../helpers';
 import { del } from '../request';
 
 let app;
@@ -39,19 +40,8 @@ async function clearEmulatorFirestore () {
 function createAdapter (db) {
   return {
     async saveItems (collectionName, items) {
-      if (!Array.isArray(items) || items.length === 0) return true;
-
       const collection = db.collection(collectionName);
-      const batch = db.batch();
-
-      items.forEach(item => {
-        const docRef = collection.doc(item.id);
-        batch.set(docRef, item);
-      });
-
-      await batch.commit();
-
-      return true;
+      return saveItems(collection, items);
     },
 
     async queryAllItems (collectionName) {
@@ -64,6 +54,26 @@ function createAdapter (db) {
       return findItems(collection, { field: 'when', operator: '>=', value: start });
     }
   };
+}
+
+async function saveItems (collection, items) {
+  if (!Array.isArray(items) || items.length === 0) return true;
+
+  const batch = collection._firestore.batch();
+
+  items.forEach(item => {
+    const record = { ...item };
+    if (!record.id) {
+      record.id = createId();
+    }
+
+    const docRef = collection.doc(record.id);
+    batch.set(docRef, record);
+  });
+
+  await batch.commit();
+
+  return true;
 }
 
 async function findItems (collection, filter) {

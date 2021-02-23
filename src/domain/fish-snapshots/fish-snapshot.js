@@ -1,8 +1,5 @@
-import { createId } from '../../helpers';
-
 export async function fishSnapshot (term, { search }) {
   const freshSnapshot = {
-    id: createId(),
     term,
     when: new Date()
   };

@@ -1,3 +1,5 @@
+import { createId } from '../../helpers';
+
 export function initVanillaDb () {
   const collections = {};
 
@@ -13,7 +15,15 @@ export function initVanillaDb () {
       if (!Array.isArray(items) || items.length === 0) return true;
 
       const collection = assertCollection(collectionName);
-      collection.push(...items);
+      const records = items.map(i => {
+        const r = { ...i };
+        if (!r.id) {
+          r.id = createId();
+        }
+        return r;
+      });
+
+      collection.push(...records);
 
       return Promise.resolve(true);
     },

@@ -28,15 +28,33 @@ describe('db module', () => {
       expect(retrieved).toHaveLength(3);
     });
 
-    const saveEmptyDataTable = [
+    const exceptionsDataTable = [
       ['empty array', []],
       ['undefined', undefined]
     ];
-    test.each(saveEmptyDataTable)('deals with saving %p gracefully', async (description, data) => {
+    test.each(exceptionsDataTable)('deals with saving %p gracefully', async (description, data) => {
       const db = await initFn();
       await db.saveItems(collectionName, data);
       const retrieved = await db.queryAllItems(collectionName);
       expect(retrieved).toEqual([]);
+    });
+
+    test('should provide an id if none is given', async () => {
+      const name = 'i do not have an id';
+      const itemsWithoutId = [{ name }];
+      const db = await initFn();
+
+      await db.saveItems(collectionName, itemsWithoutId);
+
+      const retrieved = await db.queryAllItems(collectionName);
+      expect(retrieved).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: expect.any(String),
+            name
+          })
+        ])
+      );
     });
   });
 
