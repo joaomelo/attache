@@ -1,10 +1,12 @@
-import { sortByField } from '../../../helpers';
+import { sortByField } from '../../helpers';
 
 export function renderTrackReport (report) {
-  const message = `    
+  const message = `
+    <body>
     <h1 style="margin-bottom: 0px">Ranking Report</h1>
     <p style="color: #AAAAAA; font-size: 8px; margin-top: 0px">Stake: ${report.stake.id}</p>
     ${report.terms.map(t => renderTerm(t)).join('')}
+    </body>
   `;
 
   const withoutBlankLines = message.replace(/^\s*$(?:\r\n?|\n)/gm, '');
@@ -34,7 +36,7 @@ function renderTrendPosition (trendPosition) {
   const prettyWhen = prettifyWhen(trendPosition.when);
   return `
     <p style="margin:0px">${prettyWhen}: 
-      <a href="${trendPosition.page}">${trendPosition.page.substr(0, 15)}${trendPosition.page.length > 15 ? '...' : ''}</a>
+      <a href="${trendPosition.page}">${trendPosition.page.substr(0, 30)}${trendPosition.page.length > 15 ? '...' : ''}</a>
     </p>
   `;
 };

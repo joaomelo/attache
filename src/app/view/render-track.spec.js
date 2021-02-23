@@ -1,4 +1,4 @@
-import { trackReports } from '../../../../tests/fixtures';
+import { trackReports } from '../../../tests/fixtures';
 import { renderTrackReport } from './render-track';
 import { writeFile } from 'fs';
 

@@ -1,5 +1,5 @@
 import { mountTracks } from '../tracks';
-import { renderTrackReport } from '../../app/view/email';
+import { renderTrackReport } from '../../app/view';
 
 export function determinePendingMail (stakes, snapshots, sentMail) {
   const tracks = mountTracks(stakes, snapshots);
