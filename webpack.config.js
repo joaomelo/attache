@@ -18,7 +18,6 @@ module.exports = (env, argv) => {
       path: path.resolve(__dirname, 'dist'),
       libraryTarget: 'commonjs'
     },
-    watch: env.dev,
     node: {
       __dirname: false,
       __filename: false
