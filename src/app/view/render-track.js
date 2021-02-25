@@ -1,5 +1,6 @@
 import { sortByField } from '../../helpers';
-import { resetCss, typography, colors } from './styles';
+import { resetCss, typography, colors, sizing, position, effects } from './styles';
+import { letterIcon } from './icons';
 
 export function renderTrackReport (track) {
   const message = `
@@ -8,13 +9,18 @@ export function renderTrackReport (track) {
         ${resetCss}
         ${typography}
         ${colors}
+        ${sizing}
+        ${position}
+        ${effects}
       </head>
       <body>
-        <h1 class="heavy dark fs4">
-        Track Report
-        </h1>
-        ${track.terms.map(t => renderTerm(t)).join('')}
-        ${renderFooter(track.stake.id)}
+        <div class="p3 bg-nt-900">
+          <main class="mw1 mauto p2 bg-nt-050 rounded">
+            <h1 class="heavy dark fs4 mt1 text-center">Track Report</h1>
+            ${track.terms.map(t => renderTerm(t)).join('')}
+            ${renderFooter(track.stake.id)}
+          </main>
+        </div>
       </body>
     </html>
   `;
@@ -26,11 +32,19 @@ export function renderTrackReport (track) {
 
 function renderTerm (term) {
   return `
-      <h2 class="fs3">
-        <span class="normal grey">When searching for</span> <span class="heavy dark">${term.term}<span>
-      </h2>
-      ${renderTrend(term.trend)}
-      ${term.rankings.map(r => renderRanking(r)).join('')}
+    <div class="p1">
+      <div class="mt2 flex align-center greyish">
+        ${letterIcon()}
+        <h2 class="fs3 ml1 heavy">
+          When searching for
+          <span class="dark">${term.term}</span>
+        </h2>
+      </div>
+      <div class="p1">
+        ${renderTrend(term.trend)}
+        ${term.rankings.map(r => renderRanking(r)).join('')}
+      </div>
+    </div>
   `;
 }
 
@@ -38,19 +52,22 @@ function renderTrend (trend) {
   const sortedPosition = sortByField(trend, 'when', false);
 
   return `
-    <h3 class="normal dark fs3">Trend</h3>
-    <p class="normal greyish fs2">
-      List the first search result for this Term in the last few days
-    </p>
+    <h3 class="mt2 fs3 normal dark">
+      The first pages were
+    </h3>
     ${sortedPosition.map(p => renderTrendPosition(p)).join('')}
   `;
 }
 
 function renderTrendPosition (trendPosition) {
+  const maxSize = 30;
   const prettyWhen = prettifyWhen(trendPosition.when);
   return `
-    <p class="normal dark fs2">${prettyWhen}: 
-      <a href="${trendPosition.page}">${trendPosition.page.substr(0, 30)}${trendPosition.page.length > 15 ? '...' : ''}</a>
+    <p class="normal dark fs2">
+      ${prettyWhen}: 
+      <a href="${trendPosition.page}" class="heavy">
+        ${trendPosition.page.substr(0, maxSize)}${trendPosition.page.length > maxSize ? '...' : ''}
+      </a>
     </p>
   `;
 };
@@ -58,7 +75,7 @@ function renderTrendPosition (trendPosition) {
 function renderRanking (ranking) {
   const sortedPosition = sortByField(ranking.positions, 'when', false);
   return `
-    <h3 class="normal dark fs3">
+    <h3 class="normal dark fs3 mt2">
       Page: ${ranking.page}
     </h3>
     ${sortedPosition.map(p => renderRankingPosition(p)).join('')}
