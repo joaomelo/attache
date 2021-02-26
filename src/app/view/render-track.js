@@ -1,6 +1,6 @@
 import { sortByField } from '../../helpers';
 import { resetCss, typography, colors, sizing, position, effects } from './styles';
-import { letterIcon } from './icons';
+import { letterIcon, firstIcon, pageIcon } from './icons';
 
 export function renderTrackReport (track) {
   const message = `
@@ -15,9 +15,9 @@ export function renderTrackReport (track) {
       </head>
       <body>
         <div class="p3 bg-nt-900">
-          <main class="mw1 mauto p2 bg-nt-050 rounded">
-            <h1 class="heavy dark fs4 mt1 text-center">Track Report</h1>
-            ${track.terms.map(t => renderTerm(t)).join('')}
+          <main class="wm1 mauto p2 bg-nt-050 rounded">
+            ${renderTitle()}
+            ${renderJoin(track.terms, renderTerm)}
             ${renderFooter(track.stake.id)}
           </main>
         </div>
@@ -30,21 +30,28 @@ export function renderTrackReport (track) {
   return withoutLeadingSpaces;
 }
 
+function renderTitle () {
+  return `
+    <h1 class="heavy cl-nt-900 fs4 mt1 mb2 text-center">Track Report</h1>
+    ${renderLine()}   
+  `;
+}
+
 function renderTerm (term) {
   return `
-    <div class="p1">
-      <div class="mt2 flex align-center greyish">
+    <section class="mt2 ml1 mr1 p1">
+      <span class="flex align-center cl-pr-900">
         ${letterIcon()}
-        <h2 class="fs3 ml1 heavy">
-          When searching for
-          <span class="dark">${term.term}</span>
+        <h2 class="ml1 fs3">
+          <span class="normal cl-nt-400">Searching for</span>
+          <span class="heavy">${term.term}</span>
         </h2>
-      </div>
-      <div class="p1">
+      </span>
+      <div class="p2">
         ${renderTrend(term.trend)}
-        ${term.rankings.map(r => renderRanking(r)).join('')}
+        ${renderJoin(term.rankings, renderRanking)}
       </div>
-    </div>
+    </section>
   `;
 }
 
@@ -52,10 +59,14 @@ function renderTrend (trend) {
   const sortedPosition = sortByField(trend, 'when', false);
 
   return `
-    <h3 class="mt2 fs3 normal dark">
-      The first pages were
-    </h3>
-    ${sortedPosition.map(p => renderTrendPosition(p)).join('')}
+    <span class="mb1 flex align-center cl-pr-900">
+      ${firstIcon(24)}
+      <h3 class="fs3 normal">
+        <span class="ml1">First</span>
+        <span class="cl-nt-400">results were</span>
+      </h3>
+    </span>
+    ${renderJoin(sortedPosition, renderTrendPosition)}
   `;
 }
 
@@ -63,7 +74,7 @@ function renderTrendPosition (trendPosition) {
   const maxSize = 30;
   const prettyWhen = prettifyWhen(trendPosition.when);
   return `
-    <p class="normal dark fs2">
+    <p class="normal cl-nt-900 fs2">
       ${prettyWhen}: 
       <a href="${trendPosition.page}" class="heavy">
         ${trendPosition.page.substr(0, maxSize)}${trendPosition.page.length > maxSize ? '...' : ''}
@@ -75,10 +86,15 @@ function renderTrendPosition (trendPosition) {
 function renderRanking (ranking) {
   const sortedPosition = sortByField(ranking.positions, 'when', false);
   return `
-    <h3 class="normal dark fs3 mt2">
-      Page: ${ranking.page}
-    </h3>
-    ${sortedPosition.map(p => renderRankingPosition(p)).join('')}
+    <span class="mt2 mb1 flex align-center cl-pr-900">
+      ${pageIcon(24)}
+      <h3 class="fs3 normal">
+        <span class="ml1 cl-nt-400">Page</span>
+        <span class="heavy">${ranking.page}</span>
+        <span class="cl-nt-400">ranked</span>
+      </h3>
+    </span>
+    ${renderJoin(sortedPosition, renderRankingPosition)}
   `;
 }
 
@@ -86,7 +102,7 @@ function renderRankingPosition (rankingPosition) {
   const prettyWhen = prettifyWhen(rankingPosition.when);
   const prettyPosition = rankingPosition.position === 0 ? 'Not found' : `${rankingPosition.position}º`;
   return `
-    <p class="normal dark fs2">${prettyWhen}: <span class="heavy">${prettyPosition}</span></p>
+    <p class="normal cl-nt-900 fs2">${prettyWhen}: <span class="heavy">${prettyPosition}</span></p>
   `;
 }
 
@@ -99,9 +115,20 @@ function prettifyWhen (w) {
 
 function renderFooter (stakeId) {
   return `
-    <footer class="normal grey fs2">
-      <p class="normal greyish fs1">Report for Stake id ${stakeId}</p>
-      <p>Made with <a href="https://github.com/joaomelo/attache">Attaché</a>. A open source project available at GitHub.</p>
+    ${renderLine()}
+    <footer class="p1 mt2">
+      <p class="normal cl-nt-400 fs1">Track report for Stake ${stakeId}</p>
+      <p class="mt1 normal fs2 cl-nt-700">
+        Made with <a class="underline" target="_blank" href="https://github.com/joaomelo/attache">Attaché</a>. A open source project available at GitHub.
+      </p>
     </footer>
   `;
+}
+
+function renderLine () {
+  return '<hr style="border-top: 1px solid #BCCCDC">';
+}
+
+function renderJoin (array, render) {
+  return array.map(i => render(i)).join('');
 }
