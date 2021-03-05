@@ -1,30 +1,18 @@
+import { accIfResults } from '../../helpers';
 import { extractTrends } from '../trends';
 import { rankPagesInTerms } from '../rankings';
 import { tupleTermsAndPages } from '../stakes';
+import { mountTerm } from './mount-terms';
 
 export function mountTracks (stakes, snapshots) {
   const tuples = tupleTermsAndPages(stakes);
   const rankings = rankPagesInTerms(tuples, snapshots);
   const trends = extractTrends(snapshots);
 
-  return stakes.map(s => {
-    return {
+  return stakes
+    .map(s => ({
       stake: { ...s },
-      terms: s.terms.map(t => {
-        return {
-          term: t,
-          trend: trends[t],
-          rankings: s.pages.map(p => findRanking(rankings, t, p))
-        };
-      })
-    };
-  });
+      terms: accIfResults(s.terms, mountTerm, s.pages, trends, rankings)
+    }))
+    .filter(t => t.terms.length > 0);
 }
-
-function findRanking (rankings, term, page) {
-  const ranking = rankings.find(r => r.page === page && r.term === term);
-  return {
-    page: ranking.page,
-    positions: ranking.positions
-  };
-};

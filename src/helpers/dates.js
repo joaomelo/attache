@@ -4,7 +4,7 @@ export function calcToday () {
   return today;
 }
 
-export function fromToday (delta) {
+export function fromToday (delta = 0) {
   const someday = calcToday();
   someday.setDate(someday.getDate() + delta);
   return someday;

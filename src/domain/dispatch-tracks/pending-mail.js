@@ -1,9 +1,6 @@
-import { mountTracks } from '../tracks';
-import { renderTrackReport } from '../../app/view';
 
-export function determinePendingMail (stakes, snapshots, sentMail) {
-  const tracks = mountTracks(stakes, snapshots);
-  const mails = convertTracksToMails(tracks);
+export function createPendingMail (tracks, sentMail, { render }) {
+  const mails = convertTracksToMails(tracks, { render });
   const pendingMail = mails.filter(m => !sentMail.find(s =>
     s.stakeId === m.stakeId && s.to === m.to
   ));
@@ -11,11 +8,11 @@ export function determinePendingMail (stakes, snapshots, sentMail) {
   return pendingMail;
 }
 
-export function convertTracksToMails (tracks) {
+export function convertTracksToMails (tracks, { render }) {
   const subject = 'Attaché - Track Report';
 
   return tracks.flatMap(r => {
-    const message = renderTrackReport(r);
+    const message = render(r);
     const stakeId = r.stake.id;
 
     return r.stake.emails.map(to => ({

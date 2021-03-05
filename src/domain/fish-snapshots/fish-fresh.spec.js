@@ -1,28 +1,26 @@
 import { stakes, snapshots } from '../../../tests/fixtures';
 import { createSearch } from '../../app/search';
 import { initDb } from '../../app/db';
-import { fishFreshSnapshots } from './index';
+import { fishFreshSnapshots } from './fish-fresh';
 
 describe('fish-snapshots module', () => {
-  let db, search, logger;
+  let db, search;
 
   beforeEach(async () => {
     db = await initDb('vanilla');
     await db.saveItems('stakes', stakes);
 
     search = jest.fn(createSearch('vanilla'));
-    logger = { info: jest.fn() };
   });
 
   describe('happy path', () => {
     test('save a snapshot for every term and return saved quantity', async () => {
       const expectedQt = 2;
 
-      const savedSnapshots = await fishFreshSnapshots({ db, search, logger });
+      const savedSnapshots = await fishFreshSnapshots({ db, search });
       const dbSnapshots = await db.queryAllItems('snapshots');
 
       expect(savedSnapshots).toBe(expectedQt);
-      expect(logger.info).toHaveBeenLastCalledWith(expect.stringContaining(expectedQt.toString()));
       expect(dbSnapshots).toHaveLength(expectedQt);
 
       expect(dbSnapshots).toEqual(
@@ -45,7 +43,7 @@ describe('fish-snapshots module', () => {
       const expectedQt = 1;
       db.saveItems('snapshots', snapshots);
 
-      const savedSnapshots = await fishFreshSnapshots({ db, search, logger });
+      const savedSnapshots = await fishFreshSnapshots({ db, search });
 
       expect(savedSnapshots).toBe(expectedQt);
       expect(search).toHaveBeenCalledTimes(expectedQt);
@@ -54,10 +52,9 @@ describe('fish-snapshots module', () => {
     test('run gracefully if no stakes are available', async () => {
       db = await initDb('vanilla');
 
-      const savedSnapshots = await fishFreshSnapshots({ db, search, logger });
+      const savedSnapshots = await fishFreshSnapshots({ db, search });
 
       expect(savedSnapshots).toBe(0);
-      expect(logger.info).toHaveBeenLastCalledWith(expect.stringContaining('no'));
     });
   });
 
@@ -70,7 +67,7 @@ describe('fish-snapshots module', () => {
       const expectedQt = 2;
       search = bizarreSearch;
 
-      const savedSnapshots = await fishFreshSnapshots({ db, search, logger });
+      const savedSnapshots = await fishFreshSnapshots({ db, search });
       const dbSnapshots = await db.queryAllItems('snapshots');
 
       expect(savedSnapshots).toBe(expectedQt);

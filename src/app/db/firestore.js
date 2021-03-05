@@ -1,5 +1,5 @@
 import * as admin from 'firebase-admin';
-import { createId } from '../../helpers';
+import { createId, fromToday } from '../../helpers';
 import { del } from '../request';
 
 let app;
@@ -38,20 +38,15 @@ async function clearEmulatorFirestore () {
 }
 
 function createAdapter (db) {
+  const collection = name => db.collection(name);
+
   return {
-    async saveItems (collectionName, items) {
-      const collection = db.collection(collectionName);
-      return saveItems(collection, items);
-    },
-
-    async queryAllItems (collectionName) {
-      const collection = db.collection(collectionName);
-      return findItems(collection);
-    },
-
-    queryItemsSince (collectionName, start) {
-      const collection = db.collection(collectionName);
-      return findItems(collection, { field: 'when', operator: '>=', value: start });
+    saveItems: (collectionName, items) => saveItems(collection(collectionName), items),
+    queryAllItems: collectionName => findItems(collection(collectionName)),
+    queryItemsSince: (collectionName, start) => findItems(collection(collectionName), { field: 'when', operator: '>=', value: start }),
+    queryItemsLastDays (collectionName, days = 0) {
+      const start = fromToday(-days);
+      return this.queryItemsSince(collectionName, start);
     }
   };
 }

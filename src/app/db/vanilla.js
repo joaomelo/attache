@@ -1,4 +1,4 @@
-import { createId } from '../../helpers';
+import { createId, fromToday } from '../../helpers';
 
 export function initVanillaDb () {
   const collections = {};
@@ -36,6 +36,11 @@ export function initVanillaDb () {
     queryItemsSince (collectionName, start) {
       const collection = assertCollection(collectionName);
       return Promise.resolve(collection.filter(r => r.when >= start));
+    },
+
+    queryItemsLastDays (collectionName, days = 0) {
+      const start = fromToday(-days);
+      return this.queryItemsSince(collectionName, start);
     }
   };
 };

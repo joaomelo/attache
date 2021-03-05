@@ -6,4 +6,12 @@ export function sortByField (array, field, asc = true) {
     return 0;
   });
   return copy;
-};
+}
+
+export function accIfResults (array, callback, ...params) {
+  return array.reduce((acc, item) => {
+    const result = callback(item, ...params);
+    if (result) acc.push(result);
+    return acc;
+  }, []);
+}

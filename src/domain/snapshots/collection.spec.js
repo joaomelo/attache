@@ -1,7 +1,7 @@
 import { snapshots } from '../../../tests/fixtures';
 import { fromToday } from '../../helpers';
 import { initDb } from '../../app/db';
-import { createSnapshotsCollection } from './index';
+import { createSnapshotsCollection } from './collection';
 
 describe('snapshots module', () => {
   let db, snapshotsCol;
@@ -25,9 +25,9 @@ describe('snapshots module', () => {
       expect(todaySnapshots).toHaveLength(3);
     });
 
-    test('query successful since', async () => {
+    test('query last days successful', async () => {
       await snapshotsCol.save(snapshots);
-      const sinceYesterdaySnapshots = await snapshotsCol.querySuccessfulSince(fromToday(-1));
+      const sinceYesterdaySnapshots = await snapshotsCol.querySuccessfulLastDays(1);
 
       expect(sinceYesterdaySnapshots).toHaveLength(2);
     });

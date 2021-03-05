@@ -1,6 +1,7 @@
 import { initDb } from '../app/db';
 import { createLogger } from '../app/log';
 import { createDispatch } from '../app/dispatch';
+import { renderTrackReport as render } from '../app/view';
 import { dispatchTracks } from '../domain/dispatch-tracks';
 
 export async function dispatchTracksService () {
@@ -14,7 +15,8 @@ export async function dispatchTracksService () {
     if (!(key && defaults.from)) throw new Error('SEND GRID config not found');
     const dispatch = createDispatch('sendGrid', { key, defaults });
 
-    tracksDispatched = await dispatchTracks({ db, dispatch, logger });
+    tracksDispatched = await dispatchTracks({ db, dispatch, render });
+    logger.info(`tracks dispatch cycle finished with ${tracksDispatched} dispatches`);
   } catch (error) {
     logger.error(error.message);
   };

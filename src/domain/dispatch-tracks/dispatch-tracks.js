@@ -1,39 +1,26 @@
-import { fromToday } from '../../helpers';
 import { createStakesCollection } from '../stakes';
 import { createSnapshotsCollection } from '../snapshots';
+import { mountTracks } from '../tracks';
 import { createDispatchedTracksCollection } from './collection';
-import { determinePendingMail } from './pending-mail';
+import { createPendingMail } from './pending-mail';
 import { dispatchMail } from './dispatch-mail';
 
-export async function dispatchTracks ({ db, dispatch, logger }) {
-  let dispatchedQt = 0;
-
+export async function dispatchTracks ({ db, dispatch, render }) {
   const stakesCol = createStakesCollection(db);
   const stakes = await stakesCol.queryAll();
-  if (stakes.length === 0) {
-    logger.info('no stakes found for rankings dispatch');
-    return dispatchedQt;
-  };
 
   const snapshotsCol = createSnapshotsCollection(db);
-  const lastWeek = fromToday(-7);
-  const snapshots = await snapshotsCol.querySuccessfulSince(lastWeek);
-  if (snapshots.length === 0) {
-    logger.info('no snapshots found for rankings dispatch');
-    return dispatchedQt;
-  };
+  const snapshots = await snapshotsCol.querySuccessfulLastDays(7);
+
+  const tracks = mountTracks(stakes, snapshots);
 
   const dtCol = createDispatchedTracksCollection(db);
-  const lastTwoDays = fromToday(-2);
-  const sentMail = await dtCol.querySince(lastTwoDays);
+  const sentMail = await dtCol.queryLastDays(2);
 
-  const pendingMail = determinePendingMail(stakes, snapshots, sentMail);
-
+  const pendingMail = createPendingMail(tracks, sentMail, { render });
   const dispatchedMail = await dispatchMail(pendingMail, { dispatch });
-  dtCol.save(dispatchedMail);
 
-  dispatchedQt = dispatchedMail.length;
-  logger.info(`rankings cycle finished with ${dispatchedQt} dispatches`);
+  await dtCol.save(dispatchedMail);
 
-  return dispatchedQt;
+  return dispatchedMail.length;
 }

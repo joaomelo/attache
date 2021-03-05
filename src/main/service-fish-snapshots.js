@@ -13,7 +13,8 @@ export async function fishSnapshotsService () {
     if (!key) throw new Error('SCALE SERP api key not found');
     const search = createSearch('scale', { key });
 
-    snapshotsFished = await fishFreshSnapshots({ db, search, logger });
+    snapshotsFished = await fishFreshSnapshots({ db, search });
+    logger.info(`snapshot fishing cycle finished with ${snapshotsFished} fresh snapshots saved`);
   } catch (error) {
     logger.error(error.message);
   }
