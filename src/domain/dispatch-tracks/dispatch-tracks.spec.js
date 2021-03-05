@@ -61,7 +61,7 @@ describe('dispatch rankings module', () => {
       expect(dispatchedRankings).toBe(0);
     });
 
-    test.only('do not dispatch rankings without snapshots', async () => {
+    test('do not dispatch rankings without snapshots', async () => {
       db = initDb('vanilla');
       await db.saveItems('stakes', stakes);
       await db.saveItems('snapshots', []);
