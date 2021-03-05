@@ -15,3 +15,9 @@ export function accIfResults (array, callback, ...params) {
     return acc;
   }, []);
 }
+
+export function joinMap (array, callback, joinString = '') {
+  return array
+    .map(i => callback(i))
+    .join(joinString);
+}

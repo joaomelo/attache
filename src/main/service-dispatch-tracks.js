@@ -1,7 +1,7 @@
 import { initDb } from '../app/db';
 import { createLogger } from '../app/log';
 import { createDispatch } from '../app/dispatch';
-import { renderTrackReport as render } from '../app/view';
+import { renderTrackTextReport as render } from '../app/view';
 import { dispatchTracks } from '../domain/dispatch-tracks';
 
 export async function dispatchTracksService () {

@@ -7,9 +7,11 @@ export function createSendGridDispatch ({ defaults, key, logger }) {
     const completeMail = {
       to: mail.to,
       subject: mail.subject,
-      html: mail.message,
       ...defaults
     };
+
+    const messageKey = mail.message.includes('<html>') ? 'html' : 'text';
+    completeMail[messageKey] = mail.message;
 
     try {
       const responses = await sgMail.send(completeMail);

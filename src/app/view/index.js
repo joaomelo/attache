@@ -1,1 +1,1 @@
-export { renderTrackReport } from './render-track';
+export { renderTrackTextReport } from './render-track-text';
