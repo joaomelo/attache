@@ -62,7 +62,7 @@ function establishEnvironment (envArgs) {
   return 'UNDEFINED';
 }
 
-const envDevFile = path.resolve(process.cwd(), 'env-dev.env');
+const envDevFile = path.resolve(process.cwd(), '.env');
 
 function createPluginToLoadFromEnvDevFile () {
   console.info(`attempting to inject env vars from "${envDevFile}" file using webpack plugin`);

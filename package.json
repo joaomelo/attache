@@ -7,6 +7,7 @@
     "dev:test": "jest --watchAll --detectOpenHandles --coverage=false --setupTestFrameworkScriptFile=./tests/config/local-dev.js",
     "dev:test:emulators": "firebase emulators:exec --only firestore \"npm run dev:test\"",
     "start": "npm run dev:test:emulators",
+    "dev:emulators": "npm run emulators start",
     "dev:build": "webpack --env dev --config webpack.config.js",
     "dev:shell": "firebase functions:shell",
     "prod:local:lint": "eslint --ext .js,.vue src/",
