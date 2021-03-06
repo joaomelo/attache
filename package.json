@@ -1,7 +1,7 @@
 {
   "name": "attache",
   "version": "2.12.0",
-  "description": "Attaché is a SERP tracker. It crosses the presence of pages against results of search terms and reports that periodically.",
+  "description": "Attaché is a minimal SERP tracker built with personal use in mind. It periodically reports the position of pages in organic search results.",
   "main": "dist/index.js",
   "scripts": {
     "dev:test": "jest --watchAll --detectOpenHandles --coverage=false --setupTestFrameworkScriptFile=./tests/config/local-dev.js",
