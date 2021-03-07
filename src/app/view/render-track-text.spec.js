@@ -8,14 +8,14 @@ describe('render text track report', () => {
   const track = mountTracks(stakes, snapshots)[0];
 
   test('render track', () => {
-    const message = renderTrackTextReport(track).toLowerCase();
+    const message = renderTrackTextReport(track);
 
     writeFile(join(__dirname, 'render-ranking.test.txt'), message, err => { err && console.error(err); });
 
     track.terms.forEach(t => {
-      expect(message).toEqual(expect.stringContaining(t.term));
+      expect(message.toLowerCase()).toEqual(expect.stringContaining(t.term));
       t.rankings.forEach(r => {
-        expect(message).toEqual(expect.stringContaining(r.page));
+        expect(message.toLowerCase()).toEqual(expect.stringContaining(r.page));
       });
     });
   });

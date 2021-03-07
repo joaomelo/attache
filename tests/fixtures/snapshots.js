@@ -5,7 +5,7 @@ export const snapshots = [
     id: '304145c3-b694-431b-8f19-0ce6f678e3c0',
     term: 'cloud',
     when: fromToday(-10),
-    result: ['aws.amazon.com', 'azure.microsoft.com', 'cloud.google.com', 'firebase.google.com'],
+    result: ['aws.amazon.com/let-us-make-this-link-so-amazingly-huge-in-characters/in-other-to-rendering-tests-became-so-much-more-reliable', 'azure.microsoft.com', 'cloud.google.com', 'firebase.google.com'],
     success: true,
     size: 3
   },

@@ -2,42 +2,41 @@ import { sortByField, joinMap } from '../../helpers';
 
 export function renderTrackTextReport (track) {
   return `
-📝 TRACK REPORT
-===================
+===== TRACK REPORT =====
 
 ${joinMap(track.terms, renderTerm)}
-*******************
-Made with ❤️ by Attaché. A open source project available at GitHub: https://github.com/joaomelo/attache.
+********************
+Made with ❤ by Attaché. A open source project available at https://github.com/joaomelo/attache.
 Report for ${track.stake.id}
 `;
 }
 
 function renderTerm (term) {
-  return `----------  
-🔎 Searching for "${term.term.toUpperCase()}"
+  return `
+Searching for "${term.term.toUpperCase()}"
 ----------
-- ${renderTrend(term.trend)}
+${renderTrend(term.trend)}
 
-- ${joinMap(term.rankings, renderRanking, '\n- ')}
+${joinMap(term.rankings, renderRanking, '\n')}
 `;
 }
 
 function renderTrend (trend) {
   const trendPositions = renderSeries(trend, p => p.page);
-  return `🥇 FIRST search results were: \n  ${trendPositions}`;
+  return `FIRST search results were: \n${trendPositions}`;
 }
 
 function renderRanking (ranking) {
   const dataRender = p => `${p.position === 0 ? 'Not found' : `${p.position}º`}`;
   const rankingPositions = renderSeries(ranking.positions, dataRender);
 
-  return `🌐 Page "${ranking.page.toUpperCase()}" ranked: \n  ${rankingPositions} \n`;
+  return `Page "${ranking.page.toUpperCase()}" ranked: \n${rankingPositions} \n`;
 }
 
 function renderSeries (series, dataRender) {
   const sortedPosition = sortByField(series, 'when', false);
-  const renderPosition = p => `${prettifyWhen(p.when)}: ${dataRender(p)}`;
-  const positions = joinMap(sortedPosition, renderPosition, '\n  ');
+  const renderPosition = p => `* ${prettifyWhen(p.when)}: ${dataRender(p)}`;
+  const positions = joinMap(sortedPosition, renderPosition, '\n');
   return positions;
 }
 
