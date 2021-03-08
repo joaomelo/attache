@@ -1,6 +1,6 @@
 import { stakes, snapshots } from '../../../tests/fixtures';
 import { initDb } from '../../app/db';
-import { renderTrackTextReport as render } from '../../app/view';
+import { renderTrackTextReport as render } from '../../views/email';
 import { dispatchTracks } from './dispatch-tracks';
 
 describe('dispatch rankings module', () => {
