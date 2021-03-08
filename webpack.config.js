@@ -15,7 +15,7 @@ module.exports = (env, argv) => {
     externals: [nodeExternals()],
     output: {
       filename: 'index.js',
-      path: path.resolve(__dirname, 'dist'),
+      path: path.resolve(__dirname, 'dist', 'functions'),
       libraryTarget: 'commonjs'
     },
     node: {

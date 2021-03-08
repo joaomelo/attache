@@ -81,11 +81,7 @@ I must say I have no affiliation with any of these services. I chose them from p
 
 The project uses [Jest](https://jestjs.io/) for testing. By executing `npm start`, you turn on tests in watch mode and can begin coding. It is easy to focus on a particular module applying file patterns through Jest CLI options.
 
-But be aware these tests don't massage the final serverless functions. These functions are tiny and take care only of putting together dependencies. Nevertheless, If you want to run them locally, type the commands below in different terminal windows.
-
-- `npm run dev:emulators`
-- `npm run dev:build`
-- `npm run dev:shell`
+But be aware these tests don't massage the final serverless functions. These functions are tiny and take care only of putting together dependencies. Nevertheless, If you want to run them locally, type the command `npm run shell`.
 
 The [shell interface](https://firebase.google.com/docs/functions/local-shell) enables local interactive invoke of Firebase functions from the command line.
 
@@ -93,7 +89,7 @@ The [shell interface](https://firebase.google.com/docs/functions/local-shell) en
 
 ## Locally
 
-You can deploy the serverless functions to Firebase from your local machine. To do that, execute `npm run prod:local:deploy`.
+You can deploy the serverless functions to Firebase from your local machine. To do that, execute `npm run deploy:local`.
 
 This command will take advantage of the same `.env` file used for development and the Firebase project configuration.
 
