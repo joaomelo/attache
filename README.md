@@ -37,7 +37,7 @@ Attaché is developed using Javascript and takes advantage of the language thriv
 The first step is to clone the repo with git and install all dependencies.
 
 ``` bash
-git clone https://github.com/joaomelo/lib.git
+git clone https://github.com/joaomelo/attache.git
 npm i
 ```
 
